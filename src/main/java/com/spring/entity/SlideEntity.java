@@ -8,10 +8,10 @@ import javax.persistence.Table;
 @Table(name = "slide")
 public class SlideEntity extends BaseEntity {
 	
-	@Column
+	@Column(name = "url_image")
 	private String urlImage;
 
-	@Column
+	@Column(name = "url_link")
 	private String urlLink;
 
 	public String getUrlImage() {

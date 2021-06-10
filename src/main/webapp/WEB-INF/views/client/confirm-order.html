@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace= "client/_generic :: header_html"/>
+<body>
+<div th:replace= "client/_generic :: navbar_html"></div>
+
+
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb-tree">
+                    <li><a href="#">Trang chủ</a></li>
+                    <li><a href="/xem-gio-hang">Giỏ hàng</a></li>
+                    <li>Thanh toán</li>
+                    <li class="active">Xác nhận đặt hàng</li>
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- SECTION -->
+<div class="section mt-3">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row infomation">
+            <div class="col-md-10 order-details">
+                <form class="form-group form-left" action="/xac-nhan-dat-hang" method="post">
+	                  <div th:if="${error != null}" class="alert alert-danger display-invalid-error text-center" th:utext="${error}"></div>
+	                  <h6>Nhập mã xác nhận đặt hàng được gửi trong email của bạn</h6>
+	                  <div class="form-group">
+	                       <input class="input" type="text" name="code" placeholder="Mã xác nhận" required>
+	                  </div>
+	                  <input type="hidden" name="isExpired" value="false" id="isExpired">
+	                  <button type="submit" class="primary-btn order-submit">Gửi</button>
+                 </form>
+                 <div style="text-align: center;">
+                 <h5>Thời gian xác nhận còn: </h5>
+                 <div id="countdown" style="font-size: 20px"></div>
+                 </div>
+            </div>
+            <!-- /row -->
+        </div>
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+<input type="hidden" th:value="${session.Bill != null ? session.Bill.dateExpired.time : '1621822356467'}" id="timeExpired">
+<div th:replace= "client/_generic :: footer_html"></div>
+
+<script>
+
+    var _second = 1000;
+    var _minute = _second * 60;
+    var _hour = _minute * 60;
+    var _day = _hour * 24;
+    var timer;
+   // var end = addMinutes(new Date(), 2);
+   var end = $("#timeExpired").val();
+    function showRemaining() {
+        
+        var now = new Date();
+        var distance = end - now;
+        if (distance < 0) {
+
+            clearInterval(timer);
+            document.getElementById('countdown').innerHTML = 'Hết hạn!';
+			$("#isExpired").val(true);
+            return;
+        }
+        var days = Math.floor(distance / _day);
+        var hours = Math.floor((distance % _day) / _hour);
+        var minutes = Math.floor((distance % _hour) / _minute);
+        var seconds = Math.floor((distance % _minute) / _second);
+
+       
+        document.getElementById('countdown').innerHTML = minutes + ' phút ';
+        document.getElementById('countdown').innerHTML += seconds + ' giây';
+    }
+
+    function addMinutes(date, minutes) {
+        return new Date(date.getTime() + minutes*60000);
+    }
+
+    timer = setInterval(showRemaining, 1000);
+</script>
+</body>
+</html>

@@ -1,0 +1,756 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace= "client/_generic :: header_html"/>
+<body>
+<div th:replace= "client/_generic :: navbar_html"></div>
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb-tree">
+                    <li><a href="/">Trang chủ</a></li>
+                    <li><a th:href="${'/nhomsp?n=' + Category.alias}" th:utext="${Category.name}"></a></li>
+                    <li class="active" th:utext="${Product.name}"></li>
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- SECTION -->
+<div class="section mt-5">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- Product main img -->
+            <div class="col-md-5 col-md-push-2">
+                <div id="product-main-img">
+                <th:block th:each="model : ${Product.listUrlImages}">
+                    <div class="product-preview">
+                        <img th:src="${model}" alt="">
+                    </div>
+                </th:block>
+                </div>
+                
+            </div>
+            <!-- /Product main img -->
+
+            <!-- Product thumb imgs -->
+            <div class="col-md-2  col-md-pull-5">
+                <div id="product-imgs">
+                    <th:block th:each="model : ${Product.listUrlImages}">
+                    <div class="product-preview">
+                        <img th:src="${model}" alt="">
+                    </div>
+                </th:block>
+                </div>
+            </div>
+            <!-- /Product thumb imgs -->
+
+            <!-- Product details -->
+            <div class="col-md-5">
+                <div class="product-details">
+                    <h2 class="product-name" th:utext="${Product.name}"></h2>
+                    <div>
+                        <div class="product-rating">
+                        	<th:block th:if="${Product.star != 0}" th:each="i: ${#numbers.sequence(1, Product.star)}">
+                        		<i class="fa fa-star"></i>
+                        	</th:block>
+                            <th:block th:if="${Product.star == 0}" th:each="i: ${#numbers.sequence(1, 5)}">
+                        		<i class="fa fa-star-o"></i>
+                        	</th:block>
+                        	<th:block th:if="${Product.star > 0 && Product.star < 5}" th:each="i: ${#numbers.sequence(1, 5 - Product.star)}">
+                        		<i class="fa fa-star-o"></i>
+                        	</th:block>
+                            
+                        </div>
+                        <a class="review-link" href="#tab3" onclick="$('#tab-review').click()">10 Đánh giá</a>
+                    </div>
+                    <div>
+                        <h3 th:if="${Product.sale == 0}" class="product-price">
+                        	<span class="money-vnd" th:utext="${Product.price}"></span><sup>₫</sup>
+                        </h3>
+                        <h3 th:if="${Product.sale != 0}" class="product-price">
+                        	<span class="money-vnd" th:utext="${Product.sale}"></span><sup>₫</sup>
+                        	<del class="product-old-price"><span class="money-vnd" th:utext="${Product.price}"></span><sup>₫</sup></del>
+                        </h3>
+                        <span th:if="${Product.qty <= 0 }" class="product-available">Hết hàng</span>
+                    </div>
+                    <p th:utext="${Product.promotions}"></p>
+
+
+                    <div class="add-to-cart">
+                        <div class="qty-label">
+                            Số lượng
+                            <div class="input-number" >
+                                <input type="number" value="1" id="qty-to-add">
+                                <span class="qty-up">+</span>
+                                <span class="qty-down">-</span>
+                            </div>
+                        </div>
+                        <input type="hidden" th:value="${Product.id}" id="id-product">
+                        <button class="add-to-cart-btn" onclick="addToCart($('#id-product').val(), $('#qty-to-add').val())"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</button>
+                    </div>
+
+                    <ul class="product-btns">
+                        <li><a href="#"><i class="fa fa-heart-o"></i> Thêm vào yêu thích</a></li>
+                        <li><a href="#"><i class="fa fa-exchange"></i> So sánh</a></li>
+                    </ul>
+
+                    <ul class="product-links">
+                        <li><i class="fa fa-tags"></i></li>
+                        <th:block th:each="item, count : ${#strings.arraySplit(Product.tags, ',')}">
+                        <li><a th:href="${'/timkiemtag?n=' + item}" th:utext="${item}"></a></li>
+                        </th:block>
+                    </ul>
+
+                    <ul class="product-links">
+                        <li>Chia sẻ:</li>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="#"><i class="fa fa-envelope"></i></a></li>
+                    </ul>
+
+                </div>
+            </div>
+            <!-- /Product details -->
+
+            <!-- Product tab -->
+            <div class="col-md-12">
+                <div id="product-tab">
+                    <!-- product tab nav -->
+                    <ul class="tab-nav">
+                        <li class="active"><a data-toggle="tab" href="#tab1">Thông số kỹ thuật</a></li>
+                        <li><a data-toggle="tab" href="#tab2">Bài viết</a></li>
+                        <li><a data-toggle="tab" href="#tab3" id="tab-review">Đánh giá</a></li>
+                    </ul>
+                    <!-- /product tab nav -->
+
+                    <!-- product tab content -->
+                    <div class="tab-content">
+                        <!-- tab1  -->
+                        <div id="tab1" class="tab-pane fade in active">
+                            <div class="row">
+                                <div class="col-md-6" style="margin: auto !important; float: none !important" th:utext="${Product.specifications }">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /tab1  -->
+
+                        <!-- tab2  -->
+                        <div id="tab2" class="tab-pane fade in">
+                            <div class="row">
+                                <div class="col-md-8" style="margin: auto !important; float: none !important" th:utext="${Product.article }" >
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /tab2  -->
+
+                        <!-- tab3  -->
+                        <div id="tab3" class="tab-pane fade in">
+                            <div class="row">
+                                <!-- Rating -->
+                                <div class="col-md-3">
+                                    <div id="rating">
+                                        
+                                    </div>
+                                </div>
+                                <!-- /Rating -->
+
+                                <!-- Reviews -->
+                                <div class="col-md-6">
+                                    <div id="reviews">
+                                        <ul class="reviews">
+                                            
+                                        </ul>
+                                        <ul class="reviews-pagination">
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- /Reviews -->
+
+                                <!-- Review Form -->
+                                <div class="col-md-3">
+                                    <div id="review-form">
+                                    
+                                        <form th:if="${session.UserModel != null}" class="review-form" id="form-review" action="javascript:review('form-review');">
+                                        	<div class="alert alert-danger display-invalid-error text-center" style="display:none"></div>
+                                            <textarea class="input" placeholder="Nhận xét" name="comment"></textarea>
+                                            <div class="input-rating">
+                                                <span>Đánh giá của bạn: </span>
+                                                <div class="stars">
+                                                    <input id="star5" name="star" value="5" type="radio"><label
+                                                        for="star5"></label>
+                                                    <input id="star4" name="star" value="4" type="radio"><label
+                                                        for="star4"></label>
+                                                    <input id="star3" name="star" value="3" type="radio"><label
+                                                        for="star3"></label>
+                                                    <input id="star2" name="star" value="2" type="radio"><label
+                                                        for="star2"></label>
+                                                    <input id="star1" name="star" checked value="1" type="radio"><label
+                                                        for="star1"></label>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" th:value="${session.UserModel.id}" name="userId">
+                                            <input type="hidden" th:value="${Product.id}" name="productId">
+                                            <button class="primary-btn" type="submit">Gửi đánh giá</button>
+                                        </form>
+                                        
+                                        <button th:if="${session.UserModel == null}" data-toggle="modal" data-target="#loginModal" class="primary-btn">Đăng nhập để gửi đánh giá</button>
+                                    </div>
+                                </div>
+                                <!-- /Review Form -->
+                            </div>
+                        </div>
+                        <!-- /tab3  -->
+                    </div>
+                    <!-- /product tab content  -->
+                </div>
+            </div>
+            <!-- /product tab -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+
+<!-- Section -->
+<div class="section mt-3">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="section-title text-center title__product">
+                    <h4 class="title title-product line-pro">Có thể bạn quan tâm</h4>
+                </div>
+            </div>
+
+            <!-- product -->
+            <div class="col-md-3 col-xs-6">
+                <div class="product">
+                    <div class="product-img">
+                        <img src="./img/product01.png" alt="">
+                        <ul class="icons">
+                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+                            <a class="cart"><i class="fa fa-shopping-cart"></i></a>
+                        </ul>
+                        <div class="product-label">
+                            <span class="sale">-30%</span>
+                        </div>
+                    </div>
+                    <div class="product-body">
+                        <p class="product-category">Category</p>
+                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                        <h4 class="product-price">$980.00
+                            <del class="product-old-price">$990.00</del>
+                        </h4>
+                        <div class="product-rating">
+                        </div>
+                        <div class="product-btns">
+                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span>
+                            </button>
+                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /product -->
+
+            <!-- product -->
+            <div class="col-md-3 col-xs-6">
+                <div class="product">
+                    <div class="product-img">
+                        <img src="./img/product02.png" alt="">
+                        <ul class="icons">
+                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+                            <a class="cart"><i class="fa fa-shopping-cart"></i></a>
+                        </ul>
+                        <div class="product-label">
+                            <span class="new">NEW</span>
+                        </div>
+                    </div>
+                    <div class="product-body">
+                        <p class="product-category">Category</p>
+                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                        <h4 class="product-price">$980.00
+                            <del class="product-old-price">$990.00</del>
+                        </h4>
+                        <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="product-btns">
+                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span>
+                            </button>
+                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /product -->
+
+            <div class="clearfix visible-sm visible-xs"></div>
+
+            <!-- product -->
+            <div class="col-md-3 col-xs-6">
+                <div class="product">
+                    <div class="product-img">
+                        <img src="./img/product03.png" alt="">
+                        <ul class="icons">
+                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+                            <a class="cart"><i class="fa fa-shopping-cart"></i></a>
+                        </ul>
+                    </div>
+                    <div class="product-body">
+                        <p class="product-category">Category</p>
+                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                        <h4 class="product-price">$980.00
+                            <del class="product-old-price">$990.00</del>
+                        </h4>
+                        <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                        </div>
+                        <div class="product-btns">
+                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span>
+                            </button>
+                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /product -->
+
+            <!-- product -->
+            <div class="col-md-3 col-xs-6">
+                <div class="product">
+                    <div class="product-img">
+                        <img src="./img/product04.png" alt="">
+                        <ul class="icons">
+                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+                            <a class="cart"><i class="fa fa-shopping-cart"></i></a>
+                        </ul>
+                    </div>
+                    <div class="product-body">
+                        <p class="product-category">Category</p>
+                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                        <h4 class="product-price">$980.00
+                            <del class="product-old-price">$990.00</del>
+                        </h4>
+                        <div class="product-rating">
+                        </div>
+                        <div class="product-btns">
+                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span>
+                            </button>
+                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /product -->
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /Section -->
+
+
+
+<!-- POPUP-->
+<!--
+
+<div class="popup hide__popup">
+    <div class="popup__content">
+        <div class="popup__close">
+            <svg>
+                <use xlink:href="img/sub_img/sprite.svg#icon-cross"></use>
+            </svg>
+        </div>
+        <div class="popup__left">
+            <div class="popup-img__container">
+                <img class="popup__img" src="img/sub_img/popup3.png">
+            </div>
+        </div>
+        <div class="popup__right">
+            <div class="right__content">
+                <h1>Sale Up To <span>30%</span> Off</h1>
+                <p>Đăng ký để nhận thông báo mới và tiết kiệm đến 30% cho lần mua tiếp theo!</p>
+                <form action="#">
+                    <input type="email" class="popup_form" placeholder="Nhập email...">
+                    <a href="#">Đăng ký</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+-->
+<div th:replace= "client/_generic :: footer_html"></div>
+<input type="hidden" id="url-api-get-reviews" th:value="${'/api/products/' + Product.id + '/reviews'}">
+<input type="hidden" value="4" id="limit">
+<input type="hidden" id="totalItem">
+<input type="hidden" id="totalPage">
+<input th:if="${session.UserModel != null}" type="hidden" th:value="${session.UserModel.id}" name="userId" id="user-id">
+<script type="text/javascript">
+$(document).ready(function(){
+	 $("#tab1 li").css("display", "table");
+	 $("#tab1 li").css("width", "100%");
+	 $("#tab1 li").css("border-top", "1px solid #eee");
+	 $("#tab1 li").css("padding", "5px 0");
+	 $("#tab1 li div").css("float", "right");
+	 $("#tab1 li div").css("width", "50%");
+	 $("#tab1 li p").css("display", "table-cell");
+	 $("#tab1 li p").css("width", "60%");
+	 $("#tab1 li p").css("vertical-align", "top");
+	 $("#tab1 li p").css("padding", "6px 5px");
+	 $("#tab1 li p a").css("width", "100%");	
+});
+
+function review(id_form) {
+		var data = {};
+		var formData = $("#" + id_form).serializeArray();
+		 $.each(formData, function (i, v) {
+			 data[""+v.name+""] = v.value;
+         });
+		 
+		 $.ajax({
+	            url: '/api/reviews',
+	            type: 'POST',
+	            contentType: 'application/json',
+	            data: JSON.stringify(data),
+	            dataType: 'json',
+	            success: function (result) {
+	            	if(result.alert == 'success') {
+	            		$("#review-form").html("<div class='alert alert-success text-center'>"+result.message+"</div>");
+	            		reloadReview();
+	            	} else if (result.alert == 'danger'){
+	            		$("#" + id_form + " .display-invalid-error").css("display", "block");
+	            		$("#" + id_form + " .display-invalid-error").html(result.message);
+	            	}
+	            	
+	            },
+	            error: function (error) {
+	            	alert(error.message);
+	            }
+		 });
+}
+
+function editReview(id_form) {
+	var data = {};
+	var formData = $("#" + id_form).serializeArray();
+	 $.each(formData, function (i, v) {
+		 data[""+v.name+""] = v.value;
+     });
+	 var id = data["id"];
+	 $.ajax({
+            url: '/api/reviews',
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+            	if(result.alert == 'success') {
+            		reloadReviewById(id);
+            	} else if (result.alert == 'danger'){
+            		$("#" + id_form + " .display-invalid-error").css("display", "block");
+            		$("#" + id_form + " .display-invalid-error").html(result.message);
+            	}
+            	
+            },
+            error: function (error) {
+            	alert(error.message);
+            }
+	 });
+}
+
+function getReviewPagn(limit, offset) {
+	var url = $("#url-api-get-reviews").val();
+	var userId = $("#user-id").val();
+	
+	$.get(url, function(data){
+		$(".product-details .review-link").text(data.length + " đánh giá");
+		$("#totalItem").val(data.length);
+		var limit = $("#limit").val();
+		var totalItem = $("#totalItem").val();
+		var totalPage = Math.ceil(totalItem / limit);
+		$("#totalPage").val(totalPage);
+		var pagnText = "\n";
+		
+		if(offset != 0) {
+			pagnText += "<li><a onclick='reloadReview("+ limit + "," + (offset - limit)+")'><i class='fa fa-angle-left'></i></a></li>\n";
+		}
+		
+		for(var i = 0; i < totalPage; i++) {
+			if(offset == (limit * i)) {
+				pagnText += "<li class='active'>"+(i+1)+"</li>\n";
+			} else {
+				pagnText += "<li><a onclick='reloadReview("+ limit + "," + (limit * i)+")'>"+(i+1)+"</a></li>\n";
+			}
+		}
+		if(offset + limit < totalItem) {
+			pagnText += "<li><a onclick='reloadReview("+ limit + "," + (offset + limit)+")'><i class='fa fa-angle-right'></i></a></li>\n";
+		}
+		$(".reviews-pagination").html(pagnText);
+		//$('#tab1').css('filter', 'blur(40px)');
+		//$('#display-loadding').css('display', 'block');
+		url = url + "?limit=" + limit + "&offset=" + offset;
+		$.get(url, function(data){
+			var content = "";
+			for(var i = 0; i < data.length; i++) {
+				content += "<li>\n";
+			 	content += "<div class='review-heading' id='reviews-heading-"+data[i].id+"'>\n";
+			 	content += "<h5 class='name'>"+data[i].name+"</h5>\n";
+			 	content += "<p class='date'><i class='fa fa-history'></i> "+timeSince(data[i].createdDate)+"</p>\n";
+			 	content += "<div class='review-rating'>\n";
+			 	for(var j = 0; j < data[i].star; j++) {
+			 		content += " <i class='fa fa-star'></i>\n";
+			 	}
+			 	for(var j = 0; j < 5 - data[i].star; j++) {
+			 		content += " <i class='fa fa-star-o'></i>\n";
+			 	}
+			 	content += "</div>\n";
+			 	content += "</div>\n";
+			 	content += "<div class='review-body' id='reviews-body-"+data[i].id+"'>\n";
+			 	content += "<p>"+data[i].comment+"</p>\n";
+			 	content += "</div>\n";
+			 	if(data[i].userId == userId) {
+			 		content += "<div class='review-option'>\n";
+				 	content += "<div class='dropdown dropleft float-right'>\n";
+				 	content += "<a data-toggle='dropdown'>\n";
+				 	content += "<i class='fa fa-ellipsis-h'></i>\n";
+				 	content += "</a>\n";
+				 	content += "<div class='dropdown-menu'>\n";
+				 	content += "<a class='dropdown-item' onclick='replaceFormEdit("+data[i].id+")'>Chỉnh sửa</a>\n";
+				 	content += "<a class='dropdown-item' onclick='showConfirmDelete(["+data[i].id+"])'>Xóa</a>\n";
+				 	content += "</div>\n";
+				 	content += "</div>\n";
+				 	content += "</div>\n";
+			 	}
+			 	
+			 	content += "</li>\n";	
+			}
+			 $("#reviews .reviews").html(content);
+			 if(content == "") $("#reviews .reviews").html("<h5 class='text-center'>Chưa có bình luận nào</h5>");
+		});
+		
+	});
+	
+	reloadStarReview();
+}
+
+function remove(ids) {
+	var url = "/api/reviews/" + ids;
+	$.ajax({
+        url: url,
+        type: 'DELETE',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (result) {
+        	if(result.alert == 'success') {
+        		showSuccessMessage(result.message);
+        		reloadReview();
+        	} else if (result.alert == 'danger'){
+        		showSuccessMessage(result.message);
+        	}
+        },
+        error: function (error) {
+        	alert("error");
+        }
+ });
+}
+   
+function replaceFormEdit(id){
+	var url = "/api/reviews/" + id;
+	
+	$.get(url, function(data){
+		var content = "";
+		content += "<form class='review-form' id='form-edit-review' action='javascript:editReview(\"form-edit-review\");'>";
+		content += "<div class='alert alert-danger display-invalid-error text-center' style='display:none'></div>";
+		content += "<textarea class='input' placeholder='Nhận xét' name='comment'>"+data.comment+"</textarea>";
+		content += "<div class='input-rating'>";
+		content += "<span>Đánh giá của bạn: </span>";
+		content += " <div class='stars'>";
+		for(var i = 5; i >= 1; i--) {
+			if(i == data.star) {
+				content += "<input id='star-edit-"+i+"' checked name='star' value='"+i+"' type='radio'><label for='star-edit-"+i+"'></label>";
+			} else {
+				content += "<input id='star-edit-"+i+"' name='star' value='"+i+"' type='radio'><label for='star-edit-"+i+"'></label>";
+			}
+			
+		}
+		
+		content += "</div>";
+		content += "</div>";
+		content += "<input type='hidden' name='id' value='"+data.id+"'>";
+		content += "<button class='btn btn-success' type='submit'>Lưu</button>";
+		content += "<button class='btn btn-danger' onclick='reloadReviewById("+id+")' type='button'>Hủy</button>";
+		content += "</form>";	
+		$("#reviews-body-" + id).html(content);
+	});
+	
+} 
+
+function reloadReviewById(id) {
+	var url = "/api/reviews/" + id;
+	$.get(url, function(data){
+		var content_heading = "";
+		content_heading += "<h5 class='name'>"+data.name+"</h5>\n";
+		content_heading += "<p class='date'><i class='fa fa-history'></i> "+timeSince(data.createdDate)+"</p>\n";
+		content_heading += "<div class='review-rating'>\n";
+	 	for(var j = 0; j < data.star; j++) {
+	 		content_heading += " <i class='fa fa-star'></i>\n";
+	 	}
+	 	for(var j = 0; j < 5 - data.star; j++) {
+	 		content_heading += " <i class='fa fa-star-o'></i>\n";
+	 	}
+	 	content_heading += "</div>\n";
+	 	
+		var content_body = "";
+		content_body += "<p>"+data.comment+"</p>\n";
+		$("#reviews-heading-" + id).html(content_heading);
+		$("#reviews-body-" + id).html(content_body);
+		reloadStarReview();
+	});
+}
+
+function reloadStarReview() {
+	var url = $("#url-api-get-reviews").val();
+	var userId = $("#user-id").val();
+	$.get(url, function(data){
+		var star1 = 0;
+		var star2 = 0;
+		var star3 = 0;
+		var star4 = 0;
+		var star5 = 0;
+		for(var i = 0; i < data.length; i++) {
+			switch(data[i].star) {
+			  case 1:
+				  star1++;
+			    break;
+			  case 2:
+				  star2++;
+			    break;
+			  case 3:
+				  star3++;
+				break;
+			  case 4:
+				  star4++;
+				break; 
+			  case 5:
+				  star5++;
+				break; 
+			  default:
+			    break;
+			}
+		}
+		var avg = (star5 * 5 + star4 * 4 + star3 * 3 + star2 * 2 + star1 * 1) / data.length;
+		if(data.length == 0) avg = 0;
+		var avgStar = Math.round(avg);
+		var content_rating = "";
+		var content_rating_detail = "";
+		
+		content_rating_detail += "<div class='rating-avg'>\n";
+	 	content_rating_detail += "<span>"+Math.round(avg, 0.1)+"</span>\n";
+	 	content_rating_detail += "<div class='rating-stars'>\n";
+	 	
+		for(var j = 0; j < avgStar; j++) {
+			content_rating += " <i class='fa fa-star'></i>\n";
+			content_rating_detail += " <i class='fa fa-star'></i>\n";
+	 	}
+	 	for(var j = 0; j < 5 - avgStar; j++) {
+	 		content_rating += " <i class='fa fa-star-o'></i>\n";
+	 		content_rating_detail += " <i class='fa fa-star-o'></i>\n";
+	 	}
+	 	content_rating_detail += "</div>\n";
+	 	content_rating_detail += "</div>\n";
+	 	content_rating_detail += "<ul class='rating'>\n";
+	 	
+	 	for(var i = 5; i >= 1; i--) {
+	 		content_rating_detail += "<li>\n";
+	 		content_rating_detail += "<div class='rating-stars'>\n";
+	 		for(var j = 0; j < i; j++) {
+	 			content_rating_detail += "<i class='fa fa-star'></i>\n";
+	 		}
+	 		for(var j = 0; j < 5 - i; j++) {
+	 			content_rating_detail += "<i class='fa fa-star-o'></i>\n";
+	 		}
+	 		content_rating_detail += "</div>\n";
+	 		content_rating_detail += "<div class='rating-progress'>\n";
+	 		switch(i) {
+			  case 1:
+				  content_rating_detail += "<div style='width: "+Math.floor(star1  / data.length * 100)+"%;''></div>\n";
+				  content_rating_detail += "</div>\n";
+				  content_rating_detail += "<span class='sum'>"+star1+"</span>\n</li>\n";
+			    break;
+			  case 2:
+				  content_rating_detail += "<div style='width: "+Math.floor(star2  / data.length * 100)+"%;''></div>\n";
+				  content_rating_detail += "</div>\n";
+				  content_rating_detail += "<span class='sum'>"+star2+"</span>\n</li>\n";
+			    break;
+			  case 3:
+				  content_rating_detail += "<div style='width: "+Math.floor(star3  / data.length * 100)+"%;''></div>\n";
+				  content_rating_detail += "</div>\n";
+				  content_rating_detail += "<span class='sum'>"+star3+"</span>\n</li>\n";
+				break;
+			  case 4:
+				  content_rating_detail += "<div style='width: "+Math.floor(star4  / data.length * 100)+"%;''></div>\n";
+				  content_rating_detail += "</div>\n";
+				  content_rating_detail += "<span class='sum'>"+star4+"</span>\n</li>\n";
+				break; 
+			  case 5:
+				  content_rating_detail += "<div style='width: "+Math.floor(star5  / data.length * 100)+"%;''></div>\n";
+				  content_rating_detail += "</div>\n";
+				  content_rating_detail += "<span class='sum'>"+star5+"</span>\n</li>\n";
+				break; 
+			  default:
+			    break;
+			}
+	 		
+	 	}
+	 	content_rating_detail += "</ul>";
+	 	
+	 	$("#rating").html(content_rating_detail);
+	 	
+	 	$(".product-details .product-rating").html(content_rating);
+	});
+}
+
+function reloadReview() {
+	getReviewPagn(4, 0);
+}
+
+reloadReview();
+
+</script>
+</body>
+</html>
+
+
+

@@ -9,6 +9,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "review")
 public class ReviewEntity extends BaseEntity {
+	@Column
+	private String name;
 	
 	@Column
 	private String comment;
@@ -54,6 +56,14 @@ public class ReviewEntity extends BaseEntity {
 
 	public void setProduct(ProductEntity product) {
 		this.product = product;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	

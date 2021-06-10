@@ -3,34 +3,46 @@ package com.spring.entity;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 	public abstract class BaseEntity {
 		
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Long id;
 		
-		@Column
+		@Column(unique = true)
 		private String alias;
 		
 		@Column
 		private String status;
 		
-		@Column
-		private String createdByUserId;
+		@Column(name = "create_by")
+		@CreatedBy
+		private String createdBy;
 		
-		@Column
+		@Column(name = "create_date")
+		@CreatedDate
 		private Date createdDate;
 		
-		@Column
-		private String updatedByUserId;
+		@Column(name = "updated_by")
+		@LastModifiedBy
+		private String updatedBy;
 		
-		@Column
+		@Column(name = "updated_date")
+		@LastModifiedDate
 		private Date updatedDate;
 		
 		public Long getId() {
@@ -45,12 +57,12 @@ import javax.persistence.MappedSuperclass;
 			this.alias = alias;
 		}
 
-		public String getCreatedByUserId() {
-			return createdByUserId;
+		public String getCreatedBy() {
+			return createdBy;
 		}
 
-		public void setCreatedByUserId(String createdByUserId) {
-			this.createdByUserId = createdByUserId;
+		public void setCreatedBy(String createdBy) {
+			this.createdBy = createdBy;
 		}
 
 		public Date getCreatedDate() {
@@ -61,12 +73,12 @@ import javax.persistence.MappedSuperclass;
 			this.createdDate = createdDate;
 		}
 
-		public String getUpdatedByUserId() {
-			return updatedByUserId;
+		public String getUpdatedBy() {
+			return updatedBy;
 		}
 
-		public void setUpdatedByUserId(String updatedByUserId) {
-			this.updatedByUserId = updatedByUserId;
+		public void setUpdatedBy(String updatedBy) {
+			this.updatedBy = updatedBy;
 		}
 
 		public Date getUpdatedDate() {

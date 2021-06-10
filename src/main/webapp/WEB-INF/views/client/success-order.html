@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace= "client/_generic :: header_html"/>
+<body>
+<div th:replace= "client/_generic :: navbar_html"></div>
+
+
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb-tree">
+                    <li><a href="#">Trang chủ</a></li>
+                    <li><a href="/xem-gio-hang">Giỏ hàng</a></li>
+                    <li>Thanh toán</li>
+                    <li>Xác nhận đặt hàng</li>
+                    <li class="active">Đặt hàng thành công</li>
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row notification_wrap">
+			<div class="notification">
+                <p class="line1"><i class="fa fa-check-circle-o"></i> Đặt hàng thành công</p>
+                <p class="line2">Quý khách vui lòng theo dõi đơn hàng để biết thời gian nhận hàng</p>
+				<img class="img_thanks" src="img/sub_img/delivery.png">
+                <div class="notification_link">
+                    <a href="/" class="see_bill"><i class="fa fa-undo"></i> Tiếp tục mua hàng</a>
+                    <a href="/xem-don-hang" class="continue"><i class="fa fa-arrow-circle-o-right"></i> Xem đơn hàng</a>
+                </div>
+			</div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+
+<div th:replace= "client/_generic :: footer_html"></div>
+
+</body>
+</html>

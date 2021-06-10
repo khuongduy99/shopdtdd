@@ -1,0 +1,1266 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="header_html">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="img/sub_img/sub_logo.png">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>Trang chủ - Electronics Store</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+    <!-- Glisejs -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.4.1/css/glide.core.css">
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" href="css/slick.css"/>
+    <link type="text/css" rel="stylesheet" href="css/slick-theme.css"/>
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" href="css/nouislider.min.css"/>
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/custom.css">
+    
+    <!-- Sweetalert Css -->
+    <link href="/admin/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+
+    <style type="text/css">
+    .notification-box {
+	  position: fixed;
+	  z-index: 99;
+	  top: 80px;
+	  right: 50px;
+	  width: 50px;
+	  height: 50px;
+	  text-align: center;
+	  animation: shake 2s;
+  	  animation-iteration-count: infinite;
+  	  display: none;
+	}
+	.notification .badge {
+	  position: absolute;
+	  top: -1px;
+	  right: 3px;
+	  padding: 5px 10px;
+	  border-radius: 50%;
+	  background-color: red;
+	  color: white;
+	}
+
+	.notification {
+	  color: black;
+	  background-color: white;
+	  padding: 10px 18px;
+	  position: relative;
+	  display: inline-block;
+	  border-radius: 50%;
+	  box-shadow: 0px 8px 15px rgb(0 0 0 / 10%);
+      transition: all 0.3s ease 0s;
+	}
+	.notification i {
+	  font-size:40px;
+	  color: #39a223;
+	}
+	
+	@keyframes shake {
+	  0% { transform: translate(0px, 5px); }
+	  20% { transform: translate(0px, -10px); }
+	  40% { transform: translate(0px, 3px); }
+	  60% { transform: translate(0px, -5px); }
+	  80% { transform: translate(0px, 1px); }
+	  100% { transform: translate(0px, 0px); }
+	}
+	
+	/* The message box is shown when the user clicks on the password field */
+#message {
+  display:none;
+  background: #ffffff;
+  color: #000;
+  position: relative;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+#message p {
+  padding: 0px 35px;
+  font-size: 12px;
+  margin: 8px 0 0 0;
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  left: -15px;
+  content: "✔";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  position: relative;
+  left: -15px;
+  content: "✖";
+}
+
+/*Checkout Payment*/
+    .caption .address_wrapper {
+        margin-top: .75rem;
+    }
+    .payment-header {
+        text-align: center;
+    }
+    .payment-header p {
+        font-size: 20px;
+        margin-bottom: unset;
+        font-weight: 400;
+    }
+    .payment li a {
+        color: #ec3f45!important;
+    }
+    .payment-label {
+        padding-left: 10px;
+        font-weight: bold;
+    }
+    .btn_payment_confirm {
+        display: flex;
+        justify-content: center;
+    }
+    .notification-payment {
+        text-align: center;
+    }
+    .notification-payment img {
+        width: 100px;
+    }
+
+    .multistep-container .active-button {
+        display: table;
+        margin: auto;
+        padding-left: 0;
+    }
+
+    .multistep-container .active-button li {
+        display: inline-block;
+        width: 180px;
+    }
+
+    .multistep-container .active-button li .round-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: #ccc;
+        display: block;
+        color: #000;
+        text-align: center;
+        font-weight: 500;
+        line-height: 30px;
+        max-width: 100%;
+        margin: auto;
+        position: relative;
+        z-index: 1;
+    }
+    .multistep-container .active-button li.active .round-btn {
+        background-color: #ec3f45;
+        color: #fff;
+    }
+
+    .multistep-container .active-button li:not(:first-child) .round-btn:before {
+        position: absolute;
+        content: '';
+        width: 154px;
+        height: 3px;
+        background-color: #ccc;
+        left: -150px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: -1;
+    }
+    .multistep-container .active-button li.active:not(:first-child) .round-btn:before {
+        background-color: #ec3f45;
+    }
+
+    .multistep-container .form-box:nth-child(2) {
+        display: none;
+    }
+    
+    .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: .25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+.header-search .cart-dropdown:before {
+      content: "";
+      position: absolute;
+      right: 55%;
+      bottom:  100%;
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-bottom: 14px solid #fff;
+}
+    </style>
+</head>
+
+<body>
+
+
+<body>
+<div th:fragment="navbar_html">
+<!-- Page Loader -->
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Vui lòng đợi...</p>
+        </div>
+    </div>
+<!-- HEADER -->
+<!--GO TO TOP-->
+<a href="#header" id="scroll-top" class="goto-top scroll__top">
+    <svg class="scrolltop__icon">
+        <use xlink:href="img/sub_img/sprite.svg#icon-arrow-up"></use>
+    </svg>
+</a>
+<div class="notification-box">
+    
+<div class="notification">
+  <i class="fa fa-cart-plus"></i>
+  <span class="badge"></span>
+</div>
+  </div>
+<!-- HEADER -->
+<header>
+    <!-- TOP HEADER -->
+    <div id="top-header">
+        <div class="container">
+            <ul class="header-links pull-left">
+                <li><a href="#"><i class="fa fa-phone"></i> 0833532303</a></li>
+                <li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
+                <li><a href="#"><i class="fa fa-map-marker"></i> Nong Lam University</a></li>
+            </ul>
+            <ul class="header-links pull-right">
+            	<th:block th:if="${session.UserModel == null}">
+            		<li><a data-toggle="modal" data-target="#loginModal"><i class="fa fa-user-circle-o"></i> <span>Đăng nhập / Đăng ký</span></a></li>
+            	</th:block>
+                <th:block th:if="${session.UserModel != null}">
+            		<li>
+            		<div class="dropdown"> 
+            		<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-user-circle-o"></i> <span th:utext="${session.UserModel.fullName}"></span></a>
+            		<div class="account-dropdown text-center">
+                                <p class="account-title">Tài khoản</p>
+                                <hr>
+                                <div th:if="${session.UserModel.admin}" class="account-button button-update mt-1">
+                                    <a href="/admin-page" class=" mt-2"><i class="fa fa-tachometer"></i> Vào trang quản trị</a>
+                                </div>
+                                <div class="account-button button-update mt-1">
+                                    <a href="/xem-don-hang" class=" mt-2"><i class="fa fa-wpforms"></i> Xem đơn hàng</a>
+                                </div>
+                                <div class="account-button button-update mt-1">
+                                    <a href="#" data-toggle="modal" data-target="#updateAccountModal" class=" mt-2"><i
+                                            class="fa fa-upload"></i> Cập nhật tài khoản</a>
+                                </div>
+                                <div class="account-button button-change-password mt-1">
+                                    <a href="#" data-toggle="modal" data-target="#changePasswordModal"
+                                       class="button-change-password mt-2"><i class="fa fa-key"></i> Đổi mật
+                                        khẩu</a>
+                                </div>
+                                <div class="account-button button-sign-out mt-1 mb-1">
+                                    <a href="/logout" class="button-sign-out mt-2"><i class="fa fa-sign-out"></i> Đăng
+                                        xuất</a>
+                                </div>
+
+
+                            </div>
+                            </div>
+            		</li>
+            	</th:block>
+            	
+            </ul>
+        </div>
+    </div>
+    <!-- /MODAL -->
+    <!-- /LOGIN MODAL / REGISTER -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-left">
+                            
+                                <ul class="nav nav-tabs button-box">
+                                    <li class="active "><a data-toggle="tab" href="#login">Đăng nhập</a></li>
+                                    <li><a data-toggle="tab" href="#register">Đăng ký</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="login" class="tab-pane fade in active">
+                                    	<form class="form-group form-left" id="form-login" action="javascript:login('form-login');">
+                                    	<div class="alert alert-danger display-invalid-error text-center" style="display:none"></div>
+                                    	<!-- 1. Nhập UserName, Password -->
+                                        <div class="design-input mt-4">
+                                            <input class="form-control email" onchange="updateAccount()" name="userName" placeholder="Email / Tên đăng nhập" required>
+                                        </div>
+                                        <div class="design-input">
+                                            <input type="password" class="form-control mt-2 password" onchange="updateAccount()" name="password" placeholder="Mật khẩu" required>
+                                        </div>
+                                        <div class="design-btn mt-3">
+                                        	<!-- Click đăng nhập -->
+                                            <button type="submit" class="btn primary-btn btn-large">Đăng nhập</button>
+                                        </div>
+                                        <div class="forgot-password-frame text-center">
+                                            <p class="question">Bạn muốn lấy lại mật khẩu?<a href="/quen-mat-khau"
+                                                                                             class="forgot-password">
+                                                Quên mật khẩu</a></p>
+                                        </div>
+                                        <div class="link mt-4">
+                                            <div class="line"></div>
+                                            <a href="#" class="tooltip-test" title="Tooltip">Hoặc tiếp tục bằng</a>
+                                            <div class="line"></div>
+                                        </div>
+                                        <div class="social-login mt-2 text-center">
+                                            <a href="#" class="link-social facebook"><img class="social-img"
+                                                                                          src="img/sub_img/facebook.png"></a>
+                                            <a href="#" class="link-social google"><img class="social-img"
+                                                                                        src="img/sub_img/google.png"></a>
+                                            <p class="rule mt-2 text-center">Bằng việc tiếp tục, bạn đã chấp nhận với <a
+                                                    class="rule-line">điều khoản sử dụng</a></p>
+                                        </div>
+                                       </form>
+                                    </div>
+                                    <div id="register" class="tab-pane fade">
+                                    <form class="form-group form-left" id="form-register" action="javascript:register('form-register');">
+                                    	<div class="alert alert-danger display-invalid-error text-center" style="display:none"></div>
+                                    	<div class="design-input mt-3">
+                                            <input type="text" class="form-control" name="userName"
+                                                   placeholder="Tên đăng nhập" required="required">
+                                        </div>
+                                        <div class="design-input mt-3">
+                                            <input type="text" class="form-control" name="fullName"
+                                                   placeholder="Họ tên" required="required">
+                                        </div>
+                                        <div class="design-input">
+                                            <input type="email" class="form-control mt-2" name="email"
+                                                   placeholder="Email" required="required">
+                                        </div>
+                                        <div class="design-input">
+                                            <input type="password" id="password" class="form-control mt-2" name="password" placeholder="Mật khẩu" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                                            title="Phải chứa ít nhất một số và một chữ cái viết hoa và viết thường và ít nhất 8 ký tự trở lên" required>
+                                        </div>
+                                        <div id="message">
+										  <h6>Mật khẩu phải chứa:</h6>
+										  <p id="letter" class="invalid">Một <b>ký tự thường</b></p>
+										  <p id="capital" class="invalid">Một <b>ký tự in hoa</b></p>
+										  <p id="number" class="invalid">Một <b>ký tự số</b></p>
+										  <p id="length" class="invalid">Ít nhất <b>8 characters</b></p>
+										</div>
+                                        <div class="design-input">
+                                            <input type="password" class="form-control mt-2" id="confirm_password"
+                                                   placeholder="Nhập lại mật khẩu">
+                                        </div>
+                                        <div class="design-btn mt-3">
+                                            <button type="submit" class="btn primary-btn btn-large">Đăng ký</button>
+                                        </div>
+                                        <div class="link mt-5">
+                                            <div class="line"></div>
+                                            <a href="#" class="tooltip-test" title="Tooltip">Hoặc tiếp tục bằng</a>
+                                            <div class="line"></div>
+                                        </div>
+                                        <div class="social-login mt-2 text-center">
+                                            <a href="#" class="link-social facebook"><img class="social-img"
+                                                                                          src="img/sub_img/facebook.png"></a>
+                                            <a href="#" class="link-social google"><img class="social-img"
+                                                                                        src="img/sub_img/google.png"></a>
+                                            <p class="rule mt-2 text-center">Bằng việc tiếp tục, bạn đã chấp nhận với <a
+                                                    class="rule-line">điều khoản sử dụng</a></p>
+                                        </div>
+                                        </form>
+                                        <div id="display-loadding-register" style="display:none;border: 3px solid #f1f1f1;position: absolute;top:0;left:0;z-index: 100;width: 100%;height: 100%;text-align: center;">
+										 	<div class="preloader pl-size-xl" style="position: absolute;top: 36%;left: 40%;">
+						                         <div class="spinner-layer pl-blue">
+						                              <div class="circle-clipper left">
+						                                   <div class="circle"></div>
+						                              </div>
+						                              <div class="circle-clipper right">
+						                                   <div class="circle"></div>
+						                              </div>
+						                         </div>
+						                    </div>
+										</div>
+                                    </div>
+                                </div>
+
+
+                            
+                        </div>
+                        <div class="col-right">
+                            <div class="img-ex"><img src="img/sub_img/slogan.png"></div>
+                            <div class="content mt-2">
+                                <h4>Mua sắm tại Electronics</h4>
+                                <p>Siêu ưu đãi mỗi ngày</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+     
+    <form id="sign_in" th:action="@{/j_spring_security_check}" method="POST" style="display: none">
+                            <input type="hidden" class="email" name="email" >
+                            <input type="hidden" class="password" name="password">
+                            <button type="submit" class="btn-submit-login"></button>
+     </form>
+
+    <!-- /UPDATE ACCOUNT MODAL -->
+    <div class="modal fade" id="updateAccountModal" tabindex="-1" role="dialog"
+         aria-labelledby="updateAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-left">
+                            <form class="form-group form-left" id="form-update-account" action="javascript:updateUser('form-update-account');">
+                            	<div class="alert alert-danger display-invalid-error text-center" style="display:none"></div>
+                                <div class="update_input">
+                                    <label>Tên đăng nhập</label>
+                                    <input type="text" class="form-control" name="userName" th:value="${session.UserModel != null ? session.UserModel.userName : ''}" placeholder="Tên đăng nhập" disabled="disabled">
+                                </div>
+                                <div class="update_input mt-2">
+                                    <label>Họ tên</label>
+                                    <input type="text" class="form-control" name="fullName" th:value="${session.UserModel != null ? session.UserModel.fullName : ''}" placeholder="Họ tên">
+                                </div>
+                                <div class="update_input mt-2">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control" name="email" th:value="${session.UserModel != null ? session.UserModel.email : ''}" placeholder="Email" disabled="disabled">
+                                </div>
+                                <div class="update_input mt-2">
+                                    <label>Số điện thoại</label>
+                                    <input type="number" class="form-control" name="phone" th:value="${session.UserModel != null ? (session.UserModel.phone != null ? session.UserModel.phone  : '') : ''}"placeholder="Số điện thoại">
+                                </div>
+                                <div class="update_input mt-3">
+                                    <label>Giới tính</label>
+                                    <div class="customer_gender update_gender">
+                                        <input type="radio" id="male" name="gender" th:checked="${session.UserModel != null ? (session.UserModel.gender == 'Nam' ? 'true' : 'false') : 'false'}" value="Nam">
+                                        <label for="male">Nam</label>
+                                        <input type="radio" id="female" name="gender" th:checked="${session.UserModel != null ? (session.UserModel.gender == 'Nữ' ? 'true' : 'false') : 'false'}" value="Nữ">
+                                        <label for="female">Nữ</label>
+                                    </div>
+                                </div>
+                                <div class="design-btn mt-3">
+                                	<input type="hidden" th:value="${session.UserModel != null ? session.UserModel.id : ''}" name="id">
+                                    <button type="submit" class="btn primary-btn btn-large">Lưu thay đổi</button>
+                                </div>
+                                <div class="social-login mt-2 text-center">
+                                    <p class="rule mt-2 text-center">Bằng việc tiếp tục, bạn đã chấp nhận với <a
+                                            class="rule-line">điều khoản sử dụng</a></p>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-right">
+                            <div class="img-ex"><img src="img/sub_img/avatar.png"></div>
+                            <div class="content mt-2">
+                                <h4>Hồ sơ của tôi</h4>
+                                <p>Quản lý thông tin tài khoản</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /CHANGE PASSWORD MODAL -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog"
+         aria-labelledby="changePasswordModalLabel">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-left">
+                            <form class="form-group form-left" id="form-update-password" action="javascript:updatePassword('form-update-password');">
+                            <div class="alert alert-danger display-invalid-error text-center" style="display:none"></div>
+                                <div class="update_input change-pasword">
+                                    <label>Mật khẩu hiện tại</label>
+                                    <input type="password" class="form-control" name="oldPassword">
+                                </div>
+                                <div class="update_input mt-2 change-pasword">
+                                    <label>Mật khẩu mới</label>
+                                    <input type="password" id="change-password" name="password" class="form-control">
+                                </div>
+                                <div class="update_input mt-2 change-pasword">
+                                    <label>Xác nhận mật khẩu</label>
+                                    <input type="password" id="cofirm-change-password"  class="form-control">
+                                </div>
+                                <div class="design-btn mt-3">
+                                <input type="hidden" th:value="${session.UserModel != null ? session.UserModel.id : ''}" name="id">
+                                    <button type="submit" class="btn primary-btn btn-large">Xác nhận</button>
+                                </div>
+                                <div class="social-login mt-2 text-center">
+                                    <p class="rule mt-2 text-center">Bằng việc tiếp tục, bạn đã chấp nhận với <a
+                                            class="rule-line">điều khoản sử dụng</a></p>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-right">
+                            <div class="img-ex"><img src="img/sub_img/changepassword.png"></div>
+                            <div class="content mt-2">
+                                <h4>Đổi mật khẩu</h4>
+                                <p>Vui lòng không chia sẻ mật khẩu</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- MAIN HEADER -->
+    <div id="header">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row header-tools">
+                <!-- LOGO -->
+                <div class="col-md-3">
+                    <div class="header-logo">
+                        <a href="/" class="logo">
+                            <img src="img/sub_img/logo.png" alt="">
+                        </a>
+                        <a href="/" class="sub__logo">
+                            <img src="img/sub_img/sub_logo.png">
+                        </a>
+                    </div>
+                </div>
+                <!-- /LOGO -->
+                <!-- SEARCH BAR -->
+                <div class="col-md-6 header__search">
+                    <div class="header-search">
+                        <form action="/timkiem" method="GET">
+                            <input class="input" th:value="${keyword}" name="n" placeholder="Bạn tìm gì..." autocomplete="off" onkeyup="suggestSearch(this)">
+                            <button class="search-btn" type="submit"><span>Tìm kiếm</span> <i class="fa fa-search"></i></button>
+                        </form>
+                           <div class="cart-dropdown" style="width: 100%; opacity: 1; visibility: visible; top: 66px; display: none;">
+                           		<div class="cart-summary" style="border-bottom: 1px solid #E4E7ED; border-top: 0px; padding-top: 0px; padding-bottom: 10px; margin-bottom: 10px;">
+                                    <small>Sản phẩm gợi ý</small>
+                                </div>
+                                <div class="cart-list">
+                                
+
+                                </div>
+                                
+                            </div>
+                        </div>
+                </div>
+                <!-- /SEARCH BAR -->
+
+                <!-- ACCOUNT -->
+                <div class="col-md-3 clearfix">
+                    <div class="header-ctn">
+                        <!-- Wishlist -->
+                        <div class="dropdown ">
+                            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                <i class="fa fa-heart-o"></i>
+                                <span>Yêu thích</span>
+                                <div class="qty">2</div>
+                            </a>
+                            
+                        </div>
+                        <!-- /Wishlist -->
+
+                        <!-- Cart -->
+                        <div class="dropdown" id="user-cart">
+                            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                <i class="fa fa-shopping-cart"></i>
+                                <span>Giỏ hàng</span>
+                                <div class="qty" th:utext="${session.Cart != null ? session.Cart.size : '0'}"></div>
+                            </a>
+                            <div class="cart-dropdown">
+                                  <div class="cart-list">
+                                    	<div th:if="${session.Cart != null}">
+                                    	<th:block  th:each="item : ${session.Cart.list}">
+                                    		<div class="product-widget">
+		                                        <div class="product-img">
+		                                            <img th:src="${item.urlImage}" alt="">
+		                                        </div>
+		                                        <div class="product-body">
+		                                            <h3 class="product-name"><a th:utext="${item.name}"></a></h3>
+		                                            <h4 class="product-price"><span class="qty" th:utext="${item.qtyInCart + 'x'}"></span><span class='money-vnd' th:utext="${item.price}"></span><sup>₫</sup></h4>
+		                                        </div>
+		                                        <button class="delete" th:onclick="${'removeItemInCart(' + item.id +');'}"><i class="fa fa-close"></i></button>
+		                                    </div>
+										</th:block>
+									</div>
+
+                                    
+                                </div>
+                                <div class="cart-summary">
+                                    <small th:utext="${session.Cart != null ? session.Cart.size + ' sản phẩm được chọn' : '0' + ' sản phẩm được chọn'}"></small>
+                                    <h5>TỔNG TIỀN: <span class='money-vnd' th:utext="${session.Cart != null ? session.Cart.total : '0'}"></span><sup>₫</sup></h5>
+                                </div>
+                                <div class="cart-btns">
+                                    <a href="/xem-gio-hang">Xem giỏ hàng <i class="fa fa-shopping-cart"></i></a>
+                                    <a href="/thanh-toan">Mua hàng <i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Cart -->
+
+                        <!-- Menu Toogle -->
+                        <div class="menu-toggle">
+                            <a href="#">
+                                <i class="fa fa-bars"></i>
+                                <span>Menu</span>
+                            </a>
+                        </div>
+                        <!-- /Menu Toogle -->
+                    </div>
+                </div>
+                <!-- /ACCOUNT -->
+
+            </div>
+            <!-- row -->
+        </div>
+        <!-- container -->
+    </div>
+    <!-- /MAIN HEADER -->
+</header>
+<!-- /HEADER -->
+
+<!-- NAVIGATION -->
+<nav id="navigation" class="navigation">
+    <!-- container -->
+    <div class="container">
+        <!-- responsive-nav -->
+        <div id="responsive-nav">
+            <!-- NAV -->
+            <ul class="main-nav nav navbar-nav">
+                <li class="active"><a href="#"><i class="fa fa-home"></i> Trang chủ</a></li>
+                <li><a href="/nhomsp?n=dien-thoai"><i class="fa fa-mobile-phone"></i> Điện thoại</a></li>
+                <li><a href="/nhomsp?n=laptop"><i class="fa fa-laptop"></i> Laptop</a></li>
+                <li><a href="#"><i class="fa fa-headphones"></i> Phụ kiện</a></li>
+
+            </ul>
+            <!-- /NAV -->
+        </div>
+        <!-- /responsive-nav -->
+    </div>
+    <!-- /container -->
+</nav>
+<!-- /NAVIGATION -->
+
+</div>
+
+
+<div th:fragment="footer_html">
+ 
+<!-- NEWSLETTER -->
+<div id="newsletter" class="section ptb">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="newsletter">
+                    <p>Đăng ký để nhận <strong>THÔNG BÁO MỚI</strong></p>
+                    <form>
+                        <input class="input" type="email" placeholder="Nhập email">
+                        <button class="newsletter-btn"><i class="fa fa-envelope"></i> Đăng ký</button>
+                    </form>
+                    <ul class="newsletter-follow">
+                        <li>
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /NEWSLETTER -->
+
+<!-- FOOTER -->
+<footer id="footer">
+    <!-- top footer -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-3 col-xs-6">
+                    <div class="footer">
+                        <h3 class="footer-title">About Us</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                            ut.</p>
+                        <ul class="footer-links">
+                            <li><a href="#"><i class="fa fa-map-marker"></i>1734 Stonecoal Road</a></li>
+                            <li><a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i>email@email.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-xs-6">
+                    <div class="footer">
+                        <h3 class="footer-title">Categories</h3>
+                        <ul class="footer-links">
+                            <li><a href="#">Hot deals</a></li>
+                            <li><a href="#">Laptops</a></li>
+                            <li><a href="#">Smartphones</a></li>
+                            <li><a href="#">Cameras</a></li>
+                            <li><a href="#">Accessories</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="clearfix visible-xs"></div>
+
+                <div class="col-md-3 col-xs-6">
+                    <div class="footer">
+                        <h3 class="footer-title">Information</h3>
+                        <ul class="footer-links">
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Orders and Returns</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-xs-6">
+                    <div class="footer">
+                        <h3 class="footer-title">Service</h3>
+                        <ul class="footer-links">
+                            <li><a href="#">My Account</a></li>
+                            <li><a href="#">View Cart</a></li>
+                            <li><a href="#">Wishlist</a></li>
+                            <li><a href="#">Track My Order</a></li>
+                            <li><a href="#">Help</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /top footer -->
+
+    <!-- bottom footer -->
+    <div id="bottom-footer" class="section">
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <ul class="footer-payments">
+                        <li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
+                        <li><a href="#"><i class="fa fa-credit-card"></i></a></li>
+                        <li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
+                        <li><a href="#"><i class="fa fa-cc-mastercard"></i></a></li>
+                        <li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
+                        <li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
+                    </ul>
+                    <span class="copyright">
+								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+								Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i
+                            class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
+                                                                                target="_blank">Colorlib</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+							</span>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /bottom footer -->
+</footer>
+<!-- /FOOTER -->
+
+
+<script src="js/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+
+<script src="js/bootstrap.min.js"></script>
+<script src="js/slick.min.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/jquery.zoom.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.4.1/glide.min.js"></script>
+<script src="/admin/js/pages/ui/dialogs.js"></script>
+<!-- SweetAlert Plugin Js -->
+<script src="/admin/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- Format Money -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	
+<script type="text/javascript">
+
+function getDiscoutPercent(price, sale) {
+	if(price == 0 || sale == 0) return "";
+	if(price < sale) return "";
+	var percent = Math.floor((price -  sale)  / price * 100);
+	return "- " + percent + "%";
+}
+
+function limitName(text) {
+	var limit = 35;
+	if(text.length > limit) {
+		var res = "";
+		for(var i = 0; i <= limit; i++) {
+			res += text.charAt(i)
+		}	
+		return res +="...";
+	} else return text;
+}
+
+function suggestSearch(input) {
+	
+	var url = "/api/search/products?keyword=" + $(input).val() + "&limit=8&offset=0";
+	$.get(url, function(data){
+		if(data.length != 0) {
+			var content = "";
+			for(var i = 0; i < data.length; i++) {
+				content += "<div class='product-widget'> \n";
+				content += "<div class='product-img'>\n";
+				content += "<img src='"+data[i].urlImage+"'></div>\n";
+				content += "<div class='product-body'>\n";
+				content += "<h3 class='product-name'><a>"+data[i].name+"</a></h3>\n";
+				content += "<h4 class='product-price'><span class='money-vnd'>"+data[i].price+"</span><sup>₫</sup></h4></div>\n";
+				content += "</div>\n";
+			}
+			
+			$(".header-search .cart-dropdown .cart-list").html(content);
+			$(".header-search .cart-dropdown").css("display", "block");
+		} else {
+			console.log("aaa")
+			$(".header-search .cart-dropdown").css("display", "none");
+		}
+		
+	});
+	
+	
+} 
+
+	$('.money-vnd').mask("#.##0.000", {reverse: true});
+	 setTimeout(function () { $('.page-loader-wrapper').fadeOut(); }, 50);
+	 function formatDate(dt) {
+			if(dt == null) return "";
+			var date = Number(dt);
+			var d = new Date(date);
+			var month = d.getMonth() + 1;
+			var res = d.getDate() + "/" + month + "/" + d.getFullYear() + " ";
+			res += (d.getHours().toString().length > 1 ? d.getHours() : "0" + d.getHours()) + ":" + (d.getMinutes().toString().length > 1 ? d.getMinutes() : "0" + d.getMinutes());
+			return res;
+		}
+		$(".date-format").each(function() {
+		    $(this).text(formatDate($(this).text()));
+		});
+    
+    $(".sale").each(function(){
+    	var price = $(this).children(".price-product").text();
+    	var sale = $(this).children(".sale-product").text();
+    	if(price != 0 && sale != 0) {
+    		var discout = getDiscoutPercent(price, sale);
+    		$(this).text(discout);
+    	}
+	});
+    
+    $(".product-name").each(function(){
+    	var text = $(this).children("a").text();
+    	$(this).children("a").text(limitName(text));
+    	
+	});
+    
+    function timeSince(date) {
+    	  var seconds = Math.floor((new Date() - date) / 1000);
+
+    	  var interval = seconds / 31536000;
+
+    	  if (interval > 1) {
+    	    return Math.floor(interval) + " năm";
+    	  }
+    	  interval = seconds / 2592000;
+    	  if (interval > 1) {
+    	    return Math.floor(interval) + " tháng";
+    	  }
+    	  interval = seconds / 86400;
+    	  if (interval > 1) {
+    	    return Math.floor(interval) + " ngày";
+    	  }
+    	  interval = seconds / 3600;
+    	  if (interval > 1) {
+    	    return Math.floor(interval) + " giờ trước";
+    	  }
+    	  interval = seconds / 60;
+    	  if (interval > 1) {
+    	    return Math.floor(interval) + " phút trước";
+    	  }
+    	  return Math.floor(seconds) + " giây trước";
+    	}
+    
+function addToCart(id, qty) {
+	var url = "/them-vao-gio?id=" + id + "&qty=" + qty;
+	    $.get(url, function(data){
+	    	$(".notification-box .notification .badge").text(data.length);
+			$(".notification-box").css("display", "block");
+			setTimeout(function () { $('.notification-box').fadeOut(); }, 2000);
+		
+		$("#user-cart .qty").html(data.length);
+		var content = "";
+		for(var i = 0; i < data.length; i++) {
+			content += "<div class='product-widget'>";
+			content += "<div class='product-img'>";
+			content += "<img src='"+data[i].urlImage+"'></div>";
+			content += "<div class='product-body'>";
+			content += "<h3 class='product-name'><a>"+data[i].name+"</a></h3>";
+			content += "<h4 class='product-price'><span class='qty'>"+data[i].qtyInCart+"x</span><span class='money-vnd'>"+data[i].price+"</span><sup>₫</sup></h4></div>";
+			content += "<button class='delete' onclick='removeItemInCart("+data[i].id+")'><i class='fa fa-close'></i></button></div>";
+		}
+		
+		$("#user-cart .cart-list").html(content);
+		content = "";
+		content += "<small>"+data.length+" sản phẩm được chọn</small>";
+		content += "<h5>TỔNG TIỀN: <span class='money-vnd'>"+data[0].totalMoney+"</span><sup>₫</sup></h5>";
+		$("#user-cart .cart-summary").html(content);
+	});
+}
+
+function removeItemInCart(id) {
+	var url = "/xoa-khoi-gio?id=" + id;
+	$.get(url, function(data){
+		updateMiniCart(data);
+		updateMainCart(data);
+	});
+}
+
+function updateMiniCart(data) {
+	var content = "";
+	for(var i = 0; i < data.length; i++) {
+		content += "<div class='product-widget'>";
+		content += "<div class='product-img'>";
+		content += "<img src='"+data[i].urlImage+"'></div>";
+		content += "<div class='product-body'>";
+		content += "<h3 class='product-name'><a>"+data[i].name+"</a></h3>";
+		content += "<h4 class='product-price'><span class='qty'>"+data[i].qtyInCart+"x</span><span class='money-vnd'>"+data[i].price+"</span><sup>₫</sup></h4></div>";
+		content += "<button class='delete' onclick='removeItemInCart("+data[i].id+")'><i class='fa fa-close'></i></button></div>";
+	}
+	
+	$("#user-cart .cart-list").html(content);
+	content = "";
+	content += "<small>"+data.length+" sản phẩm được chọn</small>";
+	content += "<h5>TỔNG TIỀN: <span class='money-vnd'>"+data[0].totalMoney+"</span><sup>₫</sup></h5>";
+	$("#user-cart .cart-summary").html(content);
+	$("#user-cart .dropdown-toggle .qty").html(data.length);
+}
+
+function updateMainCart(data) {
+	var content = "";
+	for(var i = 0; i < data.length; i++) {
+		content += "<div class='cart-item'>\n";
+		content += "<div class='cart-product'>\n";
+			content += "<div class='cart-image'>\n";
+			content += "<img src='"+data[i].urlImage+"'>\n";
+			content += "<button class='delete' onclick='removeItemInCart("+data[i].id+")'><i class='fa fa-close'></i></button>\n";
+			content += "</div>\n";
+			content += "<div class='cart-product-info'>\n";
+			content += "<p class='cart-product-name'>"+data[i].name+"</p>\n";
+			content += "<p class='cart-price-sm'><span class='money-vnd'>"+data[i].price+"</span><sup>₫</sup></p>\n";
+			content += "<small>x "+data[i].qtyInCart+"</small>\n";
+			content += "</div>\n";
+		content += "</div>\n";
+		content += "<div class='cart-quantity-md'>\n";
+		content += "<div class='cart-quantity-controls'>\n";
+		content += "<button type='button' onclick='updateQty("+data[i].id+" , "+ (data[i].qtyInCart - 1)+");'>-</button>\n";
+		content += "<input type='number' value='"+data[i].qtyInCart+"'>\n";
+		content += "<button type='button' onclick='updateQty("+data[i].id+" , "+(data[i].qtyInCart + 1) +");'>+</button>\n";
+		content += "</div>\n";
+		content += "</div>\n";
+		content += "<div class='cart-unit-price'>\n";
+		content += "<h4><span class='money-vnd'>"+data[i].price+"</span><sup>₫</sup></h4>\n";
+		content += "</div>\n";
+		content += "<div class='cart-product-total'>\n";
+		content += "<h4><span class='money-vnd'>"+data[i].totalMoneyOfProduct+"</span><sup>₫</sup></h4>\n";
+		content += "</div>\n";
+		content += "</div>\n";
+	}
+	
+	$("#main-cart").html(content);
+	content = "\n";
+	content += "<span class='money-vnd'>"+data[0].totalMoney+"</span><sup>₫</sup>\n";
+	$(".cart-total .total-money").html(content);
+}
+
+	
+	function login(id_form) {
+ 		var data = {};
+ 		var formData = $("#" + id_form).serializeArray();
+ 		 $.each(formData, function (i, v) {
+ 			 data[""+v.name+""] = v.value;
+	         });
+ 		 
+ 		 $.ajax({
+ 	            url: '/api/login',
+ 	            type: 'POST',
+ 	            contentType: 'application/json',
+ 	            data: JSON.stringify(data),
+ 	            dataType: 'json',
+ 	            success: function (result) {
+ 	            	if(result.alert == 'success') {
+ 	            		$("#sign_in .btn-submit-login").click();
+ 	            	} else if (result.alert == 'danger'){
+ 	            		$("#" + id_form + " .display-invalid-error").css("display", "block");
+ 	            		$("#" + id_form + " .display-invalid-error").html(result.message);
+ 	            	}
+ 	            	
+ 	            },
+ 	            error: function (error) {
+ 	            	$('#sign_up').css('filter', 'blur(0px)');
+ 	            	$('#display-loadding').css('display', 'none');
+ 	            	alert(error.message);
+ 	            }
+ 		 });
+ 	}
+	
+	function register(id_form) {
+ 		var data = {};
+ 		var formData = $("#" + id_form).serializeArray();
+ 		 $.each(formData, function (i, v) {
+ 			 data[""+v.name+""] = v.value;
+	         });
+ 		 var url = "/api/register";
+ 			$("#" + id_form).css('filter', 'blur(10px)');
+ 			$('#display-loadding-register').css('display', 'block');
+ 		 $.ajax({
+ 	            url: url,
+ 	            type: 'POST',
+ 	            contentType: 'application/json',
+ 	            data: JSON.stringify(data),
+ 	            dataType: 'json',
+ 	            success: function (result) {
+ 	            	$("#" + id_form).css('filter', 'none');
+ 	            	$('#display-loadding-register').css('display', 'none');
+ 	            	if(result.alert == 'success') {
+ 	            		var content = "<div class='alert alert-info text-center'>" + result.message + "</div>";
+ 	            		$("#" + id_form).html(content);
+ 	            	} else if (result.alert == 'danger'){
+ 	            		$("#" + id_form + " .display-invalid-error").css("display", "block");
+ 	            		$("#" + id_form + " .display-invalid-error").html(result.message);
+ 	            	}
+ 	            	
+ 	            },
+ 	            error: function (error) {
+ 	            	$("#" + id_form).css('filter', 'none');
+ 	            	$('#display-loadding-register').css('display', 'none');
+ 	            	alert(error.message);
+ 	            }
+ 		 });
+ 	}
+	
+	function updateUser(id_form) {
+ 		var data = {};
+ 		var formData = $("#" + id_form).serializeArray();
+ 		 $.each(formData, function (i, v) {
+ 			 data[""+v.name+""] = v.value;
+	         });
+ 		 var url = "/api/users/" + data['id'];
+ 		 $.ajax({
+ 	            url: url,
+ 	            type: 'PUT',
+ 	            contentType: 'application/json',
+ 	            data: JSON.stringify(data),
+ 	            dataType: 'json',
+ 	            success: function (result) {
+ 	            	if(result.alert == 'success') {
+ 	            		window.location.href = "/cap-nhat-tai-khoan";
+ 	            	} else if (result.alert == 'danger'){
+ 	            		$("#" + id_form + " .display-invalid-error").css("display", "block");
+ 	            		$("#" + id_form + " .display-invalid-error").html(result.message);
+ 	            	}
+ 	            	
+ 	            },
+ 	            error: function (error) {
+ 	            	$("#" + id_form).css('filter', 'none');
+ 	            	$('#display-loadding-register').css('display', 'none');
+ 	            	alert(error.message);
+ 	            }
+ 		 });
+ 	}
+	
+	function updatePassword(id_form) {
+ 		var data = {};
+ 		var formData = $("#" + id_form).serializeArray();
+ 		 $.each(formData, function (i, v) {
+ 			 data[""+v.name+""] = v.value;
+	         });
+ 		 var url = "/api/users/" + data['id'];
+ 		 $.ajax({
+ 	            url: url,
+ 	            type: 'PUT',
+ 	            contentType: 'application/json',
+ 	            data: JSON.stringify(data),
+ 	            dataType: 'json',
+ 	            success: function (result) {
+ 	            	if(result.alert == 'success') {
+ 	            		window.location.href = "/cap-nhat-mat-khau";
+ 	            	} else if (result.alert == 'danger'){
+ 	            		$("#" + id_form + " .display-invalid-error").css("display", "block");
+ 	            		$("#" + id_form + " .display-invalid-error").html(result.message);
+ 	            	}
+ 	            	
+ 	            },
+ 	            error: function (error) {
+ 	            	$("#" + id_form).css('filter', 'none');
+ 	            	$('#display-loadding-register').css('display', 'none');
+ 	            	alert(error.message);
+ 	            }
+ 		 });
+ 	}
+	
+	function updateAccount() {
+		var tk = $('#form-login .email').val() + "1408dt2410" + "/" + (location.pathname+location.search).substr(1);
+		$('#sign_in .email').val(tk);
+		
+		var mk = $('#form-login .password').val();
+		$('#sign_in .password').val(mk);
+	}
+	
+	var myInput = document.getElementById("password");
+	var letter = document.getElementById("letter");
+	var capital = document.getElementById("capital");
+	var number = document.getElementById("number");
+	var length = document.getElementById("length");
+
+	// When the user clicks on the password field, show the message box
+	myInput.onfocus = function() {
+	  document.getElementById("message").style.display = "block";
+	}
+
+	// When the user clicks outside of the password field, hide the message box
+	myInput.onblur = function() {
+	  document.getElementById("message").style.display = "none";
+	}
+
+	// When the user starts to type something inside the password field
+	myInput.onkeyup = function() {
+	  // Validate lowercase letters
+	  var lowerCaseLetters = /[a-z]/g;
+	  if(myInput.value.match(lowerCaseLetters)) {  
+	    letter.classList.remove("invalid");
+	    letter.classList.add("valid");
+	  } else {
+	    letter.classList.remove("valid");
+	    letter.classList.add("invalid");
+	  }
+	  
+	  // Validate capital letters
+	  var upperCaseLetters = /[A-Z]/g;
+	  if(myInput.value.match(upperCaseLetters)) {  
+	    capital.classList.remove("invalid");
+	    capital.classList.add("valid");
+	  } else {
+	    capital.classList.remove("valid");
+	    capital.classList.add("invalid");
+	  }
+
+	  // Validate numbers
+	  var numbers = /[0-9]/g;
+	  if(myInput.value.match(numbers)) {  
+	    number.classList.remove("invalid");
+	    number.classList.add("valid");
+	  } else {
+	    number.classList.remove("valid");
+	    number.classList.add("invalid");
+	  }
+	  
+	  // Validate length
+	  if(myInput.value.length >= 8) {
+	    length.classList.remove("invalid");
+	    length.classList.add("valid");
+	  } else {
+	    length.classList.remove("valid");
+	    length.classList.add("invalid");
+	  }
+	}
+	
+	var password = document.getElementById("password")
+	  , confirm_password = document.getElementById("confirm_password");
+
+	function validatePassword(){
+	  if(password.value != confirm_password.value) {
+	    confirm_password.setCustomValidity("Mật khẩu không khớp");
+	  } else {
+	    confirm_password.setCustomValidity('');
+	  }
+	}
+
+	password.onchange = validatePassword;
+	confirm_password.onkeyup = validatePassword;
+</script>
+</div>
+</body>
+</html>

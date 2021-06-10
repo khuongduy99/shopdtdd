@@ -1,0 +1,194 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace= "client/_generic :: header_html"/>
+<body>
+<div th:replace= "client/_generic :: navbar_html"></div>
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb-tree">
+                    <li><a href="/">Trang chủ</a></li>
+                    <li><a href="/xem-don-hang">Đơn hàng</a></li>
+                    <li class="active">Đơn hàng "<th:block th:utext="${BillDTO.code}"></th:block>"</li>
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <div class="bill">
+            <div class="row infomation bill_infomation">
+                <div class="col-md-12 order-details">
+                    <div class="checkout_wrap bill_wrap">
+                        <div class="checkout bill_step">
+
+                            <div class="bill_status mt-1 border-bottom">
+                                <div class="bill_id">
+                                    <span><a href="/xem-don-hang" class="bill__action"><i class="fa fa-undo"></i> Trờ về</a></span>
+                                </div>
+                                <div class="status__bill">
+                                    <p class="status_bill_success"><i class="fa fa-barcode"></i> Mã đơn hàng. <span class="bill__id" th:utext="${BillDTO.code}">#adsfdafg</span></p>
+                                    <p class="status_bill" th:utext="${BillDTO.status}"></p>
+                                </div>
+
+                            </div>
+                            <div class="step mt-2 border-bottom">
+                                <div class="stepper stepper-finish">
+                                    <div th:class="${BillDTO.status == 'Đã xác nhận' or BillDTO.status == 'Đang xử lý' or BillDTO.status == 'Đang giao' or BillDTO.status == 'Đã nhận hàng' ? 'step-icon step-icon-finish' : 'step-icon'} ">
+                                        <i class="fa fa-calendar-check-o"></i>
+                                    </div>
+                                    <div class="step-text">Đã xác nhận</div>
+                                    <div th:if="${BillDTO.status == 'Đã xác nhận'}" class="date-format" th:utext="${BillDTO.updatedDate.time}"></div>
+                                </div>
+                                <div class="stepper stepper-finish">
+                                    <div th:class="${BillDTO.status == 'Đang xử lý' or BillDTO.status == 'Đang giao' or BillDTO.status == 'Đã nhận hàng' ? 'step-icon step-icon-finish' : 'step-icon'} ">
+                                        <i class="fa fa-money"></i>
+                                    </div>
+                                    <div class="step-text">Đang xử lý</div>
+                                    <div th:if="${BillDTO.status == 'Đang xử lý'}" class="date-format" th:utext="${BillDTO.updatedDate.time}"></div>
+                                </div>
+                                <div class="stepper stepper-finish">
+                                    <div th:class="${BillDTO.status == 'Đang giao' or BillDTO.status == 'Đã nhận hàng' ? 'step-icon step-icon-finish' : 'step-icon'} ">
+                                        <i class="fa fa-truck"></i>
+                                    </div>
+                                    <div class="step-text">Đang giao</div>
+                                     <div th:if="${BillDTO.status == 'Đang giao'}" class="date-format" th:utext="${BillDTO.updatedDate.time}"></div>
+                                </div>
+                                <div class="stepper">
+                                    <div th:class="${BillDTO.status == 'Đã nhận hàng' ? 'step-icon step-icon-finish' : 'step-icon'} ">
+                                        <i class="fa fa-get-pocket"></i>
+                                    </div>
+                                    <div class="step-text">Đã nhận hàng</div>
+                                     <div th:if="${BillDTO.status == 'Đã nhận hàng'}" class="date-format" th:utext="${BillDTO.updatedDate.time}"></div>
+                                </div>
+                                <div class="step-line">
+                                    <div class="step-line-background"></div>
+                                    <div th:if="${BillDTO.status == 'Đã nhận hàng'}" class="step-line-foreground c1"></div>
+                                    <div th:if="${BillDTO.status == 'Đang xử lý'}" class="step-line-foreground c2"></div>
+                                    <div th:if="${BillDTO.status == 'Đang giao'}" class="step-line-foreground c3"></div>
+                                    <div th:if="${BillDTO.status == 'Đã nhận hàng'}" class="step-line-foreground c4"></div>
+                                </div>
+                            </div>
+                            <div class="footer_bill footer_bill_detail">
+                                <p class="note">Sản phẩm đã hết quyền đổi/trả</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /row -->
+            </div>
+            <div class="row infomation bill_infomation">
+                <div class="col-md-12 order-details">
+
+                    <div class="checkout_wrap bill_wrap">
+                        <div class="checkout_line"></div>
+
+                        <div class="checkout">
+                            <div class="checkout_title mt-1 "><i class="fa fa-info-circle"></i> Địa chỉ nhận hàng</div>
+                            <div class="address_receive border-bottom">
+                                <p class="name" th:utext="${BillDTO.fullName}"></p>
+                                <p class="phone" th:utext="${BillDTO.phone}"></p>
+                                <p class="address_home" th:utext="${BillDTO.address}"></p>
+                            </div>
+                            <div class="checkout_title mt-1 "><i class="fa fa-info-circle"></i> Lịch sử giao hàng</div>
+                            <div class="time_line_content border-bottom">
+                                <ul class="timeline">
+                                    <li>
+                                        <div class="timeline__content">
+                                            <a href="#" class="float-right date_time">21 March, 2014</a>
+                                            <a class="timeline_content" target="_blank" href="https://www.totoprayogo.com/#">Giao hàng thành công</a>
+                                        </div>
+
+                                    </li>
+                                    <li>
+                                        <div class="timeline__content">
+                                            <a href="#" class="float-right date_time">21 March, 2014</a>
+                                            <a class="timeline_content" target="_blank" href="https://www.totoprayogo.com/#">Giao hàng thành công</a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="timeline__content">
+                                            <a href="#" class="float-right date_time">21 March, 2014</a>
+                                            <a class="timeline_content" target="_blank" href="https://www.totoprayogo.com/#">Vận chuyển đến kho</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="checkout_title mt-1"><i class="fa fa-product-hunt"></i> Sản phẩm</div>
+                            <th:block th:each="product : ${BillDTO.listBillDetail}">
+                            	<div class="cart-item cart-item-checkout">
+                                    <div class="cart-product">
+
+                                        <div class="cart-image">
+                                            <img th:src="${product.urlImage}">
+                                        </div>
+                                        <div class="cart-product-info">
+                                            <p class="cart-product-name" th:utext="${product.nameProduct}"></p>
+                                            <p class="cart-price-sm"><span class='money-vnd' th:utext="${product.price}"></span><sup>₫</sup></p>
+                                            <small th:utext="${'x ' + product.qty}">x 1</small>
+                                        </div>
+
+                                    </div>
+	                                <div class="bill_price cart-product-total">
+	                                    <h4><span class='money-vnd' th:utext="${product.price * product.qty}"></span><sup>₫</sup></h4>
+	                                </div>
+                            	</div>
+                            </th:block>
+                            
+                            
+                            <div class="order-summary border-bottom1">
+                                <div class="order-col">
+                                    <div>Phí vận chuyển</div>
+                                    <div><strong>Miễn phí</strong></div>
+                                </div>
+                                <div class="order-col">
+                                    <div><strong>Tổng tiền:</strong></div>
+                                    <div><strong class="order-total" ><span class='money-vnd' th:utext="${BillDTO.totalMoney}"></span><sup>₫</sup></strong></div>
+                                </div>
+                            </div>
+                            <div class="footer_bill">
+                                <p class="note">Sản phẩm đã hết quyền đổi/trả</p>
+                                <div class="cart-action-button">
+                                    <div class="method_checkout">
+                                        <div class="total_title"><i class="fa fa-credit-card"></i> Phương thức thanh
+                                            toán:
+                                        </div>
+                                        <div th:utext="${!BillDTO.payment ? 'Thanh toán khi nhận hàng' : 'Đã thanh toán'}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /row -->
+            </div>
+        </div>
+        <!-- row -->
+
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+
+<div th:replace= "client/_generic :: footer_html"></div>
+<input type="hidden">
+<script type="text/javascript">
+function updateStatus(status) {
+	
+}
+
+</script>
+</body>
+</html>

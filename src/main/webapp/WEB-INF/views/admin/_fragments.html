@@ -1,0 +1,912 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="header_html">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Admin | <th:block th:utext="${title}" /></title>
+    <!-- Favicon-->
+    <link rel="icon" href="/admin/favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Core Css -->
+    <link href="/admin/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Waves Effect Css -->
+    <link href="/admin/plugins/node-waves/waves.css" rel="stylesheet" />
+
+    <!-- Animation Css -->
+    <link href="/admin/plugins/animate-css/animate.css" rel="stylesheet" />
+
+    <!-- Morris Chart Css-->
+    <link href="/admin/plugins/morrisjs/morris.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <link href="/admin/css/style.css" rel="stylesheet">
+
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="/admin/css/themes/all-themes.css" rel="stylesheet" />
+    
+</head>
+
+<body>
+
+<div th:fragment="navbar_html">
+
+<!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <div class="search-icon">
+            <i class="material-icons">search</i>
+        </div>
+        <input type="text" placeholder="START TYPING...">
+        <div class="close-search">
+            <i class="material-icons">close</i>
+        </div>
+    </div>
+    <!-- #END# Search Bar -->
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                <a href="javascript:void(0);" class="bars"></a>
+                <a class="navbar-brand" href="/admin-page">ADMINBSB</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Call Search -->
+                    <li><a href="javascript:void(0);" class="js-search" data-close="true"><i class="material-icons">search</i></a></li>
+                    <!-- #END# Call Search -->
+                    <!-- Notifications -->
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <i class="material-icons">notifications</i>
+                            <span class="label-count">7</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">NOTIFICATIONS</li>
+                            <li class="body">
+                                <ul class="menu">
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-light-green">
+                                                <i class="material-icons">person_add</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>12 new members joined</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 14 mins ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-cyan">
+                                                <i class="material-icons">add_shopping_cart</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>4 sales made</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 22 mins ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-red">
+                                                <i class="material-icons">delete_forever</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4><b>Nancy Doe</b> deleted account</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 3 hours ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-orange">
+                                                <i class="material-icons">mode_edit</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4><b>Nancy</b> changed name</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 2 hours ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-blue-grey">
+                                                <i class="material-icons">comment</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4><b>John</b> commented your post</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 4 hours ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-light-green">
+                                                <i class="material-icons">cached</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4><b>John</b> updated status</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 3 hours ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-purple">
+                                                <i class="material-icons">settings</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Settings updated</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> Yesterday
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="footer">
+                                <a href="javascript:void(0);">View All Notifications</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- #END# Notifications -->
+                    <!-- Tasks -->
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <i class="material-icons">flag</i>
+                            <span class="label-count">9</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">TASKS</li>
+                            <li class="body">
+                                <ul class="menu tasks">
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <h4>
+                                                Footer display issue
+                                                <small>32%</small>
+                                            </h4>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-pink" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 32%">
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <h4>
+                                                Make new buttons
+                                                <small>45%</small>
+                                            </h4>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-cyan" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <h4>
+                                                Create new dashboard
+                                                <small>54%</small>
+                                            </h4>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-teal" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 54%">
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <h4>
+                                                Solve transition issue
+                                                <small>65%</small>
+                                            </h4>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-orange" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 65%">
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <h4>
+                                                Answer GitHub questions
+                                                <small>92%</small>
+                                            </h4>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 92%">
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="footer">
+                                <a href="javascript:void(0);">View All Tasks</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- #END# Tasks -->
+                    <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+</div>
+
+<div th:fragment="menu_html">
+<section>
+        <!-- Left Sidebar -->
+        <aside id="leftsidebar" class="sidebar">
+            <!-- User Info -->
+            <div class="user-info">
+                <div class="image">
+                    <img src="/admin/images/Ảnh Khác/user.png" width="48" height="48" alt="User" />
+                </div>
+                <div class="info-container">
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:utext="${session.UserModel.fullName}"></div>
+                    <div class="email" th:utext="${session.UserModel.email}"></div>
+                    <div class="btn-group user-helper-dropdown">
+                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>
+                            <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
+                            <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/logout"><i class="material-icons">input</i>Sign Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- #User Info -->
+            <!-- Menu -->
+            <div class="menu">
+                <ul class="list">
+                  <li>
+                        <a href="/admin-page">
+                            <i class="material-icons">home</i>
+                            <span>Bảng Điều Khiển</span>
+                        </a>
+                 </li>
+                  <li class="header">SẢN PHẨM</li>
+                  <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">device_hub</i>
+                            <span>Loại Sản Phẩm</span>
+                        </a>
+                        <ul class="ml-menu">
+	                        <li>
+	                        <a href="/admin-page/category?isAccessory=false">
+	                            Sản Phẩm Chính
+	                        </a>
+	                        </li>
+	                        <li>
+	                        <a href="/admin-page/category?isAccessory=true" >
+	                           Phụ Kiện
+	                        </a>
+	                        </li>
+                        </ul>
+                    </li>
+                  
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">computer</i>
+                            <span>Sản Phẩm Chính</span>
+                        </a>
+                        <ul class="ml-menu" id="main-product-brand">
+                        </ul>
+                     </li>
+                     <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">headset</i>
+                            <span>Phụ Kiện</span>
+                        </a>
+                        <ul class="ml-menu" id="accessory-product-brand">
+	                        
+                        </ul>
+                     </li>
+                     <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">filter_list</i>
+                            <span>Bộ Lọc Sản Phẩm</span>
+                        </a>
+                        <ul class="ml-menu">
+                           <li>
+                               <a href="javascript:void(0);" class="menu-toggle">
+                                   Sản Phẩm Chính
+                               </a>
+                               <ul class="ml-menu" id="main-product">
+                                           
+                                </ul>
+                            </li>
+                                    <li>
+                               <a href="javascript:void(0);" class="menu-toggle">
+                                   Phụ Kiện
+                               </a>
+                               <ul class="ml-menu" id="accessory-product">
+                                           
+                                </ul>
+                            </li>
+                         </ul>
+                        </li>
+                     <li class="header">ĐƠN HÀNG</li>
+                     <li>
+	                        <a href="javascript:void(0);" class="menu-toggle">
+	                            <i class="material-icons">device_hub</i>
+	                            <span>ĐƠN HÀNG</span>
+	                        </a>
+	                        <ul class="ml-menu">
+		                        <li>
+		                        <a href="/admin-page/bill?status=CONFIRMED">
+		                            Đã xác nhận
+		                        </a>
+		                        </li>
+		                        <li>
+		                        <a href="/admin-page/bill?status=PROCESSING" >
+		                          Đang xử lý
+		                        </a>
+		                        </li>
+		                         <li>
+		                        <a href="/admin-page/bill?status=SHIPPING" >
+		                          Đang giao
+		                        </a>
+		                        </li>
+		                        <li>
+		                        <a href="/admin-page/bill?status=DELIVERED" >
+		                          Đã giao
+		                        </a>
+		                        </li>
+		                        <li>
+		                        <a href="/admin-page/bill?status=CANCELLED" >
+		                          Đã hủy
+		                        </a>
+		                        </li>
+	                        </ul>
+                    	</li>
+                    
+                     <li class="header">ẢNH</li>
+                     <li id="gallary-image">
+                        <a href="/admin-page/gallary">
+                            <i class="material-icons">perm_media</i>
+                            <span>Thư Viện Ảnh</span>
+                        </a>
+                     </li>
+                     <li class="header">TÀI KHOẢN</li>
+                     <li>
+                        <a href="/admin-page/role">
+                            <i class="material-icons">supervisor_account</i>
+                            <span>Vai trò</span>
+                        </a>
+                     </li>
+                     <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">account_circle</i>
+                            <span>Tài Khoản</span>
+                        </a>
+                        <ul class="ml-menu" id="user-role">
+	                        
+                        </ul>
+                     </li>
+                </ul>
+            </div>
+            <!-- #Menu -->
+            <!-- Footer -->
+            <div class="legal">
+                <div class="copyright">
+                    &copy; 2016 - 2017 <a href="javascript:void(0);">AdminBSB - Material Design</a>.
+                </div>
+                <div class="version">
+                    <b>Version: </b> 1.0.5
+                </div>
+            </div>
+            <!-- #Footer -->
+        </aside>
+        <!-- #END# Left Sidebar -->
+        <!-- Right Sidebar -->
+        <aside id="rightsidebar" class="right-sidebar">
+            <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                <li role="presentation" class="active"><a href="#skins" data-toggle="tab">SKINS</a></li>
+                <li role="presentation"><a href="#settings" data-toggle="tab">SETTINGS</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active in active" id="skins">
+                    <ul class="demo-choose-skin">
+                        <li data-theme="red" class="active">
+                            <div class="red"></div>
+                            <span>Red</span>
+                        </li>
+                        <li data-theme="pink">
+                            <div class="pink"></div>
+                            <span>Pink</span>
+                        </li>
+                        <li data-theme="purple">
+                            <div class="purple"></div>
+                            <span>Purple</span>
+                        </li>
+                        <li data-theme="deep-purple">
+                            <div class="deep-purple"></div>
+                            <span>Deep Purple</span>
+                        </li>
+                        <li data-theme="indigo">
+                            <div class="indigo"></div>
+                            <span>Indigo</span>
+                        </li>
+                        <li data-theme="blue">
+                            <div class="blue"></div>
+                            <span>Blue</span>
+                        </li>
+                        <li data-theme="light-blue">
+                            <div class="light-blue"></div>
+                            <span>Light Blue</span>
+                        </li>
+                        <li data-theme="cyan">
+                            <div class="cyan"></div>
+                            <span>Cyan</span>
+                        </li>
+                        <li data-theme="teal">
+                            <div class="teal"></div>
+                            <span>Teal</span>
+                        </li>
+                        <li data-theme="green">
+                            <div class="green"></div>
+                            <span>Green</span>
+                        </li>
+                        <li data-theme="light-green">
+                            <div class="light-green"></div>
+                            <span>Light Green</span>
+                        </li>
+                        <li data-theme="lime">
+                            <div class="lime"></div>
+                            <span>Lime</span>
+                        </li>
+                        <li data-theme="yellow">
+                            <div class="yellow"></div>
+                            <span>Yellow</span>
+                        </li>
+                        <li data-theme="amber">
+                            <div class="amber"></div>
+                            <span>Amber</span>
+                        </li>
+                        <li data-theme="orange">
+                            <div class="orange"></div>
+                            <span>Orange</span>
+                        </li>
+                        <li data-theme="deep-orange">
+                            <div class="deep-orange"></div>
+                            <span>Deep Orange</span>
+                        </li>
+                        <li data-theme="brown">
+                            <div class="brown"></div>
+                            <span>Brown</span>
+                        </li>
+                        <li data-theme="grey">
+                            <div class="grey"></div>
+                            <span>Grey</span>
+                        </li>
+                        <li data-theme="blue-grey">
+                            <div class="blue-grey"></div>
+                            <span>Blue Grey</span>
+                        </li>
+                        <li data-theme="black">
+                            <div class="black"></div>
+                            <span>Black</span>
+                        </li>
+                    </ul>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="settings">
+                    <div class="demo-settings">
+                        <p>GENERAL SETTINGS</p>
+                        <ul class="setting-list">
+                            <li>
+                                <span>Report Panel Usage</span>
+                                <div class="switch">
+                                    <label><input type="checkbox" checked><span class="lever"></span></label>
+                                </div>
+                            </li>
+                            <li>
+                                <span>Email Redirect</span>
+                                <div class="switch">
+                                    <label><input type="checkbox"><span class="lever"></span></label>
+                                </div>
+                            </li>
+                        </ul>
+                        <p>SYSTEM SETTINGS</p>
+                        <ul class="setting-list">
+                            <li>
+                                <span>Notifications</span>
+                                <div class="switch">
+                                    <label><input type="checkbox" checked><span class="lever"></span></label>
+                                </div>
+                            </li>
+                            <li>
+                                <span>Auto Updates</span>
+                                <div class="switch">
+                                    <label><input type="checkbox" checked><span class="lever"></span></label>
+                                </div>
+                            </li>
+                        </ul>
+                        <p>ACCOUNT SETTINGS</p>
+                        <ul class="setting-list">
+                            <li>
+                                <span>Offline</span>
+                                <div class="switch">
+                                    <label><input type="checkbox"><span class="lever"></span></label>
+                                </div>
+                            </li>
+                            <li>
+                                <span>Location Permission</span>
+                                <div class="switch">
+                                    <label><input type="checkbox" checked><span class="lever"></span></label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!-- #END# Right Sidebar -->
+    </section>
+</div>
+
+<div th:fragment="footer_html">
+ <!-- Jquery Core Js -->
+    <script src="/admin/plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="/admin/plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="/admin/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="/admin/plugins/node-waves/waves.js"></script>
+
+    <!-- Jquery CountTo Plugin Js -->
+    <script src="/admin/plugins/jquery-countto/jquery.countTo.js"></script>
+
+    <!-- Morris Plugin Js -->
+    <script src="/admin/plugins/raphael/raphael.min.js"></script>
+    <script src="/admin/plugins/morrisjs/morris.js"></script>
+
+    <!-- ChartJs -->
+    <script src="/admin/plugins/chartjs/Chart.bundle.js"></script>
+    <!-- Sparkline Chart Plugin Js -->
+    <script src="/admin/plugins/jquery-sparkline/jquery.sparkline.js"></script>
+	
+    <!-- Custom Js -->
+    <script src="/admin/js/admin.js"></script>
+    <!-- Demo Js -->
+    <script src="/admin/js/demo.js"></script>
+    
+</div>
+
+	<div th:fragment="myScript_html">
+	    <script type="text/javascript">
+	    	$(document).ready(function(){
+	    		resetAllMenu();
+	    	});
+	    	
+	    	function setNavigation() {
+	    	    var path = "/" + (location.pathname+location.search).substr(1);
+	    	    	$("li a").each(function(){
+	    	    		var href = $(this).attr('href');
+	    	    		if (path === href) {
+	    	    			$(this).addClass("toggled");
+	    	    			$(this).closest("li").addClass("active");
+	    	    			$(this).closest("li").closest("ul").closest("li").addClass("active");
+	    	    			$(this).closest("li").closest("ul").closest("li").children("a").addClass("toggled");
+	    	    			$(this).closest("li").closest("ul").css("display", "block");
+	    	    			if($(this).closest("li").closest("ul").closest("li").closest("ul").attr("class") != "list") {
+	    	    				var objj = $(this).closest("li").closest("ul").closest("li").closest("ul");
+	    	    				objj.css("display", "block");
+		    	    			objj.closest("li").addClass("active");
+		    	    			objj.closest("li").children("a").addClass("toggled");
+	    	    			}
+		    	        }
+	    	    	});
+	    	}  	
+	    	
+	    	function openSubMenu(tag) {
+	    		if($(tag).hasClass("toggled")) {
+	    			$(tag).removeClass("toggled");
+	    			$(tag).closest("li").children("ul").css("display", "none")
+	    		} else {
+	    			$(tag).addClass("toggled");
+	    			$(tag).closest("li").children("ul").css("display", "block")
+	    		}
+	    	 	
+	    	}
+	    	
+	    	function selectItemDelete() {
+	    		
+	    		var idsToDelete = [];
+	    		$("table input[name='id_delete']:checked").each(function(){
+	    			idsToDelete.push($(this).val());
+	    		});
+	    		
+	    		$("#idsToDelete").val(idsToDelete);
+	    		if(idsToDelete.length > 0) {
+	    			$("#btn_deleteAll").removeAttr("disabled");
+	    			
+	    		} else {
+	    			$("#btn_deleteAll").prop("disabled", true);
+	    		}
+	    	}	
+	    	
+	    	function getMainProductAndBrand() {
+	    		$.get("/api/categories?isAccessory=false", function(data){
+	    			if(data.length != 0) {
+	    				var content = "";
+	    				var arr = [];
+	    				for(var i = 0; i < data.length; i++) {
+	    					var alias = data[i].alias;
+	    					var id = "ml-menu-" +alias;
+	    					var url = "/api/categories/" +data[i].id + "/brands";
+	    					arr.push({id:id,url:url,alias:alias});
+	    					content += "<li><a href='javascript:void(0);' onclick='openSubMenu(this)' class='menu-toggle waves-effect waves-block'>"+data[i].name+"</a>"+
+	    					"<ul class='ml-menu' style='display: none' id='"+id+"'></ul></li>";
+	    					
+	    				}
+    					for(var i = 0; i< arr.length; i++) {
+    						(function(index){
+    							var id = arr[index].id;
+    							var alias = arr[index].alias;
+    							$.get(arr[index].url, function(subdata){
+            						for(var j = 0; j < subdata.length; j++) {"<li><a href='/admin-page/brand?category="+alias+"'>DS Nhãn Hàng</a></li>"
+            							$("#" + id).append("<li><a href='/admin-page/product?brand="+subdata[j].alias+"'>"+subdata[j].name+"</a></li>");
+            						}
+            						$("#" + id).append("<li><a href='/admin-page/brand?category="+alias+"'>DS Nhãn Hàng</a></li>");
+            						$("#" + id).append("<li><a href='/admin-page/brand?category="+alias+"&action=new'>Thêm Nhãn Hàng</a></li>");
+            					});
+    						})(i);
+    						
+    						
+    					}
+    					
+	    				
+	    				
+	    			} else {
+	    				content = "<li><a href='/admin-page/category?isAccessory=false&action=new'>Thêm</a></li>";
+	    			}
+	    			$("#main-product-brand").html(content);
+	    		});
+	    		
+	    	}
+	    	
+			function getAccessoryProductAndBrand() {
+				$.get("/api/categories?isAccessory=true", function(data){
+	    			var content = "";
+	    			if(data.length != 0) {
+	    				var content = "";
+	    				var arr = [];
+	    				for(var i = 0; i < data.length; i++) {
+	    					var alias = data[i].alias;
+	    					var id = "ml-menu-" +alias;
+	    					var url = "/api/categories/" +data[i].id + "/brands";
+	    					arr.push({id:id,url:url,alias:alias});
+	    					content += "<li><a href='javascript:void(0);' onclick='openSubMenu(this)' class='menu-toggle waves-effect waves-block'>"+data[i].name+"</a>"+
+	    					"<ul class='ml-menu' style='display: none' id='"+id+"'></ul></li>";
+	    					
+	    				}
+	    				
+    					for(var i = 0; i< arr.length; i++) {
+    						(function(index){
+    							var id = arr[index].id;
+    							var alias = arr[index].alias;
+    							$.get(arr[index].url, function(subdata){
+            						for(var j = 0; j < subdata.length; j++) {"<li><a href='/admin-page/brand?category="+alias+"'>DS Nhãn Hàng</a></li>"
+            							$("#" + id).append("<li><a href='/admin-page/product?brand="+subdata[j].alias+"'>"+subdata[j].name+"</a></li>");
+            						}
+            						$("#" + id).append("<li><a href='/admin-page/brand?category="+alias+"'>DS Nhãn Hàng</a></li>");
+            						$("#" + id).append("<li><a href='/admin-page/brand?category="+alias+"&action=new'>Thêm Nhãn Hàng</a></li>");
+            					});
+    						})(i);
+    						
+    						
+    					}
+    					
+	    				
+	    				
+	    			} else {
+	    				content = "<li><a href='/admin-page/category?isAccessory=true&action=new'>Thêm</a></li>";
+	    			}
+	    			$("#accessory-product-brand").html(content);
+	    		});
+	    	}
+			
+			function getMainProduct() {
+	    		$.get("/api/categories?isAccessory=false", function(data){
+	    			var content = "";
+	    			if(data.length != 0) {
+	    				for(var i = 0; i < data.length; i++) {
+	    					content += "<li><a href='/admin-page/filter-product?category="+data[i].alias+"'>"+data[i].name+"</a></li>";
+	    				}
+	    			} else {
+	    				content = "<li><a href='/admin-page/category?isAccessory=true&action=new'>Thêm</a></li>";
+	    			}
+	    			$("#main-product").html(content);
+	    		});
+	    		
+	    	}
+	    	
+			function getAccessoryProduct() {
+				$.get("/api/categories?isAccessory=true", function(data){
+					var content = "";
+	    			if(data.length != 0) {
+	    				for(var i = 0; i < data.length; i++) {
+	    					content += "<li><a href='/admin-page/filter-product?category="+data[i].alias+"'>"+data[i].name+"</a></li>";
+	    				}
+	    			} else {
+	    				content = "<li><a href='/admin-page/category?isAccessory=true&action=new'>Thêm</a></li>";
+	    			}
+    	
+    			$("#accessory-product").html(content);
+    		});
+	    	}
+			
+			function getUserRole() {
+				$.get("/api/roles", function(data){
+	    			var content = "";
+	    				for(var i = 0; i < data.length; i++) {
+	    					content += "<li><a href='/admin-page/user?role="+data[i].alias+"'>"+data[i].name+"</a></li>";
+	    				}
+    					
+	    			$("#user-role").html(content);
+	    		});
+	    	}
+			
+			
+	    	function resetAllMenu() {
+	    		getMainProductAndBrand();
+	    		getAccessoryProductAndBrand();
+	    		getMainProduct();
+	    		getAccessoryProduct();
+	    		getUserRole();
+	    		setTimeout(function(){ setNavigation() }, 500);
+	    	}
+	    
+	    	function add(id_form) {
+	    		var data = {};
+	    		var formData = $("#" + id_form).serializeArray();
+	    		 $.each(formData, function (i, v) {
+	    			 data[""+v.name+""] = v.value;
+		         });
+	    		 var url = $("#urlAPI").val();
+	    		 $.ajax({
+	    	            url: url,
+	    	            type: 'POST',
+	    	            contentType: 'application/json',
+	    	            data: JSON.stringify(data),
+	    	            dataType: 'json',
+	    	            success: function (result) {
+	    	            	if(result.alert == 'success') {
+	    	            		$('#add').modal('toggle');
+	    	            		showNotification('alert-success', result.message, 'bottom', 'center', null, null);
+	    	            		$("#" + id_form + " .display-invalid-error").html('');
+	    	            		resetTable();
+	    	            		$("#" + id_form)[0].reset();
+	    	            		$("#btn_deleteAll").prop("disabled", true);
+	    	            	} else if (result.alert == 'danger'){
+	    	            		var txt = "<div class='alert bg-red alert-dismissible' role='alert'>"
+	    	            		+ "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+	    	            		+ "<span aria-hidden='true'>&times;</span></button>" + result.message + "</div>";
+	    	            		$("#" + id_form + " .display-invalid-error").html(txt);
+	    	            	}
+	    	            	
+	    	            },
+	    	            error: function (error) {
+	    	            	alert(error.message);
+	    	            }
+	    		 });
+	    	}
+	    	
+	    	function edit(id_form) {
+	    		
+	    		var data = {};
+	    		var formData = $("#" + id_form).serializeArray();
+	    		 $.each(formData, function (i, v) {
+		                data[""+v.name+""] = v.value;
+		         });
+	    			var url = $("#urlAPI").val() + "/" + data['id'];
+	    		 $.ajax({
+	    	            url: url,
+	    	            type: 'PUT',
+	    	            contentType: 'application/json',
+	    	            data: JSON.stringify(data),
+	    	            dataType: 'json',
+	    	            success: function (result) {
+	    	            	if(result.alert == 'success') {
+	    	            		$('#edit').modal('toggle');
+	    	            		resetTable();
+	    	            		showNotification('alert-success', result.message, 'bottom', 'center', null, null);
+	    	            		$("#" + id_form + " .display-invalid-error").html('');      
+	    	            		$("#btn_deleteAll").prop("disabled", true);
+	    	            	} else if (result.alert == 'danger'){
+	    	            		var txt = "<div class='alert bg-red alert-dismissible' role='alert'>"
+	    	            		+ "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+	    	            		+ "<span aria-hidden='true'>&times;</span></button>" + result.message + "</div>";
+	    	            		$("#" + id_form + " .display-invalid-error").html(txt);
+	    	            	}
+	    	            },
+	    	            error: function (error) {
+	    	            	alert("error");
+	    	            }
+	    		 });
+	    	}
+	    	
+	    	 function remove(ids) {
+	    		var url = $("#urlAPI").val() + "/" + ids;
+	    		$.ajax({
+    	            url: url,
+    	            type: 'DELETE',
+    	            contentType: 'application/json',
+    	            dataType: 'json',
+    	            success: function (result) {
+    	            	if(result.alert == 'success') {
+    	            		resetTable();
+    	            		showSuccessMessage(result.message);
+    	            		$("#btn_deleteAll").prop("disabled", true);
+    	            	} else if (result.alert == 'danger'){
+    	            		var txt = "<div class='alert bg-red alert-dismissible' role='alert'>"
+    	            		+ "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+    	            		+ "<span aria-hidden='true'>&times;</span></button>" + result.message + "</div>";
+    	            		$("#" + id_form + " .display-invalid-error").html(txt);
+    	            	}
+    	            },
+    	            error: function (error) {
+    	            	alert("error");
+    	            }
+    		 });
+	    	}
+	    	
+	    	window.onload = function(){
+   	         setTimeout(function(){ setNavigation() }, 500);
+   	    };
+	    </script>
+	</div>
+</body>
+</html>

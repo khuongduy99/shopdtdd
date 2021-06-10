@@ -6,6 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 
@@ -13,10 +16,13 @@ import org.hibernate.annotations.Type;
 @Table(name = "category")
 public class CategoryEntity extends BaseEntity {
 	
+	@NotEmpty(message = "\"Tên loại sản phẩm\" không được để trống.")
+	@Size(min = 2, max = 50, message = "\"Tên loại sản phẩm\" nên có độ dài từ 2 đến 50 ký tự.")
+	@Pattern(regexp = "[\\w ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴ,.]*", message = "Không được chứa ký tự đặc biệt")
 	@Column
 	private String name;
 	
-	@Column(columnDefinition = "boolean default false")
+	@Column(columnDefinition = "boolean default false", name = "is_accessory")
 	@Type(type = "org.hibernate.type.NumericBooleanType")
 	private boolean isAccessory = false;
 	
@@ -24,7 +30,7 @@ public class CategoryEntity extends BaseEntity {
 	private List<BrandEntity> listBrand;
 	
 	@OneToMany(mappedBy = "category")
-	private List<ClassifyEntity> listClassify;
+	private List<FilterEntity> listFilter;
 	
 
 	public String getName() {
@@ -51,12 +57,14 @@ public class CategoryEntity extends BaseEntity {
 		this.listBrand = listBrand;
 	}
 
-	public List<ClassifyEntity> getListClassify() {
-		return listClassify;
+	public List<FilterEntity> getListFilter() {
+		return listFilter;
 	}
 
-	public void setListClassify(List<ClassifyEntity> listClassify) {
-		this.listClassify = listClassify;
+	public void setListFilter(List<FilterEntity> listFilter) {
+		this.listFilter = listFilter;
 	}
+
+	
 	
 }

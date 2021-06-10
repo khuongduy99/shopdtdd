@@ -1,7 +1,9 @@
 package com.spring.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -9,20 +11,25 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "bill_detail")
 public class BillDetailEntity extends BaseEntity {
+	@Column(name = "product_id")
+	private Long idProduct;
 	
-	@Column
+	@Column(name = "name_product")
 	private String nameProduct;
 	
-	@Column
-	private String url_image;
+	@Column(name = "url_image")
+	private String urlImage;
 	
-	@Column
-	private double price;
+	@Column(name = "price")
+	private int price;
+	
+	@Column(name = "qty")
+	private int qty;
 	
 	@Column(columnDefinition = "TEXT")
 	private String promotions;
 
-	@ManyToOne()
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "bill_id")
 	private BillEntity bill;
 
@@ -35,19 +42,11 @@ public class BillDetailEntity extends BaseEntity {
 	}
 
 	public String getUrl_image() {
-		return url_image;
+		return urlImage;
 	}
 
 	public void setUrl_image(String url_image) {
-		this.url_image = url_image;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
+		this.urlImage = url_image;
 	}
 
 	public String getPromotions() {
@@ -64,6 +63,38 @@ public class BillDetailEntity extends BaseEntity {
 
 	public void setBill(BillEntity bill) {
 		this.bill = bill;
+	}
+
+	public Long getIdProduct() {
+		return idProduct;
+	}
+
+	public void setIdProduct(Long idProduct) {
+		this.idProduct = idProduct;
+	}
+
+	public String getUrlImage() {
+		return urlImage;
+	}
+
+	public void setUrlImage(String urlImage) {
+		this.urlImage = urlImage;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public int getQty() {
+		return qty;
+	}
+
+	public void setQty(int qty) {
+		this.qty = qty;
 	}
 	
 	

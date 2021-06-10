@@ -1,0 +1,1020 @@
+<!DOCTYPE >
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="admin/_table :: header_html" />
+
+<body class="theme-red">
+	<!-- Page Loader -->
+	<div th:replace="admin/_fragments :: navbar_html"></div>
+	<!-- #END# Page Loader -->
+
+	<!-- Left Sidebar -->
+	<div th:replace="admin/_fragments :: menu_html"></div>
+	<input type="hidden" value="/api/products" id="urlAPI">
+	<input type="hidden" th:value="${'/api/brands/' + Brand.id + '/products'}" id="urlAPIResetTable">
+	<section class="content">
+		<div class="container-fluid">
+			<div class="block-header">
+
+				<button type="button" data-toggle="modal" data-target="#add"
+					class="btn bg-blue waves-effect">
+					<span>THÊM MỚI</span> <i class="material-icons">add</i>
+				</button>
+			</div>
+			<!-- Exportable Table -->
+			<div class="row clearfix">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="card">
+						<div class="header">
+							<h2 class="text-uppercase"
+								th:utext="${'Danh sách sản phẩm của ' + Category.name + ' ' + Brand.name}"></h2>
+						</div>
+
+						<div class="body">
+							<div class="table-responsive">
+								<table class="table table-bordered table-striped table-hover dataTable js-exportable" style="width: 100%">
+
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- #END# Exportable Table -->
+		</div>
+
+	</section>
+
+	
+
+	<!-- MANAGER STATUSTYPES-->
+	<!-- MODAL ADD -->
+	<div class="modal fade" id="add" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title text-uppercase"
+						th:utext="${'Thêm sản phẩm cho ' + Category.name + ' ' + Brand.name}"></h4>
+				</div>
+				<div class="modal-body" style="max-height: 600px; overflow: auto;">
+						<form id="form_validation_1" action="javascript:addProduct('form_validation_1');">
+								<a id="back-to-top-of-add"></a>
+								<div class="display-invalid-error"></div>
+									<div class="row">
+										<div class="col-md-6">
+											<b>Tên Sản Phẩm</b>
+		                                    <div class="input-group form-group">
+												<span class="input-group-addon"> <i
+													class="material-icons">devices</i>
+												</span>
+												<div class="form-line">
+													<input type="text" name="name" class="form-control"
+														placeholder="Tên Sản Phẩm" required="required" maxlength="100" minlength="2">
+												</div>
+												<div class="help-info">Giới hạn từ 2 đến 100 ký tự.</div>
+											</div>
+											<b>Giá Sản Phẩm</b>
+											<div class="input-group form-group">
+												<span class="input-group-addon"> <i
+													class="material-icons">local_atm</i>
+												</span>
+												<div class="form-line">
+													<input type="text" class="form-control money-vnd"
+														placeholder="Giá Sản Phẩm" name="price">
+												</div>
+												<div class="help-info">Ex: 1,000,000 ₫.</div>
+											</div>
+											<b>Số Lượng</b>
+											<div class="input-group form-group">
+												<span class="input-group-addon"> <i
+													class="material-icons">high_quality</i>
+												</span>
+												<div class="form-line">
+													<input type="number" max="100" min="0" name="qty" class="form-control">
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6" style="height: 30%; overflow: auto;">
+												<div style="width: 70%; float: left;padding: 5px">
+													<b>Ảnh Chính</b>
+		                                    		<a href="#" onclick="openSelectImages('image', 'add');">
+		                                    			<img class="img-responsive thumbnail image-main-product" src="https://sn0n.dblog.org/img/default.jpg" width="100%">
+		                                    		</a>
+		                                    		<input type="hidden" name="urlImage" id="urlImage">
+												</div>
+												<div style="width: 30%; float: left; padding: 5px">
+													<b>Ảnh Chi Tiết</b>
+		                                    		<button type="button" onclick="openSelectImages('images', 'add');" class="btn bg-blue waves-effect">
+														<span>Chọn ảnh</span>
+													</button>
+		                                    		<div class="dd nestable-with-handle">
+					                                    <ol class="dd-list images-product"></ol>
+		                                				<input type="hidden" name="urlImages">
+		                                			</div>
+												</div>
+		                                   </div>
+									</div>
+                                	
+								<div class="row">
+									<div class="col-md-6">
+											<div class="switch">
+	                                            <label><input type="checkbox" onclick="changeState('add', this)"><span class="lever switch-col-green"></span>Giảm Giá</label>
+	                                        </div>
+	                                    <div class="input-group form-group sale-input" style="display: none">
+											<div class="form-line">
+												<input type="text" class="form-control money-vnd" placeholder="Giá Khuyến Mãi" name="sale">
+											</div>
+											<div class="help-info">Ex: 1,000,000 ₫.</div>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<input type="checkbox" id="md_checkbox_new" class="filled-in chk-col-red" name="isNew" value="true" /> 
+										<label for="md_checkbox_new">Sản Phẩm <span class="badge bg-red">MỚI</span></label>
+									</div>
+									<div class="col-md-3">
+										 <input type="checkbox" id="md_checkbox_hot" class="filled-in chk-col-amber" name="isHot" value="true"/>
+                                		 <label for="md_checkbox_hot">Sản Phẩm <span class="badge bg-amber">HOT</span></label>
+									</div>
+								</div>
+                                <div class="input-group form-group">
+                                	<span class="input-group-addon"> <i
+											class="material-icons">local_offer</i>
+										</span>
+	                                <div class="form-line">
+	                                    <input type="text" class="form-control" data-role="tagsinput" th:value="${#strings.toLowerCase(Category.name + ',' + Brand.name + ',' + Category.name + ' ' + Brand.name)}" placeholder="Tags" name="tags">
+	                                </div>
+	                            </div>
+
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                            	<li role="presentation" class="active"><a href="#add-group-product" data-toggle="tab">PHÂN NHÓM</a></li>
+                                <li role="presentation"><a href="#add-promotion" data-toggle="tab">KHUYẾN MÃI</a></li>
+                                <li role="presentation"><a href="#add-specifications" data-toggle="tab">THÔNG SỐ KỸ THUẬT</a></li>
+                                <li role="presentation"><a href="#add-article" data-toggle="tab">BÀI VIẾT</a></li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                            	<div role="tabpanel" class="tab-pane fade in active" id="add-group-product">
+                                    <div class="input-group">
+		                       			 <select onchange="pushValueForFiltersId('add', this);" id="optgroup-add" class="ms" multiple="multiple"></select>
+		                    		</div>
+		                    		<input type="hidden" class="filtersId" name="filtersId">
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade in" id="add-promotion">
+                                    <b>Thông tin khuyến mãi</b>
+                                    <textarea class="myeditablediv" id="tinymce_1" name="promotions"></textarea>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="add-specifications">
+                                    <b>Thông tin kỹ thuật</b>
+                                    <textarea class="myeditablediv" id="tinymce_2" name="specifications"></textarea>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="add-article">
+                                    <b>Thông tin bài viết</b>
+                                    <textarea class="myeditablediv" id="tinymce_3" name="article"></textarea>    
+                                </div>
+                                
+                            </div>
+                            <button class="btn btn-primary waves-effect" type="submit">Lưu</button>
+                                <input type="hidden" name="brandId" th:value="${Brand.id}">
+                            </form>
+                </div>
+				<div class="modal-footer">
+					<button type="button" class="btn bg-red waves-effect" data-dismiss="modal">ĐÓNG</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END MODAL ADD -->
+	<!-- MODAL EDIT -->
+	<div class="modal fade" id="edit" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title text-uppercase">Chỉnh sửa sản phẩm</h4>
+				</div>
+				<div class="modal-body" style="max-height: 600px; overflow: auto;">
+                     <form id="form_validation_2" action="javascript:editProduct('form_validation_2');">
+                     			<a id="back-to-top-of-edit"></a>
+								<div class="display-invalid-error"></div>
+									<div class="row">
+										<div class="col-md-6">
+											<b>Tên Sản Phẩm</b>
+		                                    <div class="input-group form-group">
+		                                    
+												<span class="input-group-addon"> <i
+													class="material-icons">devices</i>
+												</span>
+												<div class="form-line">
+													<input type="text" name="name" class="form-control" placeholder="Tên Sản Phẩm" required="required" maxlength="50" minlength="2">
+												</div>
+												<div class="help-info">Giới hạn từ 2 đến 50 ký tự.</div>
+											</div>
+											<b>Giá Sản Phẩm</b>
+											<div class="input-group form-group">
+												<span class="input-group-addon"> <i
+													class="material-icons">local_atm</i>
+												</span>
+												<div class="form-line price">
+													
+												</div>
+												<div class="help-info">Ex: 1,000,000 ₫.</div>
+											</div>
+											<b>Số Lượng</b>
+											<div class="input-group form-group">
+												<span class="input-group-addon"> <i
+													class="material-icons">high_quality</i>
+												</span>
+												<div class="form-line">
+													<input type="number" min="0" max="100" name="qty" class="form-control">
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6" style="height: 30%; overflow: auto;">
+												<div style="width: 70%; float: left;padding: 5px">
+													<b>Ảnh Chính</b>
+		                                    		<a href="#" onclick="openSelectImages('image', 'edit');">
+		                                    			<img class="img-responsive thumbnail image-main-product" src="/admin/images//Ảnh Khác/default.jpg" width="100%">
+		                                    		</a>
+		                                    		<input type="hidden" name="urlImage">
+												</div>
+												<div style="width: 30%; float: left; padding: 5px">
+													<b>Ảnh Chi Tiết</b>
+		                                    		<button type="button" onclick="openSelectImages('images', 'edit');" class="btn bg-blue waves-effect">
+														<span>Chọn ảnh</span>
+													</button>
+		                                    		<div class="dd nestable-with-handle">
+					                                    <ol class="dd-list images-product"></ol>
+		                                				<input type="hidden" name="urlImages">
+		                                			</div>
+												</div>
+		                                   </div>
+									</div>
+                                	
+								<div class="row">
+									<div class="col-md-6">
+											<div class="switch">
+	                                            <label><input type="checkbox" class="input-change-state" onclick="changeState('edit', this)"><span class="lever switch-col-green"></span>Giảm Giá</label>
+	                                        </div>
+	                                    <div class="input-group form-group sale-input" style="display: none">
+											<div class="form-line sale">
+												
+											</div>
+											<div class="help-info">Ex: 1,000,000 ₫.</div>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<input type="checkbox" id="md_checkbox_edit_new" class="filled-in chk-col-red" name="isNew" value="true"/> 
+										<label for="md_checkbox_edit_new">Sản Phẩm <span class="badge bg-red">MỚI</span></label>
+									</div>
+									<div class="col-md-3">
+										 <input type="checkbox" id="md_checkbox_edit_hot" class="filled-in chk-col-amber" name="isHot" value="true"/>
+                                		 <label for="md_checkbox_edit_hot">Sản Phẩm <span class="badge bg-amber">HOT</span></label>
+									</div>
+								</div>
+                                <div class="input-group form-group">
+                                	<span class="input-group-addon"> <i
+											class="material-icons">local_offer</i>
+										</span>
+	                                <div class="form-line">
+	                                    <input type="text" class="form-control tags" data-role="tagsinput" placeholder="Tags" name="tags">
+	                                </div>
+	                            </div>
+								<div class="form-line">
+								<b>Trạng Thái</b>
+									<select class="form-control show-tick status" name="status">
+										<th:block th:each="item : ${ListStatus}">
+								            <option th:value="${item}" th:utext="${item}"></option>
+								        </th:block>
+                              		</select>
+                                
+                  				</div>
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                            	<li role="presentation" class="active"><a href="#edit-group-product" data-toggle="tab">PHÂN NHÓM</a></li>
+                                <li role="presentation"><a href="#edit-promotion" data-toggle="tab">KHUYẾN MÃI</a></li>
+                                <li role="presentation"><a href="#edit-specifications" data-toggle="tab">THÔNG SỐ KỸ THUẬT</a></li>
+                                <li role="presentation"><a href="#edit-article" data-toggle="tab">BÀI VIẾT</a></li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                            	<div role="tabpanel" class="tab-pane fade in active" id="edit-group-product">
+                                    <div class="input-group">
+		                       			 <select id="optgroup-edit" onchange="pushValueForFiltersId('edit', this);" class="ms" multiple="multiple"></select>
+		                    		</div>
+		                    		<input type="hidden" class="filtersId" name="filtersId">
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade in" id="edit-promotion">
+                                    <b>Thông tin khuyến mãi</b>
+                                    <textarea class="myeditablediv" id="tinymce_4" name="promotions"></textarea>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="edit-specifications">
+                                    <b>Thông tin kỹ thuật</b>
+                                    <textarea class="myeditablediv" id="tinymce_5" name="specifications"></textarea>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="edit-article">
+                                    <b>Thông tin bài viết</b>
+                                    <textarea class="myeditablediv" id="tinymce_6" name="article"></textarea>    
+                                </div>
+                                
+                            </div>
+                            <button class="btn btn-primary waves-effect" type="submit">Lưu</button>
+                                <input type="hidden" name="brandId" th:value="${Brand.id}">
+                                <input type="hidden" name="id">
+                            </form>
+                </div>
+				<div class="modal-footer">
+					<button type="button" class="btn bg-red waves-effect" data-dismiss="modal">ĐÓNG</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END MODAL EDIT -->
+	
+	<!-- MODAL VIEW -->
+	<div class="modal fade" id="view" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title text-uppercase">XEM sản phẩm</h4>
+				</div>
+				<div class="modal-body" style="max-height: 600px; overflow: auto;">
+                     <div class="row">
+                     	<div class="col-md-6">
+                     		 <b>Tên Sản Phẩm</b>
+                             <div class="input-group">
+                             <span class="input-group-addon"> <i class="material-icons">devices</i></span>
+                                   <div class="form-line">
+                                         <p class="name"></p>
+                                  </div>
+                             </div>
+                             <div class="row">
+                             	<div class="col-md-6">
+                             		 <b>Giá Sản Phẩm</b>
+		                             <div class="input-group">
+		                             <span class="input-group-addon"> <i class="material-icons">local_atm</i></span>
+		                                   <div class="form-line price"></div>
+		                             </div>
+		                             <div style="display: none" class="sale">
+		                             	<b>Giảm Giá Còn</b>
+			                             <div class="input-group">
+			                             <span class="input-group-addon"> <i class="material-icons">local_atm</i></span>
+			                                   <div class="form-line"></div>
+			                             </div>
+		                             </div>
+                             	</div>
+                             	<div class="col-md-6">
+                             		 <b>Số lượng</b>
+		                             <div class="input-group">
+		                             <span class="input-group-addon"> <i class="material-icons">high_quality</i></span>
+		                                   <div class="form-line">
+		                                         <p class="qty"></p>
+		                                  </div>
+		                             </div>
+		                             <b>Trạng thái</b>
+		                             <div class="input-group state"></div>
+                             	</div>
+                             </div>
+                             <b>Tags</b>
+                             <div class="input-group">
+                             <span class="input-group-addon"> <i class="material-icons">devices</i></span>
+                                   <div class="form-line">
+                                         <input type="text" class="form-control tags" data-role="tagsinput" disabled="disabled">
+                                  </div>
+                             </div>
+                             
+                             <div class="row">
+                             	<div class="col-md-6">
+                             		<b>Được tạo lúc</b>
+                             		<div class="input-group">
+	                             		<span class="input-group-addon"><i class="material-icons">date_range</i></span>
+	                                    <div class="form-line">
+	                                    	<p class="datetime create-date"></p>
+	                                    </div>
+                             		</div>
+                             	</div>
+                             	<div class="col-md-6">
+                             		 <b>Được tạo bởi</b>
+		                             <div class="input-group">
+		                             <span class="input-group-addon"> <i class="material-icons">person</i></span>
+		                                   <div class="form-line">
+		                                         <p class="create-by"></p>
+		                                  </div>
+		                             </div>
+                             	</div>
+                             </div>
+                             <div class="row">
+                             	<div class="col-md-6">
+                             		<b>Cập nhật lần cuối lúc</b>
+                             		<div class="input-group">
+	                             		<span class="input-group-addon"><i class="material-icons">date_range</i></span>
+	                                    <div class="form-line">
+	                                         <p class="datetime update-date"></p>
+	                                    </div>
+                             		</div>
+                             	</div>
+                             	<div class="col-md-6">
+                             		 <b>Được cập nhật bởi</b>
+		                             <div class="input-group">
+		                             <span class="input-group-addon"> <i class="material-icons">person</i></span>
+		                                   <div class="form-line">
+		                                         <p class="update-by"></p>
+		                                  </div>
+		                             </div>
+                             	</div>
+                             </div>
+                     	</div>
+                     	
+                     	<div class="col-md-6" style="max-height: 400px; overflow: auto;">
+                     		<h5>Ảnh Chính</h5>
+                            <img alt="" class="image" src="" width="100%">
+                            <h5>Ảnh Chi tiết</h5>
+                            <div class="images row"></div>
+                     	</div>
+                     	
+                     </div>
+                     
+                      <!-- Nav tabs -->
+                            <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                                <li role="presentation" class="active"><a href="#view-promotion" data-toggle="tab">KHUYẾN MÃI</a></li>
+                                <li role="presentation"><a href="#view-specifications" data-toggle="tab">THÔNG SỐ KỸ THUẬT</a></li>
+                                <li role="presentation"><a href="#view-article" data-toggle="tab">BÀI VIẾT</a></li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade in active" id="view-promotion">
+                                    <b>Thông tin khuyến mãi</b>
+                                    <div class="promotions"></div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="view-specifications">
+                                    <b>Thông tin kỹ thuật</b>
+                                    <div class="specifications"></div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="view-article">
+                                    <b>Thông tin bài viết</b>
+                                    <div class="article"></div>  
+                                </div>
+                                
+                            </div>
+                     
+                </div>
+				<div class="modal-footer">
+					<button type="button" class="btn bg-red waves-effect" data-dismiss="modal">ĐÓNG</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END MODAL VIEW -->
+	
+	<!-- MODAL SELECT IMAGE -->
+	<div class="modal fade" id="select-image" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content card">
+				<div class="modal-header header">
+					<h2>THƯ VIỆN ẢNH</h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li>
+                                    <a id="reload-modal-select-image" href="#" data-toggle="cardloading" data-loading-effect="ios">
+                                        <i class="material-icons">loop</i>
+                                    </a>
+                                </li>
+                            </ul>		
+				</div>
+				<div class="modal-body body">
+				 	<div id="images-to-select" class="row" style="max-height: 400px; overflow: auto;"></div>
+                </div>
+				<div class="modal-footer">
+					<button type="button" id="btn-select-image" class="btn bg-blue waves-effect">CHỌN</button>
+					<button type="button" class="btn bg-red waves-effect" data-dismiss="modal">ĐÓNG</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END MODAL SELECT IMAGE -->
+	<div th:replace="admin/_table :: footer_html"></div>
+	<input type="hidden" th:value="${'/api/categories/'+ Category.id +'/filters'}" id="urlGetFilter">
+	<input type="hidden" th:value="${'/api/brands/' + Brand.id + '/products'}" id="urlGetDatabaseTable">
+	<!-- Light Gallery Plugin Js -->
+    <script src="/admin/plugins/light-gallery/js/lightgallery-all.js"></script>
+	<!-- SCRIPT -->
+	<script type="text/javascript">
+	
+	var urlGetDatabaseTable = $("#urlGetDatabaseTable").val();
+    //Exportable table
+     var table = $('.js-exportable').DataTable({
+        dom: 'Bfrtip',
+        responsive: true,
+        buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+        pageLength: 10,
+        ajax: {url: urlGetDatabaseTable, dataSrc : ""},
+        columns: [
+        	{	
+        		width: "5%",
+        		title: "<button type='button' id='btn_deleteAll' class='btn bg-red waves-effect' title='Xóa Tất Cả' onclick=\"showConfirmDelete($(\'#idsToDelete\').val())\" disabled><i class='material-icons'>delete</i></button>",
+        		data: null,
+        		bSortable: false,
+        		mRender: function(data, type, full) {
+        			var typeInput = " type='checkbox'";
+        			var valueInput = " value='"+data.id+"'";
+        			var idInput = " id='id_delete_"+data.id+"'";
+        			var nameInput = " name='id_delete'";
+        			var onclickInput = " onclick='selectItemDelete()'";
+        			var classInput = " class='filled-in chk-col-orange'";
+        			var forLabel = " for='id_delete_"+data.id+"'";
+        			var content = "<input "+typeInput + valueInput + idInput + classInput + nameInput + onclickInput + "/>";
+        				content += "<label " + forLabel + "></label>";
+        	        return content;
+        	   }
+        	},
+        	{	
+        		sWidth: "35%",
+        		title: "Tên",
+        		data: "name"
+        	},
+        	{	
+        		sWidth: "5%",
+        		title: "Ảnh",
+        		data: null,
+        		render: function(data) {
+        			return "<img src='"+data.urlImage+"' width='100%'>";
+        		}
+        	},
+        	{	
+        		sWidth: "10%",
+        		title: "Giá",
+        		data: null,
+        		render: function(data) {
+        			return "<span class='money-vnd'>"+data.price+"</span> <sup>₫</sup>";
+        		}
+        	},
+        	{
+        		sWidth: "5%",
+        		title: "Mới",
+        		data: null,
+        		render: function(data) {
+        			var res = "<p class='badge bg-"+(data.new ? "red" : "black")+"' style='width: 100%'> NEW</p><br>";
+        			res += "<div class='switch'><label><input type='checkbox' " + (data.new ? "checked" : "")  + "><span class='lever switch-col-red'></span></label></div>";
+        			return res;
+        		}
+        	},
+        	{	
+        		sWidth: "5%",
+        		title: "Hot",
+        		data: null,
+        		render: function(data) {
+        			var res = "<p class='badge bg-"+(data.hot ? "amber" : "black")+"' style='width: 100%'> HOT</p><br>";
+        			res += "<div class='switch'><label><input type='checkbox' " + (data.hot ? "checked" : "")  + "><span class='lever switch-col-amber'></span></label></div>";
+        			return res;
+        		}
+        	},
+        	{	
+        		sWidth: "15%",
+        		title: "Trạng Thái",
+        		data: "status",
+        		render: function(data) {
+        			var res = "";
+        			if(data == 'Hoạt Động') res = "<span class='badge bg-teal'>" + data + "</span>";
+        			if(data == 'Không Hoạt Động') res = "<span class='badge bg-red'>" + data + "</span>"; 
+        			return res;
+        		}
+        	},
+        	{	
+        		sWidth: "20%",
+        		title: "Công cụ",
+        		data: null,
+        		bSortable: false,
+        		mRender: function(data, type, full) {
+        			
+        			var typeButton = " type='button'";
+        			//button view
+        			var titleButtonView = " title='Xem chi tiết'";
+        			var onclickButtonView = " onclick='openView("+data.id+")'";
+        			var classButtonView = " class='btn bg-blue btn-circle waves-effect'";
+        			//button Edit
+        			var titleButtonEdit = " title='Chỉnh sửa'";
+        			var onclickButtonEdit = " onclick='openEdit("+data.id+")'";
+        			var classButtonEdit = " class='btn bg-green btn-circle waves-effect'";
+        			
+        			//button Delte
+        			var titleButtonDelete = " title='Xóa'";
+        			var onclickButtonDelete = " onclick='showConfirmDelete(["+data.id+"])'";
+        			var classButtonDelete = " class='btn bg-red btn-circle waves-effect'";
+        			var content = "<button "+typeButton + titleButtonView + onclickButtonView + classButtonView+"><i class='material-icons'>search</i></button>";
+        			content += "<button "+typeButton + titleButtonEdit + onclickButtonEdit + classButtonEdit+"><i class='material-icons'>edit</i></button>";
+        			content += "<button "+typeButton + titleButtonDelete + onclickButtonDelete + classButtonDelete+"><i class='material-icons'>delete_forever</i></button>";
+        	        return content;
+        	   }
+        	}
+        ],
+    });
+    
+     	function pushValueForFiltersId(id,inp){
+	    	var values = $(inp).val();
+	    	
+	    	$("#"+id+" .filtersId").val(values);
+	    }
+    	$('#optgroup-add').multiSelect({ 
+			selectableHeader: "<div class='header bg-grey 'style='padding:8px'> Nhóm Sản Phẩm</div>",
+			selectionHeader: "<div class='header bg-grey' style='padding:8px'> Nhóm Hiện Có</div>"
+		});
+    	$('#optgroup-edit').multiSelect({ 
+			selectableHeader: "<div class='header bg-grey 'style='padding:8px'> Nhóm Sản Phẩm</div>",
+			selectionHeader: "<div class='header bg-grey' style='padding:8px'> Nhóm Hiện Có</div>"
+		});
+    	var urlGetFilter = $("#urlGetFilter").val();
+     	$.get(urlGetFilter,function(data) {
+     		var content = "";
+     		for(var i = 0; i < data.length; i++) {
+				content+=" <optgroup label='"+data[i].name+"'></optgroup>";
+			}
+
+			$('#optgroup-add').html(content);
+			for(var i = 0; i < data.length; i++) {
+				var nameRole = data[i].name;
+				for(var j = 0; j < data[i].children.length; j++) {
+					var valName = data[i].children[j].name;
+					var id = data[i].children[j].id;
+					$('#optgroup-add').multiSelect('addOption', { value: id, text: valName, index: 0, nested: nameRole });
+				}
+				
+			}
+
+			$('#optgroup-add').multiSelect('deselect_all');
+		});
+     	
+     	$.get(urlGetFilter,function(data) {
+     		var content = "";
+     		for(var i = 0; i < data.length; i++) {
+				content+=" <optgroup label='"+data[i].name+"'></optgroup>";
+			}
+
+			$('#optgroup-edit').html(content);
+			for(var i = 0; i < data.length; i++) {
+				var nameRole = data[i].name;
+				for(var j = 0; j < data[i].children.length; j++) {
+					var valName = data[i].children[j].name;
+					var id = data[i].children[j].id;
+					$('#optgroup-edit').multiSelect('addOption', { value: id, text: valName, index: 0, nested: nameRole });
+				}
+				
+			}
+
+			$('#optgroup-edit').multiSelect('deselect_all');
+		});
+	
+		function changeState(id, val) {
+		if( $(val).is(':checked') ) {
+			  $("#"+ id+ " .sale-input").css("display", "block");
+		   } else {
+			   $("#"+ id+ " input[name='sale']").val("");
+			   $("#"+ id+ " .sale-input").css("display", "none");
+		   }
+		}
+	
+		function openEdit(id) {
+			var url = $("#urlAPI").val() + "/" + id;
+			$.get(url, function(data) {
+				$("#edit input[name='name']").val(data.name);
+				$("#edit .price").html("<input type='text' class='form-control money-vnd price' value='"+data.price+"' placeholder='Giá Sản Phẩm' name='price'>");
+				$("#edit input[name='qty']").val(data.qty);
+				$("#edit .image-main-product").attr("src", data.urlImage);
+				$("#edit input[name='urlImage']").val(data.urlImage);
+				var content = "";
+				for(var i = 0; i < data.listUrlImages.length; i++) {
+					content += "<li class='dd-item dd3-item' data-srcUrl='"+data.listUrlImages[i]+"'>";
+				    content += "<div class='dd-handle dd3-handle'></div>";
+				    content += "<img class='thumbnail img-responsive' src='"+data.listUrlImages[i]+"' width='100%'></li>";
+				}
+				$("#edit .images-product").html(content);
+				$("#edit input[name='urlImages']").val(data.urlImages);
+				if(data.new) {
+					$("#edit #md_checkbox_edit_new").prop('checked', true);
+				} else {
+					$("#edit #md_checkbox_edit_new").prop('checked', false);
+				}
+				if(data.hot) {
+					$("#edit #md_checkbox_edit_hot").prop('checked', true);
+				} else {
+					$("#edit #md_checkbox_edit_hot").prop('checked', false);
+				}
+				if(data.sale != 0) {
+					$("#edit .input-change-state").attr('checked','checked');
+					$("#edit .sale-input").css("display", "block");
+					$("#edit .sale").html("<input type='text' class='form-control money-vnd price' value='"+data.sale+"' placeholder='Giá Khuyến Mãi' name='sale'>");
+				}
+				$("#edit .tags").tagsinput('add', data.tags);
+				tinyMCE.get('tinymce_4').setContent(data.promotions);
+				tinyMCE.get('tinymce_5').setContent(data.specifications);
+				tinyMCE.get('tinymce_6').setContent(data.article);
+				$("#edit input[name='id']").val(data.id);
+				$("#edit .status option").each(function(){
+					if($(this).val() == data.status) {
+						$(this).attr("selected", "selected");
+					}
+				});
+				var arrFilterOfProduct = [];
+				for(var i = 0; i < data.filtersId.length; i++) {
+					arrFilterOfProduct.push('' + data.filtersId[i]);
+				}
+				$('#optgroup-edit').multiSelect('deselect_all');
+				$('#optgroup-edit').multiSelect('select', arrFilterOfProduct);
+			});
+			
+			$("#edit").modal("show");
+		}
+		
+		function openSelectImages(type, id) {
+			var url = "/api/images";
+			if(type == "image") {
+				openFolder(type, url);
+				$("#btn-select-image").attr("onclick", "selectImage('image','"+id+"')");
+			} else if(type == "images"){
+				openFolder(type, url);
+				$("#btn-select-image").attr("onclick", "selectImage('images','"+id+"')");
+			}
+			
+			$("#select-image").modal("show");
+		}
+		
+		function openFolder(type, url) {
+			$("#reload-modal-select-image").attr("onclick", "openFolder('" + type + "', '" + url + "')");
+			var urls = [];
+			if(url.split("=").length > 1) {
+				console.log(url.split("=").length);
+				urls = url.split("=")[1].split("/");
+			}
+			
+			if(url == "/api/images") url = "/api/images?path=";
+			if(type == "image") {
+				$.get(url,function(data) {
+					var content = "";
+					content += "<ol class='breadcrumb breadcrumb-col-indigo'>";
+					content += "<li><a href='#' onclick=\"openFolder(\'image\',\'/api/images')\"><i class='material-icons'>folder</i> Images </a></li>"
+					var hrefUrl = "";
+					for(var i = 1; i < urls.length; i++) {
+						hrefUrl += "/" + urls[i];
+						content += "<li><a href='#' onclick=\"openFolder(\'image\',\'/api/images?path="+hrefUrl+"\')\"><i class='material-icons'>folder</i> "+ urls[i]+" </a></li>";
+					}
+					content += "</ol>";
+					for(var i = 0; i < data.length; i++) {
+						if(!data[i].isFolder) {
+							content += "<div class='col-md-3 col-xs-6'>";
+							content += "<input name='group4' type='radio' id='radio_"+data[i].id+"' class='radio-col-teal' value='"+data[i].url+"' />";
+							content += "<label for='radio_"+data[i].id+"' style='height: auto'><img class='img-responsive thumbnail' src='"+data[i].url+"' width='100%'></label></div>";
+						} else {
+							content += "<div class='col-md-3 col-xs-6'>";
+							content += "<div class='img-responsive thumbnail text-center '>";
+							content += "<a href='#' onclick=\"openFolder(\'image\',\'"+url+"/"+data[i].name+"\')\"> <i class='material-icons col-orange' style='font-size: 40px;'>folder</i>";
+							content += "<p>"+data[i].name+"</p> </a></div></div>";
+						}
+					}
+					$("#images-to-select").html(content);
+				});
+			} else {
+				$.get(url,function(data) {
+					var content = "";
+					content += "<ol class='breadcrumb breadcrumb-col-indigo'>";
+					content += "<li><a href='#' onclick=\"openFolder(\'images\',\'/api/images')\"><i class='material-icons'>folder</i> Images </a></li>";
+					var hrefUrl = "";
+					for(var i = 1; i < urls.length; i++) {
+						hrefUrl += "/" + urls[i];
+						content += "<li><a href='#' onclick=\"openFolder(\'images\',\'/api/images?path="+hrefUrl+"\')\"><i class='material-icons'>folder</i> "+ urls[i]+" </a></li>";
+					}
+					content += "</ol>";
+					for(var i = 0; i < data.length; i++) {
+						if(!data[i].isFolder) {
+							content += "<div class='col-md-3 col-xs-6'>";
+							content += "<input type='checkbox' name='checkboxgroup' id='md_checkbox_"+data[i].id+"' class='filled-in chk-col-teal' value='"+data[i].url+"'/>";
+							content += "<label for='md_checkbox_"+data[i].id+"' style='height: auto'><img class='img-responsive thumbnail' src='"+data[i].url+"' width='100%'></label></div>";
+						} else {
+							content += "<div class='col-md-3 col-xs-6'>";
+							content += "<div class='img-responsive thumbnail text-center '>";
+							content += "<a href='#' onclick=\"openFolder(\'images\',\'"+url+"/"+data[i].name+"\')\"> <i class='material-icons col-orange' style='font-size: 40px;'>folder</i>";
+							content += "<p>"+data[i].name+"</p> </a></div></div>";
+						}
+					}
+					$("#images-to-select").html(content);
+				});
+				
+			}
+		}
+		
+		function selectImage(type, id) {
+			if(type=="image") {
+				var srcUrl = $("input:radio[name=group4]:checked").val();
+				$("#"+id+" .image-main-product").attr("src", srcUrl);
+				$("#"+id+" input[name='urlImage']").val(srcUrl);
+			} else if(type=="images") {
+				var stt = 1;
+				var content = "";
+				var arrUrl = [];
+				$("input:checkbox[name=checkboxgroup]:checked").each(function(){
+					content += "<li class='dd-item dd3-item' data-srcUrl='"+$(this).val()+"'>";
+				    content += "<div class='dd-handle dd3-handle'></div>";
+				    content += "<img class='thumbnail img-responsive' src='"+$(this).val()+"' width='100%'></li>";
+				    arrUrl.push($(this).val());
+				    stt++;
+				});
+				var res = "";
+				for(var i = 0; i < arrUrl.length; i++) {
+					res += arrUrl[i] + "1408dt2410";
+				}
+				$("#"+id+" .images-product").html(content);
+				$("#"+id+" input[name='urlImages']").val(res);
+			}
+			$('#select-image').modal('toggle');
+		}
+		
+		function addProduct(id_form) {
+    		var data = {};
+    		data["filtersId"] = {};
+    		tinyMCE.triggerSave();
+    		jQuery(".myeditablediv").trigger("change");
+    		var formData = $("#" + id_form).serializeArray();
+    		 $.each(formData, function (i, v) {
+    			 if(v.name=="price" || v.name =="sale" ) {
+ 			 		data[""+v.name+""] = v.value.replaceAll(",", "");
+ 			 	} else if(v.name=="filtersId") {
+ 			 		if( v.value != "" )data[""+v.name+""] = v.value.split(",");
+ 			 	} else {
+ 			 		data[""+v.name+""] = v.value;
+ 			 	}
+	         });
+    		 var url = $("#urlAPI").val();
+    		 $.ajax({
+    	            url: url,
+    	            type: 'POST',
+    	            contentType: 'application/json',
+    	            data: JSON.stringify(data),
+    	            dataType: 'json',
+    	            success: function (result) {
+    	            	if(result.alert == 'success') {
+    	            		$('#add').modal('toggle');
+    	            		resetTable();    	            		
+    	            		showNotification('alert-success', result.message, 'bottom', 'center', null, null);
+    	            		$("#" + id_form + " .display-invalid-error").html('');
+    	            		$("#" + id_form)[0].reset();
+    	            		$("#images-product").html("");
+    	            		$("#image-main-product").attr("src", "https://sn0n.dblog.org/img/default.jpg");
+    	            		$("#btn_deleteAll").prop("disabled", true);
+    	            	} else if (result.alert == 'danger'){
+    	            		var txt = "<div class='alert bg-red alert-dismissible' role='alert'>"
+    	            		+ "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+    	            		+ "<span aria-hidden='true'>&times;</span></button>" + result.message + "</div>";
+    	            		$("#" + id_form + " .display-invalid-error").html(txt);
+    	            		window.location.href="#back-to-top-of-add";
+    	            		
+    	            	}
+    	            	
+    	            },
+    	            error: function (error) {
+    	            	alert(error.message);
+    	            }
+    		 });
+    	}
+		
+		function editProduct(id_form) {
+    		var data = {};
+    		tinyMCE.triggerSave();
+    		jQuery(".myeditablediv").trigger("change");
+    		var formData = $("#" + id_form).serializeArray();
+    		 $.each(formData, function (i, v) {
+    			 	if(v.name=="price" || v.name =="sale" ) {
+    			 		data[""+v.name+""] = v.value.replaceAll(",", "");
+    			 	} else if(v.name=="filtersId") {
+    			 		if( v.value != "" )data[""+v.name+""] = v.value.split(",");
+    			 	} else {
+    			 		data[""+v.name+""] = v.value;
+    			 	}
+	         });
+    		 var url = $("#urlAPI").val() + '/' +  data['id'];
+    		 $.ajax({
+    	            url: url,
+    	            type: 'PUT',
+    	            contentType: 'application/json',
+    	            data: JSON.stringify(data),
+    	            dataType: 'json',
+    	            success: function (result) {
+    	            	if(result.alert == 'success') {
+    	            		$('#edit').modal('toggle');
+    	            		resetTable();    	            		
+    	            		showNotification('alert-success', result.message, 'bottom', 'center', null, null);
+    	            		$("#" + id_form + " .display-invalid-error").html('');
+    	            		$("#" + id_form)[0].reset();
+    	            		$("#btn_deleteAll").prop("disabled", true);
+    	            	} else if (result.alert == 'danger'){
+    	            		var txt = "<div class='alert bg-red alert-dismissible' role='alert'>"
+    	            		+ "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+    	            		+ "<span aria-hidden='true'>&times;</span></button>" + result.message + "</div>";
+    	            		$("#" + id_form + " .display-invalid-error").html(txt);
+    	            		window.location.href="#back-to-top-of-edit";
+    	            	}
+    	            	
+    	            },
+    	            error: function (error) {
+    	            	alert(error.message);
+    	            }
+    		 });
+    	}
+		function resetTable() {
+			table.ajax.reload();
+			resetAllMenu();
+		}
+		
+		function openView(id) {
+			var url = $("#urlAPI").val() + "/" + id;
+			$.get(url, function(data) {
+				$("#view .name").text(data.name);
+				$("#view .price").html("<p class='money-vnd'> "+data.price+" </p>");
+				$("#view .tags").val(data.tags);
+				if(data.sale != 0) {
+					$("#view .sale .form-line").html("<p class='money-vnd'> "+data.sale+" </p>");
+					$("#view .sale").css("display", "block");
+				} else {
+					$("#view .sale").css("display", "none");
+				}
+				$("#view .state").html("");
+				if(data.hot) $("#view .state").append("<span class='badge bg-orange' style='margin: 2px'>HOT</span>");
+				if(data.new) $("#view .state").append("<span class='badge bg-red' style='margin: 2px'>NEW</span>");
+				if(data.status === "Hoạt Động") $("#view .state").append("<span class='badge bg-teal' style='margin: 2px'>"+ data.status +"</span>");
+				var urlImages = data.urlImages.split("1408dt2410");
+				var contentImages = "";
+				for(var i = 0; i < urlImages.length - 1; i++) {
+					contentImages += "<div class='col-xs-4'>";
+					contentImages += "<a target='_blank' href='"+urlImages[i]+"'>";
+					contentImages += "<img class='img-responsive thumbnail' src='"+urlImages[i]+"' width='100%'>";
+					contentImages += "</a></div>";
+				}
+				$("#view .images").html(contentImages);
+				$("#view .image").attr("src", data.urlImage);
+				$("#view .create-date").html(formatDate(data.createdDate));
+				$("#view .update-date").html(formatDate(data.updatedDate));
+				$("#view .create-by").html(data.createdBy);
+				$("#view .update-by").html(data.updatedBy);
+				$("#view .promotions").html(data.promotions);
+				$("#view .specifications").html(data.specifications);
+				$("#view .article").html(data.article);
+			});
+			$('#aniimated-thumbnials').lightGallery({
+		        thumbnail: true,
+		        selector: 'a'
+		    });
+			$("#view").modal("show");
+    	}
+
+		$(function () {
+
+		    //TinyMCE
+		    tinymce.init({
+		        selector: ".myeditablediv",
+		        theme: "modern",
+		        height: 300,
+		        plugins: [
+		            'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+		            'searchreplace wordcount visualblocks visualchars code fullscreen',
+		            'insertdatetime media nonbreaking save table contextmenu directionality',
+		            'emoticons template paste textcolor colorpicker textpattern imagetools'
+		        ],
+		        toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+		        toolbar2: 'print preview media | forecolor backcolor emoticons',
+		        image_advtab: true
+		    });
+			    tinymce.suffix = ".min";
+			    tinyMCE.baseURL = '/admin/plugins/tinymce';
+			});
+		
+		
+	</script>
+	<!-- END SCRIPT -->
+	<!-- END MANAGER STATUSTYPES-->
+
+	<div th:utext="${ScriptFormBackEnd}"></div>
+	<th:block th:replace="admin/_fragments :: myScript_html"></th:block>
+	<!-- JQuery Steps Plugin Js -->
+	<script src="/admin/plugins/jquery-steps/jquery.steps.js"></script>
+	<!-- Bootstrap Tags Input Plugin Js -->
+    <script src="/admin/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+    <!-- Jquery Nestable -->
+    <script src="/admin/plugins/nestable/jquery.nestable.js"></script>
+     <!-- Ckeditor -->
+    <script src="/admin/plugins/tinymce/tinymce.js"></script>
+    <script type="text/javascript">
+    
+    $(function () {
+    	$('.dd').nestable();
+
+        $('.dd').on('change', function () {
+            var $this = $(this);
+            var serializedData = $($this).nestable('serialize');
+            var res = "";
+            for(var i = 0; i < serializedData.length; i++) {
+				res += serializedData[i].srcurl + "1408dt2410";
+			}
+			$("#urlImages").val(res);
+        });
+    });
+    
+  
+    </script>
+</body>
+
+</html>

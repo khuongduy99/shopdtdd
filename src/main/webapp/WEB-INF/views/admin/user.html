@@ -1,0 +1,361 @@
+<!DOCTYPE >
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="admin/_table :: header_html" />
+
+<body class="theme-red">
+	<!-- Page Loader -->
+	<div th:replace="admin/_fragments :: navbar_html"></div>
+	<!-- #END# Page Loader -->
+
+	<!-- Left Sidebar -->
+	<div th:replace="admin/_fragments :: menu_html"></div>
+	<section class="content">
+		<div class="container-fluid">
+			<!-- Exportable Table -->
+			<div class="row clearfix">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="card">
+						<div class="header">
+							<h2 class="text-uppercase">Danh sách tài khoản</h2>
+						</div>
+
+						<div class="body">
+							<div class="table-responsive">
+								<table class="table table-bordered table-striped table-hover dataTable js-exportable" id="table_contacts">
+									
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- #END# Exportable Table -->
+			
+		</div>
+		
+		<!-- MANAGER-->
+		<!-- MODAL ADD -->
+		<div class="modal fade" id="add" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-uppercase">Thêm vai trò</h4>
+					</div>
+					<div class="modal-body">
+						
+
+						<form id="form_validation_1" action="javascript:add('form_validation_1');">
+							<div class="display-invalid-error"></div>
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input type="text" class="form-control" name="name" maxlength="30" minlength="2" autocomplete="off" required>
+									<label class="form-label">Tên vai trò</label>
+								</div>
+								<div class="help-info">Giới hạn từ 2 đến 30 ký tự.</div>
+							</div>
+							<button class="btn btn-primary waves-effect" type="submit">Lưu</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-link waves-effect"
+							data-dismiss="modal">ĐÓNG</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	<!-- END MODAL ADD -->
+	<!-- MODAL EDIT ROLE-->
+	<div class="modal fade" id="edit" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title text-uppercase">Cài đặt vai trò cho tài khoản</h4>
+				</div>
+				<div class="modal-body">
+
+					<form id="form_validation_2" action="javascript:updateRoleForUser('form_validation_2');">
+							<b>Họ tên</b>
+							<div class="input-group">
+		                        <span class="input-group-addon">
+		                            <i class="material-icons">person</i>
+		                        </span>
+		                        <div class="form-line">
+		                            <input type="text" class="form-control fullName" value="" disabled="disabled">
+		                        </div>
+		                    </div>
+							<b>Tên tài khoản</b>
+							<div class="input-group">
+		                        <span class="input-group-addon">
+		                            <i class="material-icons">email</i>
+		                        </span>
+		                        <div class="form-line">
+		                            <input type="email" class="form-control email" value="" disabled="disabled">
+		                        </div>
+		                    </div>
+		                    <div class="input-group">
+		                        <select id="optgroup" onchange="pushValueForRolesId();" class="ms" multiple="multiple"></select>
+		                    </div>
+							
+                            <input type="hidden" name="rolesId" class="rolesId">
+							<input type="hidden" name="id" class="idUser">
+						<button class="btn btn-primary waves-effect" type="submit" >Lưu</button>
+						
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn bg-red waves-effect"
+						data-dismiss="modal">ĐÓNG</button>
+				</div>
+			</div>
+		</div>
+		</div>
+		<!-- END MODAL EDIT -->
+	</section>
+
+		<input type="hidden" value="/api/users" id="urlAPI">
+		<input type="hidden" th:value="${'/api/roles/' + Role.id +'/users'}" id="urlGetDatabaseTable">
+		<!-- SCRIPT -->
+		
+	<div th:replace="admin/_table :: footer_html"></div>
+	<div th:utext="${ScriptFormBackEnd}"></div>
+	
+	<script type="text/javascript">
+			var urlGetDatabaseTable = $("#urlGetDatabaseTable").val();
+		    //Exportable table
+		     var table = $('.js-exportable').DataTable({
+		        dom: 'Bfrtip',
+		        responsive: true,
+		        buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+		        pageLength: 10,
+	            ajax: {url: urlGetDatabaseTable, dataSrc : ""},
+	            columns: [
+	            	{
+	            		title: "<button type='button' id='btn_deleteAll' class='btn bg-red waves-effect' title='Xóa Tất Cả' onclick=\"showConfirmDelete($(\'#idsToDelete\').val())\" disabled><i class='material-icons'>delete</i></button>",
+	            		data: null,
+	            		bSortable: false,
+	            		mRender: function(data, type, full) {
+	            			var typeInput = " type='checkbox'";
+	            			var valueInput = " value='"+data.id+"'";
+	            			var idInput = " id='id_delete_"+data.id+"'";
+	            			var nameInput = " name='id_delete'";
+	            			var onclickInput = " onclick='selectItemDelete()'";
+	            			var classInput = " class='filled-in chk-col-orange'";
+	            			var forLabel = " for='id_delete_"+data.id+"'";
+	            			var content = "<input "+typeInput + valueInput + idInput + classInput + nameInput + onclickInput + "/>";
+	            				content += "<label " + forLabel + "></label>";
+	            	        return content;
+	            	   }
+	            	},
+	            	{
+	            		title: "Họ Tên",
+	            		data: "fullName"
+	            	},
+	            	{
+	            		title: "Email",
+	            		data: "email"
+	            	},
+	            	{
+	            		title: "Vai trò",
+	            		data: "listRole",
+	            		render: function(data) {
+	            			var res = "";
+	            			for(var i = 0; i < data.length; i++) {
+	            				res += "<span class='badge bg-cyan' style='margin:3px'>" + data[i].name + "</span>";
+	            			}
+	            			return res;
+	            		}
+	            	}, 
+	            	{
+	            		title: "Trạng Thái",
+	            		data: "status",
+	            		render: function(data) {
+	            			var res = "";
+	            			if(data == 'Hoạt Động') res = "<span class='badge bg-teal'>" + data + "</span>";
+	            			if(data == 'Bị Khóa') res = "<span class='badge bg-black'>" + data + "</span>"; 
+	            			return res;
+	            		}
+	            	},
+	            	{
+	            		title: "Lần cuối đăng nhập",	
+	            		data: "lastLogin",
+	            		render: function(data) {
+	            			return formatDate(data);
+	            		}
+	            	},
+	            	{
+	            		title: "Công cụ",
+	            		data: null,
+	            		bSortable: false,
+	            		mRender: function(data, type, full) {
+	            			
+	            			var typeButton = " type='button'";
+	            			//button view
+	            			var titleButtonView = " title='Xem chi tiết'";
+	            			var onclickButtonView = " onclick='openView("+data.id+")'";
+	            			var classButtonView = " class='btn bg-blue btn-circle waves-effect'";
+	            			
+	            			//button change Role
+	            			var titleButtonChangeRole = " title='Thay đổi vai trò'";
+	            			var onclickButtonChangeRole = " onclick='openEdit("+data.id+")'";
+	            			var classButtonChangeRole = " class='btn bg-green btn-circle waves-effect'";
+	            			
+	            			//button Edit
+	            			var titleButtonEdit = data.status == "Bị Khóa" ? " title='Mở khóa tài khoản'" : " title='Khóa Tài Khoản'";
+	            			var onclickButtonEdit = data.status == "Bị Khóa" ? " onclick='showAjaxUnBlockUser("+data.id+")'" : " onclick='showAjaxBlockUser("+data.id+")'";
+	            			var classButtonEdit = data.status == "Bị Khóa" ? " class='btn bg-grey btn-circle waves-effect'" : " class='btn bg-brown btn-circle waves-effect'";
+	            			
+	            			//button Delte
+	            			var titleButtonDelete = " title='Xóa'";
+	            			var onclickButtonDelete = " onclick='showConfirmDelete(["+data.id+"])'";
+	            			var classButtonDelete = " class='btn bg-red btn-circle waves-effect'";
+	            			var content = "<button "+typeButton + titleButtonView + onclickButtonView + classButtonView+"><i class='material-icons'>search</i></button>";
+	            			content += "<button "+typeButton + titleButtonChangeRole + onclickButtonChangeRole + classButtonChangeRole+"><i class='material-icons'>settings</i></button>";
+	            			content += "<button "+typeButton + titleButtonEdit + onclickButtonEdit + classButtonEdit+"><i class='material-icons'>" +(data.status == "Bị Khóa" ? "lock_open" : "lock")+ "</i></button>";
+	            			content += "<button "+typeButton + titleButtonDelete + onclickButtonDelete + classButtonDelete+"><i class='material-icons'>delete_forever</i></button>";
+	            	        return content;
+	            	   }
+	            	}
+	            ],
+		    });
+		     
+		
+			function openEdit(id) {
+				var url = $("#urlAPI").val() + "/" + id;
+				
+				
+				$.get(url,function(data) {
+					var arrRoleOfUser = [];
+					$("#edit .email").val(data.email);
+					$("#edit .fullName").val(data.fullName);
+					$("#edit .idUser").val(data.id);
+					for(var i = 0; i < data.listRole.length; i++) {
+						var nameRole = data.listRole[i].name;
+						var id = data.listRole[i].id;
+						arrRoleOfUser.push('' + id);
+					}
+					$('#optgroup').multiSelect('deselect_all');
+					$('#optgroup').multiSelect('select', arrRoleOfUser);
+				});
+				
+				$("#edit").modal("show"); 
+			}	
+			
+			$('#optgroup').multiSelect({ 
+				selectableHeader: "<div class='header bg-grey 'style='padding:8px'> Vai trò</div>",
+  				selectionHeader: "<div class='header bg-grey' style='padding:8px'> Vai trò hiện có của tài khoản</div>"
+  			});
+			
+			$.get("/api/roles",function(data) {
+				for(var i = 0; i < data.length; i++) {
+					var nameRole = data[i].name;
+					var id = data[i].id;
+					$('#optgroup').multiSelect('addOption', { value: id, text: nameRole, index: 0 });
+				}
+				
+			});
+			
+			function updateRoleForUser(id_form) {
+				var data = {};
+				var rolesId = [];
+				rolesId = $("#edit .rolesId").val().split(",");
+	    		var formData = $("#" + id_form).serializeArray();
+	    		 $.each(formData, function (i, v) {
+	    			 	if(v.name == "rolesId") {
+	    			 		data[""+v.name+""] = rolesId;
+	    			 	} else {
+	    			 		data[""+v.name+""] = v.value;
+	    			 	}
+		                
+		         });
+	    			var url = $("#urlAPI").val() + "/" + data['id'];
+	    		 $.ajax({
+	    	            url: url,
+	    	            type: 'PUT',
+	    	            contentType: 'application/json',
+	    	            data: JSON.stringify(data),
+	    	            dataType: 'json',
+	    	            success: function (result) {
+	    	            	if(result.alert == 'success') {
+	    	            		$('#edit').modal('toggle');
+	    	            		resetTable();
+	    	            		showSuccessMessage(result.message);
+	    	            		$("#btn_deleteAll").prop("disabled", true);
+	    	            	} else if (result.alert == 'danger'){
+	    	            		var txt = "<div class='alert bg-red alert-dismissible' role='alert'>"
+	    	            		+ "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+	    	            		+ "<span aria-hidden='true'>&times;</span></button>" + result.message + "</div>";
+	    	            		$("#" + id_form + " .display-invalid-error").html(txt);
+	    	            	}
+	    	            },
+	    	            error: function (error) {
+	    	            	alert("error");
+	    	            }
+	    		 });
+			}
+			
+			function resetTable() {
+				table.ajax.reload();
+				resetAllMenu();
+			}
+			
+			function blockUser(id){
+				var url = $("#urlAPI").val() + "/" + id;
+				var data = {};
+				
+				data["status"] = "Bị Khóa";
+				$.ajax({
+    	            url: url,
+    	            type: 'PUT',
+    	            contentType: 'application/json',
+    	            data: JSON.stringify(data),
+    	            dataType: 'json',
+    	            success: function (result) {
+    	            	if(result.alert == 'success') {
+    	            		resetTable();
+    	            		showSuccessMessage(result.message);
+    	            		$("#btn_deleteAll").prop("disabled", true);
+    	            	} 
+    	            },
+    	            error: function (error) {
+    	            	alert("error");
+    	            }
+    		 });
+		    }
+			
+			function unBlockUser(id){
+				var url = $("#urlAPI").val() + "/" + id;
+				var data = {};
+				
+				data["status"] = "Hoạt Động";
+				$.ajax({
+    	            url: url,
+    	            type: 'PUT',
+    	            contentType: 'application/json',
+    	            data: JSON.stringify(data),
+    	            dataType: 'json',
+    	            success: function (result) {
+    	            	if(result.alert == 'success') {
+    	            		resetTable();
+    	            		showSuccessMessage(result.message);
+    	            		$("#btn_deleteAll").prop("disabled", true);
+    	            	} 
+    	            },
+    	            error: function (error) {
+    	            	alert("error");
+    	            }
+    		 });
+		    }
+			
+		    function pushValueForRolesId(){
+		    	var values = $('#optgroup').val();
+		    	
+		    	$("#edit .rolesId").val(values);
+		    }
+		</script>
+		
+	<div th:replace="admin/_fragments :: myScript_html"></div>
+</body>
+
+</html>

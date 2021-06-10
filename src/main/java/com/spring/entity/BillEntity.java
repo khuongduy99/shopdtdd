@@ -2,8 +2,10 @@ package com.spring.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -11,7 +13,7 @@ import javax.persistence.Table;
 @Table(name = "bill")
 public class BillEntity extends BaseEntity {
 	
-	@Column
+	@Column(name = "full_name")
 	private String fullName;
 	
 	@Column
@@ -29,16 +31,33 @@ public class BillEntity extends BaseEntity {
 	@Column
 	private String note;
 	
-	@Column
-	private double total_money;
+	@Column(columnDefinition = "boolean default false", name = "is_payment")
+	private boolean isPayment;
+	
+	@Column(name = "total_money")
+	private int totalMoney;
+	
+	@Column(name = "user_id")
+	private Long userId;
+	
+	@Column(name = "code")
+	private String code;
 
-	@OneToMany(mappedBy = "bill")
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	@OneToMany(mappedBy = "bill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<BillDetailEntity> listBillDetail;
 
 	public String getFullName() {
 		return fullName;
 	}
-
+	
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
@@ -83,12 +102,29 @@ public class BillEntity extends BaseEntity {
 		this.note = note;
 	}
 
-	public double getTotal_money() {
-		return total_money;
+	public boolean isPayment() {
+		return isPayment;
 	}
 
-	public void setTotal_money(double total_money) {
-		this.total_money = total_money;
+	public void setPayment(boolean isPayment) {
+		this.isPayment = isPayment;
+	}
+
+	
+	public int getTotalMoney() {
+		return totalMoney;
+	}
+
+	public void setTotalMoney(int totalMoney) {
+		this.totalMoney = totalMoney;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public List<BillDetailEntity> getListBillDetail() {
@@ -98,6 +134,5 @@ public class BillEntity extends BaseEntity {
 	public void setListBillDetail(List<BillDetailEntity> listBillDetail) {
 		this.listBillDetail = listBillDetail;
 	}
-	
 	
 }

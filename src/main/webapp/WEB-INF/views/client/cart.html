@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace= "client/_generic :: header_html"/>
+<body>
+<div th:replace= "client/_generic :: navbar_html"></div>
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb-tree">
+                    <li><a href="#">Trang chủ</a></li>
+                    <li class="active">Giỏ hàng</li>
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="product-cart">
+                <div class="cart-collection">
+                    <div class="cart-header">
+                        <p>Sản phẩm</p>
+                        <p>Số lượng</p>
+                        <p>Giá tiền</p>
+                        <p>Tổng tiền</p>
+                    </div>
+                    <div th:if="${session.Cart != null}" id="main-cart">
+						<th:block  th:each="item : ${session.Cart.list}">
+		                    <div class="cart-item">
+		                        <div class="cart-product">
+		
+		                            <div class="cart-image">
+		                                <img th:src="${item.urlImage}">
+		                                <button class="delete" th:onclick="${'removeItemInCart('+item.id+')'}"><i class="fa fa-close"></i></button>
+		                            </div>
+		                            <div class="cart-product-info">
+		                                <p class="cart-product-name" th:utext="${item.name}"></p>
+										<p class="cart-price-sm"><span class='money-vnd' th:utext="${item.price}"></span><sup>₫</sup></p>
+										<small th:utext="${'x ' + item.qtyInCart}"></small>
+		                            </div>
+		
+		                        </div>
+		                        <div class="cart-quantity-md">
+		                            <div class="cart-quantity-controls">
+										<button type="button" th:onclick="${'updateQty(' + item.id +', '+ (item.qtyInCart - 1) +');'}">-</button>
+											<input type="number" name="qty" th:value="${item.qtyInCart}">
+										<button type="button" th:onclick="${'updateQty(' + item.id +', '+ (item.qtyInCart + 1) +');'}">+</button>
+									</div>
+		                        </div>
+		                        <div class="cart-unit-price">
+		                            <h4><span class='money-vnd' th:utext="${item.price}"></span><sup>₫</sup></h4>
+		                        </div>
+		                        <div class="cart-product-total">
+		                            <h4><span class='money-vnd' th:utext="${item.totalMoneyOfProduct}"></span><sup>₫</sup></h4>
+		                        </div>
+		                        <div class="cart-control-sm">
+		                            <div class="remove">
+		                                <span><i class="fa fa-trash-o"></i> Xóa</span>
+		
+		                            </div>
+		                            <div class="cart-quantity-control-sm">
+		                                <button>-</button>
+		                                <input type="number" value="1">
+		                                <button>+</button>
+		                            </div>
+		                        </div>
+		                    </div>
+		                        		
+						</th:block>
+					</div>
+                </div>
+                <div class="cart-total-holder">
+                    <div class="cart-total">
+                        <p>Thành tiền: </p>
+						<p class="total-money"><span class='money-vnd' th:utext="${session.Cart != null ? session.Cart.total : '0'}"></span><sup>₫</sup></p>
+                    </div>
+
+                    <div class="cart-action-button">
+                        <a href="/">Tiếp tục mua sắm <i class="fa fa-undo"></i></a>
+                        <th:block th:if="${session.UserModel == null}">
+							<a data-toggle="modal" data-target="#loginModal" class="button-update">Tiến hành hanh toán <i class="fa fa-arrow-circle-right"></i></a>
+						</th:block>
+						<th:block th:if="${session.UserModel != null}">
+							<a href="/thanh-toan" class="button-update">Tiến hành mua hàng <i class="fa fa-arrow-circle-right"></i></a>
+						</th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+
+<div th:replace= "client/_generic :: footer_html"></div>
+
+<script type="text/javascript">
+function updateQty(id, qty) {
+	var url = "/cap-nhat-gio?id=" + id + "&qty=" + qty;
+	$.get(url, function(data){
+		updateMiniCart(data);
+		updateMainCart(data);
+	});
+}
+
+</script>
+</body>
+</html>

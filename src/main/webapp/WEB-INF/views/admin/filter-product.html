@@ -1,0 +1,238 @@
+<!DOCTYPE >
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="admin/_table :: header_html" />
+
+<body class="theme-red">
+	<!-- Page Loader -->
+	<div th:replace="admin/_fragments :: navbar_html"></div>
+	<!-- #END# Page Loader -->
+
+	<!-- Left Sidebar -->
+	<div th:replace="admin/_fragments :: menu_html"></div>
+	<section class="content">
+			<div class="block-header">
+				<button type="button" data-toggle="modal" data-target="#add"
+					class="btn bg-blue waves-effect">
+					<span>THÊM MỚI</span> <i class="material-icons">add</i>
+				</button>
+			</div>
+		<!-- Draggable Handles -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                    <div class="header">
+							<h2 class="text-uppercase" th:utext="${'Bộ lọc sản phẩm ' + Category.name}"></h2>
+						</div>
+                        <div class="body">
+                            <div class="clearfix m-b-20">
+                                <div class="dd nestable-with-handle">
+                                   <ol id="dd-empty-placeholder" class="dd-list">
+                                        
+                                    </ol>
+                                    <div id="display-loadding" style="display:none;border: 3px solid #f1f1f1;position: absolute;top:0;left:0;z-index: 2;width: 100%;height: 100%;text-align: center;">
+									 	<div class="preloader pl-size-xl" style="position: absolute;top: 36%;left: 40%;">
+					                         <div class="spinner-layer pl-blue">
+					                              <div class="circle-clipper left">
+					                                   <div class="circle"></div>
+					                              </div>
+					                              <div class="circle-clipper right">
+					                                   <div class="circle"></div>
+					                              </div>
+					                         </div>
+					                    </div>
+									</div>
+                                </div>
+                            </div>
+               
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Draggable Handles -->
+	</section>
+
+	<!-- MODAL ADD -->
+		<div class="modal fade" id="add" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-uppercase" th:utext="${'Thêm nhóm sản phẩm cho ' + (Category != null ? Category.name : '')}"></h4>
+					</div>
+					<div class="modal-body">
+						<form id="form_validation_1" action="javascript:add('form_validation_1');">
+							<div class="display-invalid-error"></div>
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input type="text" class="form-control" name="name" maxlength="100" minlength="2" autocomplete="off" required>
+									<label class="form-label">Tên nhóm sản phẩm</label>
+								</div>
+								<div class="help-info">Giới hạn từ 2 đến 100 ký tự.</div>
+							</div>
+							<input type="hidden" th:value="${(Category != null ? Category.id : '')}" name="categoryId">
+							<button class="btn btn-primary waves-effect" type="submit">Lưu</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-link bg-red waves-effect" data-dismiss="modal">ĐÓNG</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	<!-- END MODAL ADD -->
+	<!-- MODAL EDIT -->
+	<div class="modal fade" id="edit" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title text-uppercase">Đổi tên nhóm sản phẩm</h4>
+				</div>
+				<div class="modal-body">
+
+					<form id="form_validation_2" action="javascript:edit('form_validation_2');">
+					<div class="display-invalid-error"></div>
+						<b>Tên Nhóm Sản Phẩm</b>
+		                <div class="input-group form-group">
+							<div class="form-line">
+								<input type="text" name="name" class="form-control name" placeholder="Tên Nhóm Sản Phẩm" required="required" maxlength="100" minlength="2">
+							</div>
+							<div class="help-info">Giới hạn từ 2 đến 100 ký tự.</div>
+						</div>
+							<input type="hidden" th:value="${(Category != null ? Category.id : '')}" name="categoryId">
+							<input type="hidden" name="id" class="id">
+						<button class="btn btn-primary waves-effect" type="submit">Lưu</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-link waves-effect"
+						data-dismiss="modal">ĐÓNG</button>
+				</div>
+			</div>
+		</div>
+		</div>
+		<!-- END MODAL EDIT -->
+	
+	<input type="hidden" value="/api/filters" id="urlAPI">
+	<input type="hidden" th:value="${'/api/categories/' + Category.id +'/filters'}" id="urlAPIList">
+	<div th:replace="admin/_table :: footer_html"></div>
+
+	<div th:utext="${ScriptFormBackEnd}"></div>
+	
+	<!-- Bootstrap Tags Input Plugin Js -->
+    <script src="/admin/plugins/nestable/jquery.nestable.js"></script>
+    
+<script>
+
+	function buildItem(item) {
+
+        var html = "<li class='dd-item dd3-item' data-id='" + item.id + "'>";
+        html += "<div class='dd-handle dd3-handle'></div>";
+        html += "<div class='dd-handle dd3-content'>" + item.name + "</div>";
+        html += "<div class='dd-custom-option'>";
+        html += "<button class='btn bg-blue waves-effect' onclick='openToolOption(this);'><i class='material-icons'>settings</i></button>";
+        html += "<ul class='talkbubble'>";
+        html += "<li><button class='btn bg-green btn-circle waves-effect' title='Đổi tên' onclick='openEdit("+item.id+")'><i class='material-icons'>settings_backup_restore</i></button></li>";
+        html += "<li><button class='btn bg-red btn-circle waves-effect' title='Xóa'><i class='material-icons'>delete_forever</i></button></li>";
+        html += "</ul></div>";                                    		
+                                            		
+                                            	
+
+        if (item.children) {
+
+            html += "<ol class='dd-list'>";
+            $.each(item.children, function (index, sub) {
+                html += buildItem(sub);
+            });
+            html += "</ol>";
+        }
+
+        html += "</li>";
+
+        return html;
+    }
+	
+	function openEdit(id) {
+		var url = $("#urlAPI").val() + "/" + id;
+		$.get(url,function(data) {
+			$("#edit .name").val(data.name);
+			$("#edit .id").val(data.id);
+		});
+		$("#edit").modal("show"); 
+	}
+	
+	function resetTable() {
+		var url = $("#urlAPIList").val();
+		$.get(url,function(data) {
+		    var output = '';
+		    
+			if(data.length != 0) {
+				  for(var i = 0; i < data.length;i++) {
+					  output += buildItem(data[i]);
+				  }      
+			}
+		  
+
+		    $('#dd-empty-placeholder').html(output);
+		});
+		resetAllMenu();
+	}
+	$(document).ready(function(){
+		var url = $("#urlAPIList").val();
+		$.get(url,function(data) {
+		    var output = '';
+		    
+			if(data.length != 0) {
+				  for(var i = 0; i < data.length;i++) {
+					  output += buildItem(data[i]);
+				  }      
+			}
+		  
+
+		    $('#dd-empty-placeholder').html(output);
+		});
+});
+</script>
+    <script type="text/javascript">
+    
+    $(function () {
+    	$('.dd').nestable({maxDepth: 2});
+    	
+
+        $('.dd').on('change', function () {
+            var $this = $(this);
+            var serializedData = $($this).nestable('serialize');
+    			var url = $("#urlAPI").val();
+    			$('#dd-empty-placeholder').css('filter', 'blur(8px)');
+     			$('#display-loadding').css('display', 'block');
+    		 $.ajax({
+    	            url: url,
+    	            type: 'PUT',
+    	            contentType: 'application/json',
+    	            data: JSON.stringify(serializedData),
+    	            dataType: 'json',
+    	            success: function (result) {
+    	            	if(result.alert == 'success') {
+    	            		$('#dd-empty-placeholder').css('filter', 'blur(0px)');
+    	         			$('#display-loadding').css('display', 'none');
+    	            		resetTable();
+    	            	} else if (result.alert == 'danger'){
+    	            		var txt = "<div class='alert bg-red alert-dismissible' role='alert'>"
+    	            		+ "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+    	            		+ "<span aria-hidden='true'>&times;</span></button>" + result.message + "</div>";
+    	            		$("#" + id_form + " .display-invalid-error").html(txt);
+    	            	}
+    	            },
+    	            error: function (error) {
+    	            	alert("error");
+    	            }
+    		 });
+        });
+    });
+    
+  
+    </script>
+    <th:block th:replace="admin/_fragments :: myScript_html"></th:block>
+</body>
+
+</html>

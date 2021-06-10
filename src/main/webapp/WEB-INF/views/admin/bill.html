@@ -1,0 +1,208 @@
+<!DOCTYPE >
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="admin/_table :: header_html" />
+
+<body class="theme-red">
+	<!-- Page Loader -->
+	<div th:replace="admin/_fragments :: navbar_html"></div>
+	<!-- #END# Page Loader -->
+
+	<!-- Left Sidebar -->
+	<div th:replace="admin/_fragments :: menu_html"></div>
+	<section class="content">
+		<div class="container-fluid">
+			<div class="block-header">
+
+				<button type="button" data-toggle="modal" data-target="#add"
+					class="btn bg-blue waves-effect">
+					<span>THÊM MỚI</span> <i class="material-icons">add</i>
+				</button>
+			</div>
+			<!-- Exportable Table -->
+			<div class="row clearfix">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="card">
+						<div class="header">
+							<h2 class="text-uppercase" th:utext="${'Danh sách đơn hàng ' + status}"></h2>
+						</div>
+
+						<div class="body">
+							<div class="table-responsive">
+								<table class="table table-bordered table-striped table-hover dataTable js-exportable" id="table_contacts">
+									
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- #END# Exportable Table -->
+		</div>
+
+	</section>
+
+
+	
+		<!-- MANAGER STATUSTYPES-->
+		
+	
+	<!-- END MODAL ADD -->
+	<!-- MODAL EDIT -->
+	<div class="modal fade" id="edit" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title text-uppercase">Cập nhật trạng thái cho đơn hàng</h4>
+				</div>
+				<div class="modal-body">
+
+					<form id="form_validation_2" action="javascript:edit('form_validation_2');">
+					<div class="display-invalid-error"></div>
+						
+						<div class="form-group form-float">
+						<div class="form-line">
+									<b>Trạng Thái</b>
+									<select class="form-control show-tick status" name="status">
+										<th:block th:each="item : ${ListStatus}">
+								            <option th:value="${item}" th:utext="${item}"></option>
+								        </th:block>
+                              		</select>
+                  				</div>
+						</div>
+							<input type="hidden" name="id" class="id">
+						<button class="btn btn-primary waves-effect" type="submit">Lưu</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-link waves-effect"
+						data-dismiss="modal">ĐÓNG</button>
+				</div>
+			</div>
+		</div>
+		</div>
+		<!-- END MODAL EDIT -->
+		<input type="hidden" value="/api/bill" id="urlAPI">
+		<input type="hidden" th:value="${'/api/bill?status=' + status}" id="urlGetDatabaseTable">
+		<!-- SCRIPT -->
+		<div th:replace="admin/_table :: footer_html"></div>
+		<div th:utext="${ScriptFormBackEnd}"></div>
+		<script type="text/javascript">
+			var urlGetDatabaseTable = $("#urlGetDatabaseTable").val();
+		    //Exportable table
+		     var table = $('.js-exportable').DataTable({
+		        dom: 'Bfrtip',
+		        responsive: true,
+		        buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+		        pageLength: 10,
+	            ajax: {url: urlGetDatabaseTable, dataSrc : ""},
+	            columns: [
+	            	{
+	            		title: "<button type='button' id='btn_deleteAll' class='btn bg-red waves-effect' title='Xóa Tất Cả' onclick=\"showConfirmDelete($(\'#idsToDelete\').val())\" disabled><i class='material-icons'>delete</i></button>",
+	            		data: null,
+	            		bSortable: false,
+	            		mRender: function(data, type, full) {
+	            			var typeInput = " type='checkbox'";
+	            			var valueInput = " value='"+data.id+"'";
+	            			var idInput = " id='id_delete_"+data.id+"'";
+	            			var nameInput = " name='id_delete'";
+	            			var onclickInput = " onclick='selectItemDelete()'";
+	            			var classInput = " class='filled-in chk-col-orange'";
+	            			var forLabel = " for='id_delete_"+data.id+"'";
+	            			var content = "<input "+typeInput + valueInput + idInput + classInput + nameInput + onclickInput + "/>";
+	            				content += "<label " + forLabel + "></label>";
+	            	        return content;
+	            	   }
+	            	},
+	            	{
+	            		title: "Họ tên",
+	            		data: "fullName"
+	            	},
+	            	{
+	            		title: "Email",
+	            		data: "email"
+	            	},
+	            	{
+	            		title: "Điện thoại",
+	            		data: "phone"
+	            	},
+	            	{
+	            		title: "Tổng tiền",
+	            		data: null,
+	            		render: function(data) {
+	            			return "<span class='money-vnd'>"+data.totalMoney+"</span> <sup>₫</sup>";
+	            		}
+	            	},
+	            	{
+	            		title: "Trạng Thái",
+	            		data: "status",
+	            		render: function(data) {
+	            			var res = "";
+	            			if(data == 'Đã xác nhận') res = "<span class='badge bg-cyan'>" + data + "</span>";
+	            			if(data == 'Đang xử lý') res = "<span class='badge bg-amber'>" + data + "</span>";
+	            			if(data == 'Đang giao') res = "<span class='badge bg-lime'>" + data + "</span>";
+	            			if(data == 'Đã giao hàng') res = "<span class='badge bg-green'>" + data + "</span>";
+	            			if(data == 'Đã hủy') res = "<span class='badge bg-red'>" + data + "</span>"; 
+	            			return res;
+	            		}
+	            	},
+	            	{
+	            		title: "Lần cuối cập nhật",	
+	            		data: "updatedDate",
+	            		render: function(data) {
+	            			return formatDate(data);
+	            		}
+	            	},
+	            	{
+	            		title: "Công cụ",
+	            		data: null,
+	            		bSortable: false,
+	            		mRender: function(data, type, full) {
+	            			
+	            			var typeButton = " type='button'";
+	            			//button view
+	            			var titleButtonView = " title='Xem chi tiết'";
+	            			var onclickButtonView = " onclick='openView("+data.id+")'";
+	            			var classButtonView = " class='btn bg-blue btn-circle waves-effect'";
+	            			//button Edit
+	            			var titleButtonEdit = " title='Chỉnh sửa'";
+	            			var onclickButtonEdit = " onclick='openEdit("+data.id+")()'";
+	            			var classButtonEdit = " class='btn bg-green btn-circle waves-effect'";
+	            			
+	            			//button Delte
+	            			var titleButtonDelete = " title='Xóa'";
+	            			var onclickButtonDelete = " onclick='showConfirmDelete(["+data.id+"])'";
+	            			var classButtonDelete = " class='btn bg-red btn-circle waves-effect'";
+	            			var content = "<button "+typeButton + titleButtonView + onclickButtonView + classButtonView+"><i class='material-icons'>search</i></button>";
+	            			content += "<button "+typeButton + titleButtonEdit + onclickButtonEdit + classButtonEdit+"><i class='material-icons'>edit</i></button>";
+	            			content += "<button "+typeButton + titleButtonDelete + onclickButtonDelete + classButtonDelete+"><i class='material-icons'>delete</i></button>";
+	            	        return content;
+	            	   }
+	            	}
+	            ],
+		    });
+		    
+		     function resetTable() {
+					table.ajax.reload();
+					resetAllMenu();
+				}
+		     
+		     function openEdit(id) {
+					var url = "/api/bill/" + id;
+					$.get(url, function(data) {
+						$("#edit .id").val(data.id);
+						$("#edit .status option").each(function(){
+							if($(this).val() == data.status) {
+								$(this).attr("selected", "selected");
+							}
+						});
+					});
+					
+					$("#edit").modal("show");
+				}
+				
+		</script>
+		<div th:replace="admin/_fragments :: myScript_html"></div>
+</body>
+
+</html>

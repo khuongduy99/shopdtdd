@@ -12,7 +12,7 @@ public class EncrytedPasswordUtils {
     public static void main(String[] args) {
         String password = "123";
         String encrytedPassword = encrytePassword(password);
- 
+        System.out.println(new BCryptPasswordEncoder().matches("$2a$10$B0ZbSWHrgj.dEfJJiepz/.JBuaS2p4Xbb7Nhmn8qwiV6z49Rev/a.", "123"));
         System.out.println("Encryted Password: " + encrytedPassword);
     }
 }

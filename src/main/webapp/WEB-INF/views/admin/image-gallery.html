@@ -1,0 +1,282 @@
+<!DOCTYPE >
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="admin/_table :: header_html" />
+
+<body class="theme-red">
+	<!-- Page Loader -->
+	<div th:replace="admin/_fragments :: navbar_html"></div>
+	<!-- #END# Page Loader -->
+	
+	<!-- Left Sidebar -->
+	<div th:replace="admin/_fragments :: menu_html"></div>
+	<input type="hidden" th:value="${nowPath}" id="nowPath">
+	<input type="hidden" th:value="${prePath}" id="prePath">
+	<section class="content">
+        <div class="container-fluid">
+            <!-- Image Gallery -->
+            
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                BỘ SƯU TẬP
+                            </h2>
+                            
+                        </div>
+                        <div class="body">
+                        <ol class="breadcrumb breadcrumb-col-indigo">
+                        	<li>
+					          <a href="/admin-page/gallary"><i class="material-icons">folder</i> Images </a>
+					        </li>
+	                        <li th:each="url : ${listUrlFolder}">
+					          	<a th:href="'/admin-page/gallary?path=' + ${url.url}" ><i class="material-icons">folder</i> <th:block th:utext="${url.name}"></th:block></a>					          
+					        </li>
+				        </ol>
+      						
+                            
+                        	<div class="block-header text-right">
+									<button type="button" data-toggle="modal" data-target="#add-folder" class="btn bg-cyan waves-effect">
+										<span>THÊM FOLDER</span> <i class="material-icons">create_new_folder</i>
+									</button>
+									<button type="button" data-toggle="modal" data-target="#upload-file" class="btn bg-green waves-effect">
+										<span>UPLOAD FILE</span> <i class="material-icons">file_upload</i>
+									</button>
+							</div>
+							
+							<div th:if="${prePath != null}" class="block-header text-left">
+									<button type="button" th:onclick="'window.location.href=\'/admin-page/gallary?path=' + ${prePath} + '\''" class="btn bg-grey waves-effect">
+											<span>QUAY LẠI</span> <i class="material-icons">keyboard_return</i>
+									</button>
+							</div>
+									
+                            <div id="aniimated-thumbnials" class="row">
+                            <th:block th:each="model, stt : ${ListFile}"> 
+                                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                                	<div th:if="${!model.isFolder}">
+	                                    <a class="view-image" th:href="${model.url}" data-sub-html="">
+	                                        <img class="img-responsive thumbnail" th:src="${model.url}" width="100%">
+	                                    </a>
+	                                   <button style="position: absolute;top: 0;left: 10;" type="button" th:onclick="'showConfirmDeleteFile([\'' +${nowPath} + '/' + ${model.name}+ '\'])'" class="btn bg-red btn-circle waves-effect"><i class="material-icons" title="Xóa">delete</i></button>
+	                                   <button style="position: absolute;top: 40;left: 10;" type="button" onclick="coppyUrl(this);" class="btn bg-blue btn-circle waves-effect"><i class="material-icons" title="coppy url">content_copy</i></button>
+                                    </div>
+                                    
+	                                   <div th:if="${model.isFolder}" class="img-responsive thumbnail text-center ">
+	                                   	<a href="#" th:onclick="'openFolderLink(\'/' +${model.name}+ '\')'">
+                                			<i class="material-icons col-orange" style="font-size: 90px;">folder</i>
+                                        	<p th:utext="${model.name}"></p>
+                                        </a>
+                                        	<button style="position: absolute;top: 0;left: 10;" type="button" th:onclick="'showConfirmDeleteFile([\'' +${nowPath} + '/' + ${model.name}+ '\'])'" class="btn bg-red btn-circle waves-effect"><i class="material-icons" title="Xóa">delete</i></button>
+                                        	
+                                		</div>
+                                	
+                                </div>
+                             </th:block>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+	
+		
+	<!-- MODAL ADD -->
+		<div class="modal fade" id="add-folder" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-uppercase">Thêm Folder</h4>
+					</div>
+					<div class="modal-body">
+						
+
+						<form id="form_validation_1" action="javascript:createFolder('form_validation_1');">
+							<div class="display-invalid-error"></div>
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input type="text" class="form-control" name="nameFolder"
+										maxlength="50" minlength="2" autocomplete="off" required>
+									<label class="form-label">Tên Folder</label>
+									
+								</div>
+								<div class="help-info">Giới hạn từ 2 đến 50 ký tự.</div>
+							</div>
+							<button class="btn btn-primary waves-effect" type="submit">Lưu</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-link waves-effect"
+							data-dismiss="modal">ĐÓNG</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	<!-- END MODAL ADD -->
+	
+	<!-- MODAL ADD -->
+		<div class="modal fade" id="upload-file" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-uppercase">Thêm File</h4>
+					</div>
+					<div class="modal-body">
+						
+
+						 <form action="/api/uploadImages" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
+                                <div class="dz-message">
+                                    <div class="drag-icon-cph">
+                                        <i class="material-icons">touch_app</i>
+                                    </div>
+                                    <h3>Thả tệp vào đây hoặc nhấp để tải lên.</h3>
+                                </div>
+                                <div class="fallback">
+                                    <input name="file" type="file" multiple accept="image/*"/>
+                                </div>
+                                <input name="nowPath" type="hidden" th:value="${nowPath}" />
+                               
+                            </form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-link waves-effect" onclick="window.location.reload()">ĐÓNG</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	<!-- END MODAL ADD -->
+
+	
+	<div th:replace="admin/_table :: footer_html"></div>
+	<!-- Light Gallery Plugin Js -->
+    <script src="/admin/plugins/light-gallery/js/lightgallery-all.js"></script>
+	
+    <!-- Dropzone Plugin Js -->
+    <script src="/admin/plugins/dropzone/dropzone.js"></script>
+	<div th:utext="${ScriptFormBackEnd}"></div>
+	<div th:replace="admin/_fragments :: myScript_html"></div>
+	<script type="text/javascript">
+	$(document).ready(function(){
+    	
+		$(function () {
+		    $('#aniimated-thumbnials').lightGallery({
+		        thumbnail: true,
+		        selector: '.view-image'
+		    });
+		});
+    	
+        Dropzone.autoDiscover = false;
+
+        var myDropzone = new Dropzone("#frmFileUpload", {              
+          autoProcessQueue: true,
+          maxFilesize: 5,
+          maxFiles: 15,
+          parallelUploads: 15,
+          acceptedFiles: ".jpeg,.jpg,.png"
+        });
+
+        $('#submit-all').click(function(){           
+          myDropzone.processQueue();
+        });
+	});
+		function openFolder(path) {
+			var url = "/api/uploadImages?path=" + $("#nowPath").val() + path;
+			$.get(url,function(data) {
+				var content = "";
+				for(var i = 0; i < data.length; i++) {
+					if(!data[i].isFolder) {
+						content += "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12' style='height: 300px'>";
+						content += "<a href='" +data[i].url+ "' data-sub-html=''>";
+						content += "<img class='img-responsive thumbnail' src='"+data[i].url+"' width='100%'>";
+						content += "<button type='button' class='btn btn-danger'>Xóa</button></a></div>";
+					} else {
+						content += "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12' style='height: 300px'>";
+						content += "<div class='img-responsive thumbnail text-center '>";
+						content += "<i class='material-icons col-orange' style='font-size: 8.5vw;''>folder</i>";
+						content += "<p>"+data[i].name+"</p></div>";
+						content += "<button type='button' class='btn btn-danger'>Xóa</button></div>";
+					}
+				}
+				$("#aniimated-thumbnials").html(content);
+			});
+		}
+		
+		function openFolderLink(url){
+			window.location.href = "/admin-page/gallary?path=" + $("#nowPath").val() + url;
+		}
+		
+		function createFolder(id_form) {
+    		var data = {};
+    		var formData = $("#" + id_form).serializeArray();
+    		 $.each(formData, function (i, v) {
+	                data[""+v.name+""] = $("#nowPath").val() + "/" + v.value;
+	         });
+    		 var url = '/api/folder';
+    		 $.ajax({
+    	            url: url,
+    	            type: 'POST',
+    	            contentType: 'application/json',
+    	            data: JSON.stringify(data),
+    	            dataType: 'json',
+    	            success: function (result) {
+    	            	if(result.alert == 'success') {
+    	            		$('#add-folder').modal('toggle');
+    	            		location.reload();
+    	            	} else if (result.alert == 'danger'){
+    	            		var txt = "<div class='alert bg-red alert-dismissible' role='alert'>"
+    	            		+ "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+    	            		+ "<span aria-hidden='true'>&times;</span></button>" + result.message + "</div>";
+    	            		$("#" + id_form + " .display-invalid-error").html(txt);
+    	            	}
+    	            	
+    	            },
+    	            error: function (error) {
+    	            	alert(error.message);
+    	            }
+    		 });
+    	}
+		
+		function removeFile(ids) {
+    		var url = "/api/folder";
+    		
+    		var data = {};
+    		data["pathToDelete"] = ids;
+    		 
+    		$.ajax({
+	            url: url,
+	            type: 'DELETE',
+	            contentType: 'application/json',
+	            data: JSON.stringify(data),
+	            dataType: 'json',
+	            success: function (result) {
+	            	if(result.alert == 'success') {
+	            		location.reload();
+	            	} else if (result.alert == 'danger'){
+	            		
+	            	}
+	            },
+	            error: function (error) {
+	            	alert("error");
+	            }
+		 });
+    	}
+		
+		function coppyUrl(btn) {
+			
+			  var copyText = $(btn).parent().children(".view-image").attr("href");
+			  var $temp = $("<input>");
+				$("body").append($temp);
+				$temp.val($(btn).parent().children(".view-image").attr("href")).select();
+				
+				 document.execCommand("copy");
+			  $temp.remove();
+		}
+	</script>
+</body>
+
+</html>

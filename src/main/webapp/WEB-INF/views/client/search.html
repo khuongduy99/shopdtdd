@@ -1,0 +1,260 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace= "client/_generic :: header_html"/>
+<body>
+<div th:replace= "client/_generic :: navbar_html"></div>
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb-tree">
+                    <li><a href="/">Trang chủ</a></li>
+                    <li class="active">Tìm kiếm với từ khóa "<th:block th:utext="${keyword}"></th:block>"</li>
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+    <h4>Tìm thấy <th:block th:utext="${totalItem}"></th:block> sản phẩm cho từ khóa "<th:block th:utext="${keyword}"></th:block>"</h4>
+        <!-- row -->
+        <div class="row">
+            <!-- STORE -->
+                <!-- store top filter -->
+                <!-- 
+                <div class="store-filter clearfix">
+                    <div class="store-sort">
+                        <label>
+                            Bộ lọc:
+                            <button type="button" class="btn btn-light">Light</button>
+                        </label>
+
+                    </div>
+<!--                    <ul class="store-grid tab-nav">-->
+<!--                        <li class="active"><a data-toggle="tab" href="#tab1" role="tab"><i class="fa fa-th"></i></a></li>-->
+<!--                        <li><a data-toggle="tab" href="#tab2" role="tab"><i class="fa fa-th-list"></i></a></li>-->
+<!--                    </ul>
+                </div> -->
+                <!-- /store top filter -->
+                <!-- store products -->
+                <div class="products-tabs">
+                    <div id="tab1" class="tab-pane active" role="tabpanel">
+                        <div class="row">
+                        
+                        <th:block th:each="model : ${ListProduct}">
+                            <!-- product -->
+                            <div class="col-md-3 col-xs-4">
+                                <div class="product">
+                                    <div class="product-img">
+                                        <img th:src="${model.urlImage}" alt="">
+                                        <ul class="icons">
+                                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+                                            <a class="cart" th:onclick="${'addToCart(' + model.id +', 1);'}"><i class="fa fa-shopping-cart"></i></a>
+                                        </ul>
+                                        <div class="product-label">
+                                            <span th:if="${model.sale != 0}" class="sale"><span class="price-product" th:utext=${model.price}></span><span class="sale-product" th:utext=${model.sale}></span></span>
+	                                        <span th:if="${model.new}" class="new">MỚI</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-body">
+                                        <h3 class="product-name"><a href="#" th:title="${model.name}" th:utext="${model.name}"></a></h3>
+                                        <h4 th:if="${model.sale != 0}" class="product-price">
+	                                        	<span class="money-vnd" th:utext="${model.sale}"></span><sup>₫</sup>
+	                                            <del class="product-old-price"><span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup></del>
+	                                     </h4>
+	                                     <h4 th:if="${model.sale == 0}" class="product-price">
+	                                        	<span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup>
+	                                        </h4>
+                                        <div class="product-rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <div class="product-btns">
+                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
+                                                    class="tooltipp">add to compare</span>
+                                            </button>
+                                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /product -->
+							</th:block>
+                            
+                        </div>
+                    </div>
+                </div>
+
+				<!-- store bottom filter -->
+                <div class="store-filter clearfix">
+                    <span class="store-qty" th:utext="${totalItem + ' sản phẩm'}"></span>
+                    <ul class="store-pagination">
+                        <li class="active">1</li>
+                        <th:block th:if="${totalPage > 1}">		
+                        <th:block th:each="i: ${#numbers.sequence(2, totalPage)}">
+                        	 <li><a th:onclick="${'getProductPagn(' + limit +',' + (limit * (i - 1))+');'}" th:utext="${i}"></a></li>
+                        </th:block>
+                        <li><a th:onclick="${'getProductPagn(' + limit +',' + (limit)+');'}"><i class="fa fa-angle-right"></i></a></li>
+                        </th:block>
+                    </ul>
+                </div>
+                <!-- /store bottom filter -->
+               
+                <!-- /store bottom filter -->
+                <div id="display-loadding" style="display:none;background-color:#fff; border: 3px solid #f1f1f1;position: absolute;top:0;left:0;z-index: 100;width: 100%;height: 100%;text-align: center;">
+							 	<div class="preloader pl-size-xl" style="position: absolute;top: 36%;left: 45%;">
+			                         <div class="spinner-layer pl-red">
+			                              <div class="circle-clipper left">
+			                                   <div class="circle"></div>
+			                              </div>
+			                              <div class="circle-clipper right">
+			                                   <div class="circle"></div>
+			                              </div>
+			                         </div>
+			                    </div>
+							</div>
+            <!-- /STORE -->
+
+            
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+
+
+
+<!-- POPUP-->
+<!--
+
+<div class="popup hide__popup">
+    <div class="popup__content">
+        <div class="popup__close">
+            <svg>
+                <use xlink:href="img/sub_img/sprite.svg#icon-cross"></use>
+            </svg>
+        </div>
+        <div class="popup__left">
+            <div class="popup-img__container">
+                <img class="popup__img" src="img/sub_img/popup3.png">
+            </div>
+        </div>
+        <div class="popup__right">
+            <div class="right__content">
+                <h1>Sale Up To <span>30%</span> Off</h1>
+                <p>Đăng ký để nhận thông báo mới và tiết kiệm đến 30% cho lần mua tiếp theo!</p>
+                <form action="#">
+                    <input type="email" class="popup_form" placeholder="Nhập email...">
+                    <a href="#">Đăng ký</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+-->
+<input type="hidden" th:value="${'/api/search/products?keyword=' + keyword + '&'}" id="urlAPIgetProduct">
+<input type="hidden" th:value="${limit}" id="limit">
+<input type="hidden" th:value="${totalItem}" id="totalItem">
+<input type="hidden" th:value="${totalPage}" id="totalPage">
+<div th:replace= "client/_generic :: footer_html"></div>
+<script type="text/javascript">
+	function getProductPagn(limit, offset) {
+		var totalItem = $("#totalItem").val();
+		var totalPage = $("#totalPage").val();
+		
+		var pagnText = "\n";
+		
+		if(offset != 0) {
+			pagnText += "<li><a onclick='getProductPagn("+ limit + "," + (offset - limit)+")'><i class='fa fa-angle-left'></i></a></li>\n";
+		}
+		
+		for(var i = 0; i < totalPage; i++) {
+			if(offset == (limit * i)) {
+				pagnText += "<li class='active'>"+(i+1)+"</li>\n";
+			} else {
+				pagnText += "<li><a onclick='getProductPagn("+ limit + "," + (limit * i)+")'>"+(i+1)+"</a></li>\n";
+			}
+		}
+		if(offset + limit < totalItem) {
+			pagnText += "<li><a onclick='getProductPagn("+ limit + "," + (offset + limit)+")'><i class='fa fa-angle-right'></i></a></li>\n";
+		}
+		$(".store-pagination").html(pagnText);
+		$('#tab1').css('filter', 'blur(40px)');
+		$('#display-loadding').css('display', 'block');
+		
+		var url = $("#urlAPIgetProduct").val() + "limit=" + limit + "&offset=" + offset;
+		$.get(url,function(data) {
+			var txt = "\n";
+			for(var i = 0; i < data.length; i++) {
+				var obj = data[i];
+				txt += "<div class='col-md-3 col-xs-4'>\n";
+				txt += "<div class='product'>\n";
+				txt += "<div class='product-img'>\n";
+				txt += "<img src='"+obj.urlImage+"' alt=''>\n";
+				txt += "<ul class='icons'>\n";
+				txt += "<a class='wish-list'><i class='fa fa-heart-o'></i></a>\n";
+				txt += "<a class='cart' onclick='addToCart(" +obj.id+ ", 1);'><i class='fa fa-shopping-cart'></i></a>\n";
+				txt += "</ul>\n";
+				txt += "<div class='product-label'>\n";
+				if(obj.sale != 0) txt += "<span class='sale'>"+getDiscoutPercent(obj.price, obj.sale)+"</span>\n";
+				if(obj.new) txt += "<span class='new'>MỚI</span>\n";
+				txt += "</div>\n";
+				txt += "</div>\n";
+				
+				txt += "<div class='product-body'>\n";
+				txt += "<h3 class='product-name'><a href='' title='"+obj.name+"'>"+limitName(obj.name)+"</a></h3>\n";
+				if(obj.sale != 0) {
+					txt += "<h4 class='product-price'>\n";
+					txt += "<span class='money-vnd'>"+obj.sale+"</span><sup>₫</sup>\n";
+					txt += "<del class='product-old-price'><span class='money-vnd' >"+obj.price+"</span><sup>₫</sup></del>\n";
+					txt += "</h4>\n";
+				} else {
+					txt += "<h4 class='product-price'>\n";
+					txt += "<span class='money-vnd'>"+obj.price+"</span><sup>₫</sup>\n";
+					txt += "</h4>\n";
+				}
+				
+				txt += "<div class='product-rating'>\n";
+				txt += "<i class='fa fa-star'></i>\n";
+				txt += "<i class='fa fa-star'></i>\n";
+				txt += "<i class='fa fa-star'></i>\n";
+				txt += "<i class='fa fa-star'></i>\n";
+				txt += "<i class='fa fa-star'></i\n>";
+				txt += "</div>\n";
+				txt += "<div class='product-btns'>\n";
+				txt += "<button class='add-to-compare'><i class='fa fa-exchange'></i><span class='tooltipp'>add to compare</span></button>\n";
+				txt += "<button class='quick-view'><i class='fa fa-eye'></i><span class='tooltipp'>quick view</span></button>\n";
+				txt += "</div>\n";
+				txt += "</div>\n";
+				txt += "</div>\n";
+				txt += "</div>\n";
+			}
+			
+			$("#tab1 .row").html(txt);
+			$('#tab1').css('filter', 'none');
+			setTimeout(function () { $('#display-loadding').fadeOut(); }, 100);
+		});
+	}
+	
+	
+	
+</script>
+</body>
+</html>

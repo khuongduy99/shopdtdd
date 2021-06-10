@@ -1,0 +1,773 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace= "client/_generic :: header_html"/>
+<body>
+<div th:replace= "client/_generic :: navbar_html"></div>
+
+<!-- SECTION home-->
+<div class="section home">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- shop -->
+            <div class="col-md-8 col-xs-6 slide-shop">
+                <div class="shop">
+                    <div id="carousel1" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img src="img/sub_img/banner1.png" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="item">
+                                <img src="img/sub_img/banner2.png" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="item">
+                                <img src="img/sub_img/banner3.png" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="item">
+                                <img src="img/sub_img/banner4.png" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="item">
+                                <img src="img/sub_img/banner5.png" class="d-block w-100" alt="...">
+                            </div>
+                        </div>
+
+                        <a class="left carousel-control" href="#carousel1" data-slide="prev">
+                            <span class="icon-prev"></i></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel1" data-slide="next">
+                            <span class="icon-next"></i></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel1" data-slide-to="0" class="active"><a>Galaxy S21 series 5G
+                                Giảm đến 8 triệu</a></li>
+                            <li data-target="#carousel1" data-slide-to="1"><a>Đồng hồ Nhật Bản <br> Giảm đến 30%</a>
+                            </li>
+                            <li data-target="#carousel1" data-slide-to="2"><a>Redmi Note 10Series <br> Giảm đến 400.000đ</a>
+                            </li>
+                            <li data-target="#carousel1" data-slide-to="3"><a>Vivo Y51 <br> Giảm hết ý 700 ngàn</a></li>
+                            <li data-target="#carousel1" data-slide-to="4"><a>Sắm laptop <br> Giảm đến 1,6 triệu</a>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <!-- /shop -->
+
+            <!-- shop -->
+            <div class="col-md-4 col-xs-6 unset-padding-right shop-right">
+                <div class="shop">
+                    <div class="shop-content">
+                        <figure>
+                            <h5 class="title technology-title">24H Công nghệ</h5>
+                        </figure>
+
+
+                        <div class="shop-content-news">
+                            <a href="#">
+                                <div class="news-img">
+                                    <img src="img/sub_img/content1.jpg" alt="">
+                                </div>
+                                <div class="news-title">
+                                    <h3>Trên tay Lenovo Tab M7: Máy tính bảng nhỏ gọn</h3>
+                                    <span>33 phút trước</span>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="shop-img">
+                        <img src="img/sub_img/sale1.png" alt="">
+                    </div>
+                    <!--							<div class="shop-body">-->
+                    <!--								<h3>Accessories<br>Collection</h3>-->
+                    <!--								<a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>-->
+                    <!--							</div>-->
+                    <div class="shop-img">
+                        <img src="img/sub_img/sale2.png" alt="">
+                    </div>
+                    <!--							<div class="shop-body">-->
+                    <!--								<h3>Accessories<br>Collection</h3>-->
+                    <!--								<a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>-->
+                    <!--							</div>-->
+                </div>
+            </div>
+            <!-- /shop -->
+
+            <!-- shop -->
+            <!-- /shop -->
+
+        </div>
+        <div class="ads">
+            <img class="img-responsive img-ads" src="img/sub_img/ads.png" alt="Quảng cáo">
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION home-->
+
+<!-- SECTION sản phẩm nổi bật-->
+<div class="section ">
+    <!-- container -->
+    <div class="container square">
+        <!-- row -->
+        <div class="row">
+
+            <!-- section title -->
+            <div class="col-md-12 border-bottom">
+                <div class="section-title">
+
+                    <h4 class="title">Sản phẩm đang khuyến mãi</h4>
+
+
+                    <div class="section-nav">
+                        <ul class="section-tab-nav tab-nav">
+                            <li class="active"><a data-toggle="tab" href="#tab-phone-sale">Điện thoại</a></li>
+                            <li><a data-toggle="tab" href="#tab-laptop-sale">Laptop</a></li>
+                            <li><a data-toggle="tab" href="#tab-accessory-sale">Phụ kiện</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /section title -->
+            <!-- Products tab & slick -->
+            <div class="col-md-12 pb-3">
+                <div class="row">
+                    <div class="products-tabs">
+                        <!-- tab -->
+                        <div id="tab-phone-sale" class="tab-pane fade in active">
+                            <div class="products-slick" data-nav="#slick-nav-1">
+                            	<th:block th:each="model : ${ListProductIsPhoneNew}">
+	                                <!-- product -->
+	                                <div class="product">
+	                                    <div class="product-img">
+	                                        <img th:src="${model.urlImage}" alt="">
+	                                        <ul class="icons">
+	                                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+	                                            <a class="cart"  th:onclick="${'addToCart(' + model.id +', 1);'}"><i class="fa fa-shopping-cart"></i></a>
+	                                        </ul>
+	                                        <div class="product-label">
+	                                            <span th:if="${model.sale != 0}" class="sale"><span class="price-product" th:utext=${model.price}></span><span class="sale-product" th:utext=${model.sale}></span></span>
+	                                            <span th:if="${model.new}" class="new">MỚI</span>
+	                                        </div>
+	                                    </div>
+	                                    <div class="product-body">
+	                                        <h3 class="product-name"><a th:href="${'/sp?n=' + model.alias}" th:utext="${model.name}"></a></h3>
+	                                        <h4 th:if="${model.sale != 0}" class="product-price">
+	                                        	<span class="money-vnd" th:utext="${model.sale}"></span><sup>₫</sup>
+	                                            <del class="product-old-price"><span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup></del>
+	                                        </h4>
+	                                        <h4 th:if="${model.sale == 0}" class="product-price">
+	                                        	<span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup>
+	                                        </h4>
+	                                        <div class="product-rating">
+	                                            <th:block  th:each="i: ${#numbers.sequence(0, model.star - 1)}">
+					                        		<i class="fa fa-star"></i>
+					                        	</th:block>
+					                            <th:block th:if="${model.star != 5}" th:each="i: ${#numbers.sequence(0, 4 - model.star)}">
+					                        		<i class="fa fa-star-o"></i>
+					                        	</th:block>
+	                                        </div>
+	                                        <div class="product-btns">
+	                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
+	                                                    class="tooltipp">So sánh</span></button>
+	                                            <button class="quick-view"><a th:href="${'/sp?n=' + model.alias}"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></a>
+	                                            </button>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <!-- /product -->
+								</th:block>
+                                
+                            </div>
+                            <div id="slick-nav-1" class="products-slick-nav"></div>
+                        </div>
+                        <!-- /tab -->
+						<!-- tab -->
+                        <div id="tab-laptop-sale" class="tab-pane fade in">
+                            <div class="products-slick" data-nav="#slick-nav-2">
+                            	<th:block th:each="model : ${ListProductIsLaptopNew}">
+	                                <!-- product -->
+	                                <div class="product">
+	                                    <div class="product-img">
+	                                        <img th:src="${model.urlImage}" alt="">
+	                                        <ul class="icons">
+	                                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+	                                            <a class="cart" th:onclick="${'addToCart(' + model.id +', 1);'}"><i class="fa fa-shopping-cart"></i></a>
+	                                        </ul>
+	                                        <div class="product-label">
+	                                            <span th:if="${model.sale != 0}" class="sale"><span class="price-product" th:utext=${model.price}></span><span class="sale-product" th:utext=${model.sale}></span></span>
+	                                            <span th:if="${model.new}" class="new">MỚI</span>
+	                                        </div>
+	                                    </div>
+	                                    <div class="product-body">
+	                                        <h3 class="product-name"><a th:href="${'/sp?n=' + model.alias}" th:utext="${model.name}"></a></h3>
+	                                        <h4 th:if="${model.sale != 0}" class="product-price">
+	                                        	<span class="money-vnd" th:utext="${model.sale}"></span><sup>₫</sup>
+	                                            <del class="product-old-price"><span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup></del>
+	                                        </h4>
+	                                        <h4 th:if="${model.sale == 0}" class="product-price">
+	                                        	<span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup>
+	                                        </h4>
+	                                        <div class="product-rating">
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                        </div>
+	                                        <div class="product-btns">
+	                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
+	                                                    class="tooltipp">So sánh</span></button>
+	                                            <button class="quick-view"><a th:href="${'/sp?n=' + model.alias}"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></a>
+	                                            </button>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <!-- /product -->
+								</th:block>
+                                
+                            </div>
+                            <div id="slick-nav-2" class="products-slick-nav"></div>
+                        </div>
+                        <!-- /tab -->
+                        <!-- tab -->
+                        <div id="tab-accessory-sale" class="tab-pane fade in">
+                            <div class="products-slick" data-nav="#slick-nav-3">
+                            	<th:block th:each="model : ${ListProductIsAccessoryNew}">
+	                                <!-- product -->
+	                                <div class="product">
+	                                    <div class="product-img">
+	                                        <img th:src="${model.urlImage}" alt="">
+	                                        <ul class="icons">
+	                                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+	                                            <a class="cart" th:onclick="${'addToCart(' + model.id +', 1);'}"><i class="fa fa-shopping-cart"></i></a>
+	                                        </ul>
+	                                        <div class="product-label">
+	                                            <span th:if="${model.sale != 0}" class="sale"><span class="price-product" th:utext=${model.price}></span><span class="sale-product" th:utext=${model.sale}></span></span>
+	                                            <span th:if="${model.new}" class="new">MỚI</span>
+	                                        </div>
+	                                    </div>
+	                                    <div class="product-body">
+	                                        <h3 class="product-name"><a th:href="${'/sp?n=' + model.alias}" th:utext="${model.name}"></a></h3>
+	                                        <h4 th:if="${model.sale != 0}" class="product-price">
+	                                        	<span class="money-vnd" th:utext="${model.sale}"></span><sup>₫</sup>
+	                                            <del class="product-old-price"><span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup></del>
+	                                        </h4>
+	                                        <h4 th:if="${model.sale == 0}" class="product-price">
+	                                        	<span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup>
+	                                        </h4>
+	                                        <div class="product-rating">
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                        </div>
+	                                        <div class="product-btns">
+	                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
+	                                                    class="tooltipp">So sánh</span></button>
+	                                            <button class="quick-view"><a th:href="${'/sp?n=' + model.alias}"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></a>
+	                                            </button>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <!-- /product -->
+								</th:block>
+                                
+                            </div>
+                            <div id="slick-nav-3" class="products-slick-nav"></div>
+                        </div>
+                        <!-- /tab -->
+                    </div>
+                </div>
+            </div>
+            <!-- Products tab & slick -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION sản phẩm nổi bật-->
+
+<!-- SECTION điện thoại nổi bật-->
+<div class="section mt-1">
+    <!-- container -->
+    <div class="container square">
+        <!-- row -->
+        <div class="row">
+
+            <!-- section title -->
+            <div class="col-md-12 border-bottom">
+                <div class="section-title">
+
+                    <h4 class="title">SẢN Phẩm mới</h4>
+
+
+                    <div class="section-nav">
+                        <ul class="section-tab-nav tab-nav">
+                            <li class="active"><a data-toggle="tab" href="#tab-phone-new">Điện thoại</a></li>
+                            <li><a data-toggle="tab" href="#tab-laptop-new">Laptop</a></li>
+                            <li><a data-toggle="tab" href="#tab-accessory-new">Phụ kiện</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /section title -->
+            <!-- Products tab & slick -->
+            <div class="col-md-12 pb-3">
+                <div class="row">
+                    <div class="products-tabs">
+                        <!-- tab -->
+                        <div id="tab2" class="tab-pane active">
+                            <div class="products-slick" data-nav="#slick-nav-4">
+                                <!-- product -->
+                                <div class="product">
+                                    <div class="product-img">
+                                        <img src="img/product01.png" alt="">
+                                        <ul class="icons">
+                                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+                                            <a class="cart"><i class="fa fa-shopping-cart"></i></a>
+                                        </ul>
+                                        <div class="product-label">
+                                            <span class="sale">-30%</span>
+                                            <span class="new">MỚI</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-body">
+                                        <p class="product-category">Laptop</p>
+                                        <h3 class="product-name"><a href="#">Laptop Asus</a></h3>
+                                        <h4 class="product-price">12.000.000đ
+                                            <del class="product-old-price">15.000.000đ</del>
+                                        </h4>
+                                        <div class="product-rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <div class="product-btns">
+                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
+                                                    class="tooltipp">So sánh</span></button>
+                                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--                                    <div class="add-to-cart">-->
+                                    <!--                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart-->
+                                    <!--                                        </button>-->
+                                    <!--                                    </div>-->
+                                </div>
+                                <!-- /product -->
+
+                                <!-- product -->
+                                <div class="product">
+                                    <div class="product-img">
+                                        <img src="img/product02.png" alt="">
+                                        <ul class="icons">
+                                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+                                            <a class="cart"><i class="fa fa-shopping-cart"></i></a>
+                                        </ul>
+                                        <div class="product-label">
+                                            <span class="sale">-30%</span>
+                                            <span class="new">MỚI</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-body">
+                                        <p class="product-category">Phụ kiện</p>
+                                        <h3 class="product-name"><a href="#">Tai nghe Headphone</a></h3>
+                                        <h4 class="product-price">2.000.000đ
+                                            <del class="product-old-price">3.000.000đ</del>
+                                        </h4>
+                                        <div class="product-rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <div class="product-btns">
+                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
+                                                    class="tooltipp">So sánh</span></button>
+                                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--                                    <div class="add-to-cart">-->
+                                    <!--                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart-->
+                                    <!--                                        </button>-->
+                                    <!--                                    </div>-->
+                                </div>
+                                <!-- /product -->
+
+                                <!-- product -->
+                                <div class="product">
+                                    <div class="product-img">
+                                        <img src="img/product03.png" alt="">
+                                        <ul class="icons">
+                                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+                                            <a class="cart"><i class="fa fa-shopping-cart"></i></a>
+                                        </ul>
+                                        <div class="product-label">
+                                            <span class="sale">-30%</span>
+                                            <span class="new">MỚI</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-body">
+                                        <p class="product-category">Laptop</p>
+                                        <h3 class="product-name"><a href="#">Laptop Dell</a></h3>
+                                        <h4 class="product-price">13.000.000đ
+                                            <del class="product-old-price">16.000.000Dđ</del>
+                                        </h4>
+                                        <div class="product-rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <div class="product-btns">
+                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
+                                                    class="tooltipp">So sánh</span></button>
+                                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--                                    <div class="add-to-cart">-->
+                                    <!--                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart-->
+                                    <!--                                        </button>-->
+                                    <!--                                    </div>-->
+                                </div>
+                                <!-- /product -->
+
+                                <!-- product -->
+                                <div class="product">
+                                    <div class="product-img">
+                                        <img src="img/product04.png" alt="">
+                                        <ul class="icons">
+                                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+                                            <a class="cart"><i class="fa fa-shopping-cart"></i></a>
+                                        </ul>
+                                        <div class="product-label">
+                                            <span class="sale">-30%</span>
+                                            <span class="new">MỚI</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-body">
+                                        <p class="product-category">Máy tính bảng</p>
+                                        <h3 class="product-name"><a href="#">Máy tính bảng Apple</a></h3>
+                                        <h4 class="product-price">5.000.000đ
+                                            <del class="product-old-price">10.000.000đ</del>
+                                        </h4>
+                                        <div class="product-rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <div class="product-btns">
+                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
+                                                    class="tooltipp">So sánh</span></button>
+                                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--                                    <div class="add-to-cart">-->
+                                    <!--                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart-->
+                                    <!--                                        </button>-->
+                                    <!--                                    </div>-->
+                                </div>
+                                <!-- /product -->
+
+                                <!-- product -->
+                                <div class="product">
+                                    <div class="product-img">
+                                        <img src="img/product05.png" alt="">
+                                        <ul class="icons">
+                                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+                                            <a class="cart"><i class="fa fa-shopping-cart"></i></a>
+                                        </ul>
+                                        <div class="product-label">
+                                            <span class="sale">-30%</span>
+                                            <span class="new">MỚI</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-body">
+                                        <p class="product-category">Phụ kiện</p>
+                                        <h3 class="product-name"><a href="#">Tai nghe phòng thu</a></h3>
+                                        <h4 class="product-price">17.000.000đ
+                                            <del class="product-old-price">20.000.000đ</del>
+                                        </h4>
+                                        <div class="product-rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <div class="product-btns">
+                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
+                                                    class="tooltipp">So sánh</span></button>
+                                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--                                    <div class="add-to-cart">-->
+                                    <!--                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart-->
+                                    <!--                                        </button>-->
+                                    <!--                                    </div>-->
+                                </div>
+                                <!-- /product -->
+                            </div>
+                            <div id="slick-nav-4" class="products-slick-nav"></div>
+                        </div>
+                        <!-- /tab -->
+
+                    </div>
+                </div>
+            </div>
+            <!-- Products tab & slick -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION điện thọai nổi bật-->
+
+<!-- container ADS -->
+<div class="container mt-1">
+    <div class="row">
+        <div class="celebrate">
+            <img class="img-responsive" src="img/sub_img/celebrate1.png">
+            <img class="img-responsive" src="img/sub_img/celebrate2.png">
+            <img class="img-responsive" src="img/sub_img/celebrate3.png">
+        </div>
+
+
+    </div>
+</div>
+<!-- /container ADS-->
+
+<!-- SECTION laptop nổi bật-->
+<div class="section mt-1">
+    <!-- container -->
+    <div class="container square">
+        <!-- row -->
+        <div class="row">
+
+            <!-- section title -->
+            <div class="col-md-12 border-bottom">
+                <div class="section-title">
+
+                    <h4 class="title">Sản phẩm nổi bật</h4>
+
+
+                    <div class="section-nav">
+                        <ul class="section-tab-nav tab-nav">
+                            <li class="active"><a data-toggle="tab" href="#tab-phone-hot">Điện thoại</a></li>
+                            <li><a data-toggle="tab" href="#tab-laptop-hot">Laptop</a></li>
+                            <li><a data-toggle="tab" href="#tab-accessory-hot">Phụ kiện</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /section title -->
+            <!-- Products tab & slick -->
+            <div class="col-md-12 pb-3">
+                <div class="row">
+                    <div class="products-tabs">
+                        <!-- tab -->
+                        <div id="tab-phone-hot" class="tab-pane fade in active">
+                            <div class="products-slick" data-nav="#slick-nav-7">
+                            	<th:block th:each="model : ${ListProductIsPhoneHot}">
+	                                <!-- product -->
+	                                <div class="product">
+	                                    <div class="product-img">
+	                                        <img th:src="${model.urlImage}" alt="">
+	                                        <ul class="icons">
+	                                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+	                                            <a class="cart"  th:onclick="${'addToCart(' + model.id +', 1);'}"><i class="fa fa-shopping-cart"></i></a>
+	                                        </ul>
+	                                        <div class="product-label">
+	                                            <span th:if="${model.sale != 0}" class="sale"><span class="price-product" th:utext=${model.price}></span><span class="sale-product" th:utext=${model.sale}></span></span>
+	                                            <span th:if="${model.new}" class="new">MỚI</span>
+	                                        </div>
+	                                    </div>
+	                                    <div class="product-body">
+	                                        <h3 class="product-name"><a href="#" th:utext="${model.name}"></a></h3>
+	                                        <h4 th:if="${model.sale != 0}" class="product-price">
+	                                        	<span class="money-vnd" th:utext="${model.sale}"></span><sup>₫</sup>
+	                                            <del class="product-old-price"><span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup></del>
+	                                        </h4>
+	                                        <h4 th:if="${model.sale == 0}" class="product-price">
+	                                        	<span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup>
+	                                        </h4>
+	                                        <div class="product-rating">
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                        </div>
+	                                        <div class="product-btns">
+	                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
+	                                                    class="tooltipp">So sánh</span></button>
+	                                            <button class="quick-view"><a href="product.html"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></a>
+	                                            </button>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <!-- /product -->
+								</th:block>
+                                
+                            </div>
+                            <div id="slick-nav-7" class="products-slick-nav"></div>
+                        </div>
+                        <!-- /tab -->
+						<!-- tab -->
+                        <div id="tab-laptop-hot" class="tab-pane fade in">
+                            <div class="products-slick" data-nav="#slick-nav-8">
+                            	<th:block th:each="model : ${ListProductIsLaptopHot}">
+	                                <!-- product -->
+	                                <div class="product">
+	                                    <div class="product-img">
+	                                        <img th:src="${model.urlImage}" alt="">
+	                                        <ul class="icons">
+	                                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+	                                            <a class="cart"><i class="fa fa-shopping-cart"></i></a>
+	                                        </ul>
+	                                        <div class="product-label">
+	                                            <span th:if="${model.sale != 0}" class="sale"><span class="price-product" th:utext=${model.price}></span><span class="sale-product" th:utext=${model.sale}></span></span>
+	                                            <span th:if="${model.new}" class="new">MỚI</span>
+	                                        </div>
+	                                    </div>
+	                                    <div class="product-body">
+	                                        <h3 class="product-name"><a href="#" th:utext="${model.name}"></a></h3>
+	                                        <h4 th:if="${model.sale != 0}" class="product-price">
+	                                        	<span class="money-vnd" th:utext="${model.sale}"></span><sup>₫</sup>
+	                                            <del class="product-old-price"><span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup></del>
+	                                        </h4>
+	                                        <h4 th:if="${model.sale == 0}" class="product-price">
+	                                        	<span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup>
+	                                        </h4>
+	                                        <div class="product-rating">
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                        </div>
+	                                        <div class="product-btns">
+	                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
+	                                                    class="tooltipp">So sánh</span></button>
+	                                            <button class="quick-view"><a href="product.html"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></a>
+	                                            </button>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <!-- /product -->
+								</th:block>
+                                
+                            </div>
+                            <div id="slick-nav-8" class="products-slick-nav"></div>
+                        </div>
+                        <!-- /tab -->
+                        <!-- tab -->
+                        <div id="tab-accessory-hot" class="tab-pane fade in">
+                            <div class="products-slick" data-nav="#slick-nav-9">
+                            	<th:block th:each="model : ${ListProductIsAccessoryHot}">
+	                                <!-- product -->
+	                                <div class="product">
+	                                    <div class="product-img">
+	                                        <img th:src="${model.urlImage}" alt="">
+	                                        <ul class="icons">
+	                                            <a class="wish-list"><i class="fa fa-heart-o"></i></a>
+	                                            <a class="cart"><i class="fa fa-shopping-cart"></i></a>
+	                                        </ul>
+	                                        <div class="product-label">
+	                                            <span th:if="${model.sale != 0}" class="sale"><span class="price-product" th:utext=${model.price}></span><span class="sale-product" th:utext=${model.sale}></span></span>
+	                                            <span th:if="${model.new}" class="new">MỚI</span>
+	                                        </div>
+	                                    </div>
+	                                    <div class="product-body">
+	                                        <h3 class="product-name"><a href="#" th:utext="${model.name}"></a></h3>
+	                                        <h4 th:if="${model.sale != 0}" class="product-price">
+	                                        	<span class="money-vnd" th:utext="${model.sale}"></span><sup>₫</sup>
+	                                            <del class="product-old-price"><span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup></del>
+	                                        </h4>
+	                                        <h4 th:if="${model.sale == 0}" class="product-price">
+	                                        	<span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup>
+	                                        </h4>
+	                                        <div class="product-rating">
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                            <i class="fa fa-star"></i>
+	                                        </div>
+	                                        <div class="product-btns">
+	                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
+	                                                    class="tooltipp">So sánh</span></button>
+	                                            <button class="quick-view"><a href="product.html"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></a>
+	                                            </button>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <!-- /product -->
+								</th:block>
+                                
+                            </div>
+                            <div id="slick-nav-9" class="products-slick-nav"></div>
+                        </div>
+                        <!-- /tab -->
+
+                    </div>
+                </div>
+            </div>
+            <!-- Products tab & slick -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION laptop nổi bật -->
+
+
+
+<!-- POPUP-->
+<!--
+
+<div class="popup hide__popup">
+    <div class="popup__content">
+        <div class="popup__close">
+            <svg>
+                <use xlink:href="img/sub_img/sprite.svg#icon-cross"></use>
+            </svg>
+        </div>
+        <div class="popup__left">
+            <div class="popup-img__container">
+                <img class="popup__img" src="img/sub_img/popup3.png">
+            </div>
+        </div>
+        <div class="popup__right">
+            <div class="right__content">
+                <h1>Sale Up To <span>30%</span> Off</h1>
+                <p>Đăng ký để nhận thông báo mới và tiết kiệm đến 30% cho lần mua tiếp theo!</p>
+                <form action="#">
+                    <input type="email" class="popup_form" placeholder="Nhập email...">
+                    <a href="#">Đăng ký</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+-->
+<div th:replace= "client/_generic :: footer_html"></div>
+</body>
+</html>

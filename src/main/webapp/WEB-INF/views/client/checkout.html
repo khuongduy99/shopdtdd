@@ -1,0 +1,320 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace= "client/_generic :: header_html"/>
+<body>
+<div th:replace= "client/_generic :: navbar_html"></div>
+
+
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb-tree">
+                    <li><a href="#">Trang chủ</a></li>
+                    <li><a href="/xem-gio-hang">Giỏ hàng</a></li>
+                    <li class="active">Thanh toán</li>
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- SECTION -->
+<div class="section mt-3">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row infomation">
+            <div class="col-md-10 order-details">
+                <div class="checkout_link">
+                    <a href="/" class="checkout_link_continue"><i class="fa fa-undo"></i> Mua thêm sản phẩm
+                        khác</a>
+                    <p>Thông tin thanh toán</p>
+                </div>
+                <div class="checkout_wrap">
+                    <div class="checkout_line"></div>
+                    <div class="checkout">
+                        <div class="checkout_title mt-1"><i class="fa fa-product-hunt"></i> Sản phẩm</div>
+                        <div th:if="${session.Cart != null}" id="main-cart">
+						<th:block  th:each="item : ${session.Cart.list}">
+	                        <div class="cart-item cart-item-checkout">
+	                                <div class="cart-product">
+	
+	                                    <div class="cart-image">
+	                                        <img th:src="${item.urlImage}">
+	                                    </div>
+	                                    <div class="cart-product-info">
+	                                        <p class="cart-product-name" th:utext="${item.name}"></p>
+	                                        <p class="cart-price-sm"><span class='money-vnd' th:utext="${item.price}"></span><sup>₫</sup></p>
+	                                        <small th:utext="${'x ' + item.qtyInCart}"></small>
+	                                    </div>
+	
+	                                </div>
+	                                <div class="cart-product-total">
+	                                    <h4><span class='money-vnd' th:utext="${item.totalMoneyOfProduct}"></span><sup>₫</sup></h4>
+	                                </div>
+	                        </div>
+                        </th:block>
+                        </div>
+                        <div class="order-summary border-bottom1">
+                            <div class="order-col">
+                                <div>Phí vận chuyển</div>
+                                <div><strong>Miễn phí</strong></div>
+                            </div>
+                            <div class="order-col">
+                                <div><strong>Tổng tiền:</strong></div>
+                                <div><strong class="order-total"><span class='money-vnd' th:utext="${session.Cart != null ? session.Cart.total : '0'}"></span><sup>₫</sup></strong></div>
+                            </div>
+                        </div>
+                        <div class="checkout_title"><i class="fa fa-info-circle"></i> Thông tin khách hàng</div>
+                        
+                        <div class="address_info">
+                        <form id="form-checkout" action="/dat-hang" method="post">
+                        <div class="alert alert-danger display-invalid-error text-center" style="display:none"></div>
+                        	<input type="hidden" th:value="${session.UserModel.email}" name="email">
+                            <div class="address__infomation">
+                                
+                                    <div class="customer_gender">
+                                        <input type="radio" id="male" name="gender" value="Nam" th:checked="${session.UserModel != null ? (session.UserModel.gender == 'Nam' ? 'true' : 'false') : 'false'}">
+                                        <label for="male">Anh</label>
+                                        <input type="radio" id="female" name="gender" value="Nữ" th:checked="${session.UserModel != null ? (session.UserModel.gender == 'Nữ' ? 'true' : 'false') : 'false'}">
+                                        <label for="female">Chị</label>
+                                    </div>
+                                    <div class="customer_infomation">
+                                        <div class="form-group">
+                                            <input class="input" type="text" th:value="${session.UserModel.fullName != null ? session.UserModel.fullName : ''}" name="fullName" placeholder="Họ và Tên" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="input" th:value="${session.UserModel.phone != null ? session.UserModel.phone : ''}" type="number" name="phone" placeholder="Số điện thoại" required>
+                                        </div>
+                                    </div>
+                               
+                            </div>
+                            <div class="checkout_title"><i class="fa fa-map-marker"></i> Địa chỉ giao hàng</div>
+                            <div class="address_wrapper">
+                                <p>Vui lòng chọn địa chỉ giao hàng</p>
+                                
+                                    <div class="customer_infomation">
+                                        <div class="form-group">
+                                            <select  id="province" class="input-select" onchange="updateAddress();">
+                                                <option value="Bình Dương">Bình Dương</option>
+                                                <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="district" class="input-select" onchange="updateAddress();">
+                                                <option value="Thuận An">Thuận An</option>
+                                                <option value="Dĩ An">Dĩ An</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="customer_infomation">
+                                        <div class="form-group">
+                                            <select id="towwn" class="input-select" onchange="updateAddress();">
+                                                <option value="Phường Bình Hòa">Phường Bình Hòa</option>
+                                                <option value="Phường Bình Nhâm">Phường Bình Nhâm</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="input" id="num-house" type="text"  onchange="updateAddress();" placeholder="Số nhà">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="address" id="address">
+                                    <!-- Order notes -->
+                                    <div class="order-notes">
+                                        <textarea class="input" name="note" placeholder="Ghi chú của bạn cho cửa hàng chúng tôi. (không bắt buộc)"></textarea>
+                                    </div>
+                                    <!-- /Order notes -->
+                                
+                            </div>
+                            <div class="checkout_title"><i class="fa fa-credit-card"></i> Phương thức thanh toán</div>
+                            <div class="checkout_method">
+                              
+                                    <div class="payment-method">
+                                        <div class="input-radio">
+                                            <input type="radio" name="payment" id="payment-1">
+                                            <label for="payment-1">
+                                                <span></span>
+                                                Thẻ tín dụng/Thẻ ghi nợ
+                                            </label>
+                                            <div class="caption">
+                                                <ul class="active-button">
+                                                    <li><span class="round-btn"></span></li>
+                                                    <li><span class="round-btn"></span></li>
+                                                    <li><span class="round-btn"></span></li>
+                                                </ul>
+                                                <div class="address_wrapper">
+                                                    <div class="multistep-container">
+                                                        <div class="form-box">
+                                                            <ul class="active-button">
+                                                                <li class="active">
+                                                                    <span class="round-btn"><i class="fa fa-credit-card"></i></span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="round-btn"><i class="fa fa-check"></i></span>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="payment-header">
+                                                                <p class="mt-2">Chi tiết thanh toán</p>
+                                                                <ul class="footer-payments payment">
+                                                                    <li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
+                                                                    <li><a href="#"><i class="fa fa-credit-card"></i></a>
+                                                                    </li>
+                                                                    <li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
+                                                                    <li><a href="#"><i class="fa fa-cc-mastercard"></i></a>
+                                                                    </li>
+                                                                    <li><a href="#"><i class="fa fa-cc-discover"></i></a>
+                                                                    </li>
+                                                                    <li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
+                                                                </ul>
+                                                            </div>
+                                                            <hr>
+                                                                <div class="customer_infomation">
+                                                                    <div class="form-group">
+                                                                        <p class="payment-label">Số thẻ</p>
+                                                                        <input class="input" type="text" name="last-name"
+                                                                               placeholder="Nhập số thẻ">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <p class="payment-label">Tên chủ sở hữu thẻ</p>
+                                                                        <input class="input" type="text" name="last-name"
+                                                                               placeholder="Nhập tên">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="customer_infomation">
+                                                                    <div class="form-group">
+                                                                        <p class="payment-label">Ngày hết hạn</p>
+                                                                        <input class="input" type="date" name="last-name"
+                                                                               placeholder="Ngày hết hạn">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <p class="payment-label">Mã CV</p>
+                                                                        <input class="input" type="text" name="last-name"
+                                                                               placeholder="Nhập mã CV">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="btn_payment_confirm">
+                                                                    <button type="button" onclick="$('#isPayment').val(true);" class="primary-btn order-submit payment-submit">Xác nhận thanh
+                                                                        toán
+                                                                    </button>
+                                                                </div>
+																<input type="hidden" value="false" name="isPayment" id="isPayment">
+                                                        </div>
+                                                        <div class="form-box">
+                                                            <ul class="active-button">
+                                                                <li class="active">
+                                                                    <span class="round-btn"><i class="fa fa-credit-card"></i></span>
+                                                                </li>
+                                                                <li class="active">
+                                                                    <span class="round-btn"><i class="fa fa-check"></i></span>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="payment-header">
+                                                                <p class="mt-2">Thông báo</p>
+                                                            </div>
+                                                            <hr>
+                                                            <div class="notification-payment">
+                                                                <img src="img/sub_img/check.png">
+                                                                <p class="line1 mt-1"><i class="fa fa-check-circle-o"></i> Thiết lập thanh toán bằng thẻ thành công</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-radio">
+                                            <input type="radio" name="payment" id="payment-3">
+                                            <label for="payment-3">
+                                                <span></span>
+                                                Thanh toán khi nhận hàng
+                                            </label>
+                                            <div class="caption">
+                                                <p>Người giao hàng thu hộ tiền khi giao hàng cho khách hàng thành
+                                                    công</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-checkbox">
+                                        <input type="checkbox" id="terms">
+                                        <label for="terms">
+                                            <span></span>
+                                            Tôi đã đọc và đồng ý với <a href="#" class="term"> điều khoản của
+                                            Electronics Store</a>
+                                        </label>
+                                    </div>
+                                    
+                                    <input type="hidden" name="userId" th:value="${session.UserModel.id}">
+                                    <button type="submit" id="submit-order" class="primary-btn order-submit">Đặt hàng</button>
+                               
+                            </div>
+ 							</form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+
+<div th:replace= "client/_generic :: footer_html"></div>
+
+<script type="text/javascript">
+$(".multistep-container .form-box .payment-submit").click(function () {
+    $(this).parents(".form-box").fadeOut('fast');
+    $(this).parents(".form-box").next().fadeIn('fast');
+});
+
+function order(id_form) {
+		var data = {};
+		var formData = $("#" + id_form).serializeArray();
+		 $.each(formData, function (i, v) {
+			 data[""+v.name+""] = v.value;
+         });
+		 $.ajax({
+	            url: '/api/order',
+	            type: 'POST',
+	            contentType: 'application/json',
+	            data: JSON.stringify(data),
+	            dataType: 'json',
+	            success: function (result) {
+	            	if(result.alert == 'success') {
+	            		$("#" + id_form).attr('action', "/dat-hang");
+	            		$("#submit-order").click();
+	            	} else if (result.alert == 'danger'){
+	            		$("#" + id_form + " .display-invalid-error").css("display", "block");
+	            		$("#" + id_form + " .display-invalid-error").html(result.message);
+	            	}
+	            	
+	            },
+	            error: function (error) {
+	            	$("#" + id_form).css('filter', 'none');
+	            	$('#display-loadding-register').css('display', 'none');
+	            	alert(error.message);
+	            }
+		 });
+	}
+
+function updateAddress() {
+	var province = $("#province").val();
+	var district = $("#district").val();
+	var towwn = $("#towwn").val();
+	var numHouse = $("#num-house").val();
+	
+	var address = province + ", " + district + ", " + towwn + ", " + numHouse;
+	$("#address").val(address);
+	
+}
+</script>
+</body>
+</html>

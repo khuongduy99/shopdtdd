@@ -1,0 +1,268 @@
+<!DOCTYPE >
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="admin/_table :: header_html" />
+
+<body class="theme-red">
+	<!-- Page Loader -->
+	<div th:replace="admin/_fragments :: navbar_html"></div>
+	<!-- #END# Page Loader -->
+
+	<!-- Left Sidebar -->
+	<div th:replace="admin/_fragments :: menu_html"></div>
+	<input type="hidden" value="/api/categories" id="urlAPI">
+	<section class="content">
+		<div class="container-fluid">
+			<div class="block-header">
+				<button type="button" data-toggle="modal" data-target="#add"
+					class="btn btn-primary">
+					<span>THÊM MỚI</span> <i class="material-icons">add</i>
+				</button>
+				<button type="button" data-toggle="modal" data-target="#add"
+					class="btn btn-danger" id="btn_deleteAll" onclick="showConfirmDelete($('#idsToDelete').val())" disabled>
+					<span>XÓA</span> <i class="material-icons">delete_forever</i>
+				</button>
+			</div>
+			<!-- Exportable Table -->
+			<div class="row clearfix">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="card">
+						<div class="header">
+							<h2 class="text-uppercase" th:utext="${!isAccessory ? 'Danh sách sản phẩm chính' : 'Danh sách phụ kiện'}"></h2>
+						</div>
+
+						<div class="body">
+							<div class="table-responsive">
+								<table class="table table-bordered table-striped table-hover dataTable js-exportable" style="width: 100%">
+									
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- #END# Exportable Table -->
+		</div>
+
+	</section>
+
+
+	
+		<!-- MANAGER-->
+		<!-- MODAL ADD -->
+		<div class="modal fade" id="add" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header border-bottom-0">
+						<h4 class="modal-title text-uppercase" th:utext="${!isAccessory ? 'Thêm sản phẩm chính' : 'Thêm phụ kiện'}"> </h4>
+					</div>
+					<form id="form_validation_1" action="javascript:add('form_validation_1');">
+						<div class="modal-body">
+							
+								<div class="display-invalid-error"></div>
+								<div class="form-group form-float">
+									<div class="form-line">
+										<input type="text" class="form-control" name="name" maxlength="30" minlength="2" autocomplete="off" required>
+										<label class="form-label" th:utext="${!isAccessory ? 'Tên sản phẩm chính' : 'Tên phụ kiện'}"></label>
+									</div>
+									<div class="help-info">Giới hạn từ 2 đến 30 ký tự.</div>
+								</div>
+								<input type="hidden" name="isAccessory" th:value="${isAccessory}">
+						</div>
+					
+						<div class="modal-footer border-top-0 d-flex justify-content-center">
+				          <button type="submit" class="btn btn-success">Lưu</button>
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">ĐÓNG</button>
+				        </div>
+				     </form>
+				</div>
+			</div>
+		</div>
+	
+	<!-- END MODAL ADD -->
+	<!-- MODAL EDIT -->
+	<div class="modal fade" id="edit" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title text-uppercase" th:utext="${!isAccessory ? 'Chỉnh sửa sản phẩm chính' : 'Chỉnh sửa phụ kiện'}"></h4>
+				</div>
+				<div class="modal-body">
+
+					<form id="form_validation_2" action="javascript:edit('form_validation_2');">
+					<div class="display-invalid-error"></div>
+						<div class="input-group form-float">
+							<b>Tên Loại Sản Phẩm</b>
+			                <div class="input-group form-group">
+			                	 <span class="input-group-addon"> <i class="material-icons">devices_other</i></span>
+								<div class="form-line">
+									<input type="text" name="name" class="form-control name" placeholder="Tên Loại Sản Phẩm" required="required" maxlength="50" minlength="2">
+								</div>
+								<div class="help-info">Giới hạn từ 2 đến 50 ký tự.</div>
+							</div>
+						</div>
+						<div class="form-line">
+								<b>Trạng Thái</b>
+									<select class="form-control show-tick status" name="status">
+										<th:block th:each="item : ${ListStatus}">
+								            <option th:value="${item}" th:utext="${item}"></option>
+								        </th:block>
+                                       
+                              		</select>
+                                
+                  		</div>
+						<input type="hidden" class="id" name="id">
+						<br>
+						<br>
+						<button class="btn btn-primary waves-effect" type="submit">Lưu</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-link waves-effect"
+						data-dismiss="modal">ĐÓNG</button>
+				</div>
+			</div>
+		</div>
+		</div>
+		<!-- END MODAL EDIT -->
+		<input type="hidden" value="/api/categories" id="urlAPI">
+		<input type="hidden" th:value="${isAccessory}" id="isAccessory">
+		<!-- SCRIPT -->
+		<div th:replace="admin/_table :: footer_html"></div>
+		<div th:utext="${ScriptFormBackEnd}"></div>
+		<script type="text/javascript">
+			var urlGetDatabaseTable = "/api/categories?isAccessory=" + $("#isAccessory").val();
+		    //Exportable table
+		     var table = $('.js-exportable').DataTable({
+		        dom: 'Bfrtip',
+		        responsive: true,
+		        buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+		        pageLength: 10,
+	            ajax: {url: urlGetDatabaseTable, dataSrc : ""},
+	            columns: [
+	            	{
+	            		data: null,
+	            		bSortable: false,
+	            		mRender: function(data, type, full) {
+	            			var typeInput = " type='checkbox'";
+	            			var valueInput = " value='"+data.id+"'";
+	            			var idInput = " id='id_delete_"+data.id+"'";
+	            			var nameInput = " name='id_delete'";
+	            			var onclickInput = " onclick='selectItemDelete()'";
+	            			var classInput = " class='filled-in chk-col-orange'";
+	            			var forLabel = " for='id_delete_"+data.id+"'";
+	            			var content = "<input "+typeInput + valueInput + idInput + classInput + nameInput + onclickInput + "/>";
+	            				content += "<label " + forLabel + "></label>";
+	            	        return content;
+	            	   }
+	            	},
+	            	{
+	            		title: "Tên",
+	            		data: "name"
+	            	},
+	            	{
+	            		title: "Trạng Thái",
+	            		data: "status",
+	            		render: function(data) {
+	            			var res = "";
+	            			if(data == 'Hoạt Động') res = "<span class='badge bg-teal'>" + data + "</span>";
+	            			if(data == 'Không Hoạt Động') res = "<span class='badge bg-red'>" + data + "</span>"; 
+	            			return res;
+	            		}
+	            	},
+	            	{
+	            		title: "Lần cuối cập nhật",	
+	            		data: "updatedDate",
+	            		render: function(data) {
+	            			return formatDate(data);
+	            		}
+	            	},
+	            	{
+	            		title: "Người cập nhật",	
+	            		data: "updatedBy"
+	            	},
+	            	{
+	            		title: "Ngày tạo",	
+	            		data: "createdDate",
+	            		render: function(data) {
+	            			return formatDate(data);
+	            		}
+	            	},
+	            	{
+	            		title: "Người tạo",	
+	            		data: "createdBy"
+	            	},
+	            	{
+	            		title: "",
+	            		data: null,
+	            		bSortable: false,
+	            		mRender: function(data, type, full) {
+	            			
+	            			var typeButton = " type='button'";
+	            			//button view
+	            			var titleButtonView = " title='Xem chi tiết'";
+	            			var onclickButtonView = " onclick='openView("+data.id+")'";
+	            			var classButtonView = " class='btn bg-blue btn-circle waves-effect'";
+	            			//button Edit
+	            			var titleButtonEdit = " title='Chỉnh sửa'";
+	            			var onclickButtonEdit = " onclick='openEdit("+data.id+")'";
+	            			var classButtonEdit = " class='btn bg-green btn-circle waves-effect'";
+	            			
+	            			//button Delte
+	            			var titleButtonDelete = " title='Xóa'";
+	            			var onclickButtonDelete = " onclick='showConfirmDelete(["+data.id+"])'";
+	            			var classButtonDelete = " class='btn bg-red btn-block btn-circle waves-effect'";
+	            			//var content = "<button "+typeButton + titleButtonView + onclickButtonView + classButtonView+"><i class='material-icons'>search</i></button>";
+	            			//content += "<button "+typeButton + titleButtonEdit + onclickButtonEdit + classButtonEdit+"><i class='material-icons'>edit</i></button>";
+	            			//content += "<button "+typeButton + titleButtonDelete + onclickButtonDelete + classButtonDelete+"><i class='material-icons'>delete</i></button>";
+	            			var content = "<div style='position: absolute;'>";
+	            			content += "<button class='btn bg-deep-purple btn-circle waves-effect waves-circle waves-float' onclick='openToolOption(this);'><i class='material-icons'>settings</i></button>";
+	            			content += "<ul class='optionbubble'>";
+	            			content += "<li><button class='btn bg-green btn-circle waves-effect' title='Đổi tên' onclick='openEdit()'><i class='material-icons'>settings_backup_restore</i></button></li>";
+	            			content += "<li><button class='btn bg-red btn-circle waves-effect' title='Xóa'><i class='material-icons'>delete_forever</i></button></li>";
+	            			content += "</ul></div>";
+	            	        return content;
+	            	   }
+	            	}
+	            ],
+		    });
+		    
+		     function resetTable() {
+					table.ajax.reload();
+					resetAllMenu();
+				}
+		    
+			function openEdit(id) {
+				var url = $("#urlAPI").val() + "/" + id;
+				$.get(url,function(data) {
+					$("#edit .name").val(data.name);
+					$("#edit .id").val(data.id);
+					$("#edit .status option").each(function(){
+						if($(this).val() == data.status) {
+							$(this).attr("selected", "selected");
+							
+						}
+							   
+					});
+				});
+				
+				
+				$("#edit").modal("show"); 
+			}
+			
+			function openView(id) {
+				var url = $("#urlAPI").val() + "/" + id;
+				$.get(url,function(data) {
+					$("form[id='form_validation_2'] input[name='name']").val(data.name);
+					$("form[id='form_validation_2'] input[name='id']").val(data.id);
+					$("form[id='form_validation_2'] .form-line").addClass("focused");
+				});
+				$("#edit").modal("show"); 
+			}
+			
+			
+		</script>
+	<div th:replace="admin/_fragments :: myScript_html"></div>
+</body>
+
+</html>

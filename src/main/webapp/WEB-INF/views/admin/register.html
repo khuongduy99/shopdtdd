@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace= "admin/_fragments :: header_html"/>
+
+<body class="login-page">
+    <div class="login-box">
+        <div class="logo">
+            <a href="javascript:void(0);">Admin<b>BSB</b></a>
+            <small>Admin BootStrap Based - Material Design</small>
+        </div>
+        <div class="card">
+            <div class="body">
+            	
+                <form id="sign_up" action="javascript:register('sign_up');">
+                    <div class="msg">Đăng ký thành viên mới</div>
+                    <div class="display-invalid-error"></div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">person</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="text" class="form-control" name="fullName" placeholder="Họ Tên" required autofocus>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">email</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="email" class="form-control" name="email" placeholder="Địa chỉ Email" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">lock</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="password" class="form-control" name="password" minlength="6" placeholder="Mật Khẩu" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">lock</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="password" class="form-control" name="confirm" minlength="6" placeholder="Confirm Password" required>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-block btn-lg bg-pink waves-effect" type="submit">ĐĂNG KÝ</button>
+
+                    <div class="m-t-25 m-b--5 align-center">
+                        <a href="/login">Bạn đã có tài khoản? Đăng nhập ngay!</a>
+                    </div>
+                </form>
+                
+                <div id="display-loadding" style="display:none;border: 3px solid #f1f1f1;position: absolute;top:0;left:0;z-index: 2;width: 100%;height: 100%;text-align: center;">
+				 	<div class="preloader pl-size-xl" style="position: absolute;top: 36%;left: 40%;">
+                         <div class="spinner-layer pl-blue">
+                              <div class="circle-clipper left">
+                                   <div class="circle"></div>
+                              </div>
+                              <div class="circle-clipper right">
+                                   <div class="circle"></div>
+                              </div>
+                         </div>
+                    </div>
+				</div>
+            </div>
+        </div>
+    </div>
+
+     <div th:replace= "admin/_fragments :: footer_html"></div>
+     <script type="text/javascript">
+     function register(id_form) {
+ 		var data = {};
+ 		var formData = $("#" + id_form).serializeArray();
+ 		 $.each(formData, function (i, v) {
+ 			 data[""+v.name+""] = v.value;
+	         });
+ 		 var url = "/api/register";
+ 			$('#sign_up').css('filter', 'blur(8px)');
+ 			$('#display-loadding').css('display', 'block');
+ 		 $.ajax({
+ 	            url: url,
+ 	            type: 'POST',
+ 	            contentType: 'application/json',
+ 	            data: JSON.stringify(data),
+ 	            dataType: 'json',
+ 	            success: function (result) {
+ 	            	$('#sign_up').css('filter', 'blur(0px)');
+ 	            	$('#display-loadding').css('display', 'none');
+ 	            	if(result.alert == 'success') {
+ 	            		var content = "<div class='alert alert-info'>" + result.message + "</div>";
+ 	            		$('.card .body').html(content);
+ 	            	} else if (result.alert == 'danger'){
+ 	            		var txt = "<div class='alert bg-red alert-dismissible' role='alert'>"
+ 	            		+ "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+ 	            		+ "<span aria-hidden='true'>&times;</span></button>" + result.message + "</div>";
+ 	            		$("#" + id_form + " .display-invalid-error").html(txt);
+ 	            	}
+ 	            	
+ 	            },
+ 	            error: function (error) {
+ 	            	$('#sign_up').css('filter', 'blur(0px)');
+ 	            	$('#display-loadding').css('display', 'none');
+ 	            	alert(error.message);
+ 	            }
+ 		 });
+ 	}
+     </script>
+</body>
+
+</html>

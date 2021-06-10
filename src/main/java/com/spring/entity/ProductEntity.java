@@ -3,7 +3,6 @@ package com.spring.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -12,6 +11,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 
@@ -19,23 +21,32 @@ import org.hibernate.annotations.Type;
 @Table(name = "product")
 public class ProductEntity extends BaseEntity {
 
+	@NotEmpty(message = "\"Tên Sản Phẩm\" không được để trống.")
+	@Size(min = 2, max = 50, message = "\"Tên Sản Phẩm\" nên có độ dài từ 2 đến 50 ký tự.")
+	@Pattern(regexp = "[\\w ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴ ,.\\-:+/)(&]*", message = "\"Tên Sản Phẩm\" không được chứa ký tự đặc biệt")
 	@Column
 	private String name;
+	
+	@Column
+	private int price;
 
 	@Column
-	private double price;
-
-	@Column
-	private double sale;
+	private int sale;
 
 	@Column
 	private int qty;
+	
+	@Column(name = "url_image")
+	private String urlImage;
+	
+	@Column(name = "url_images", columnDefinition = "TEXT")
+	private String urlImages;
 
-	@Column(columnDefinition = "boolean default false")
+	@Column(columnDefinition = "boolean default false", name = "is_new")
 	@Type(type = "org.hibernate.type.NumericBooleanType")
 	private boolean isNew = false;
 
-	@Column(columnDefinition = "boolean default false")
+	@Column(columnDefinition = "boolean default false", name = "is_hot")
 	@Type(type = "org.hibernate.type.NumericBooleanType")
 	private boolean isHot = false;
 
@@ -53,17 +64,42 @@ public class ProductEntity extends BaseEntity {
 
 	@Column(columnDefinition = "TEXT")
 	private String specifications;
+	
+	@Column
+	private String tags;
+	
+	public String getUrlImage() {
+		return urlImage;
+	}
+
+	public void setUrlImage(String urlImage) {
+		this.urlImage = urlImage;
+	}
+
+	public String getUrlImages() {
+		return urlImages;
+	}
+
+	public void setUrlImages(String urlImages) {
+		this.urlImages = urlImages;
+	}
+
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
 
 	@ManyToOne
 	@JoinColumn(name = "brand_id")
 	private BrandEntity brand;
 
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "filter_product", joinColumns = @JoinColumn(name = "filter_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+	@ManyToMany
+	@JoinTable(name = "filter_product", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "filter_id"))
 	private List<FilterEntity> listFilter = new ArrayList<FilterEntity>();
 
-	@OneToMany(mappedBy = "product")
-	private List<ImageOfProductEntity> listImage;
 	
 	@OneToMany(mappedBy = "product")
 	private List<ReviewEntity> listReview;
@@ -72,31 +108,23 @@ public class ProductEntity extends BaseEntity {
 		return name;
 	}
 
-	public List<ReviewEntity> getListReview() {
-		return listReview;
-	}
-
-	public void setListReview(List<ReviewEntity> listReview) {
-		this.listReview = listReview;
-	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public double getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 
-	public double getSale() {
+	public int getSale() {
 		return sale;
 	}
 
-	public void setSale(double sale) {
+	public void setSale(int sale) {
 		this.sale = sale;
 	}
 
@@ -181,12 +209,11 @@ public class ProductEntity extends BaseEntity {
 		this.listFilter = listFilter;
 	}
 
-	public List<ImageOfProductEntity> getListImage() {
-		return listImage;
+	public List<ReviewEntity> getListReview() {
+		return listReview;
 	}
 
-	public void setListImage(List<ImageOfProductEntity> listImage) {
-		this.listImage = listImage;
+	public void setListReview(List<ReviewEntity> listReview) {
+		this.listReview = listReview;
 	}
-	
 }

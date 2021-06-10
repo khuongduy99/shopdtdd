@@ -18,12 +18,22 @@ public class FilterEntity extends BaseEntity {
 	private String name;
 
 	@ManyToOne
-    @JoinColumn(name="classify_id")
-    private ClassifyEntity classify;
+    @JoinColumn(name="category_id")
+    private CategoryEntity category;
 	
 	@ManyToMany(mappedBy = "listFilter")
     private List<ProductEntity> listProduct = new ArrayList<ProductEntity>();
- 
+	
+	@Column(name="parent_id")
+	private Long parentId;
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
 
 	public String getName() {
 		return name;
@@ -33,12 +43,13 @@ public class FilterEntity extends BaseEntity {
 		this.name = name;
 	}
 
-	public ClassifyEntity getClassify() {
-		return classify;
+	
+	public CategoryEntity getCategory() {
+		return category;
 	}
 
-	public void setClassify(ClassifyEntity classify) {
-		this.classify = classify;
+	public void setCategory(CategoryEntity category) {
+		this.category = category;
 	}
 
 	public List<ProductEntity> getListProduct() {
