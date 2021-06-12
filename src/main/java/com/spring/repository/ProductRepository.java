@@ -88,9 +88,21 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long>{
 	@Query(value = "SELECT COUNT(p.id) FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id WHERE b.id = ?1 AND c.status = ?2 AND b.status = ?3 AND p.status = ?4", nativeQuery = true)
     int countByBrandIdAndStatus(Long id, String statusCategory, String statusBrand, String productStatus);
 	
+	@Query(value = "SELECT COUNT(p.id) FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id WHERE c.id = ?1 AND c.status = ?2 AND b.status = ?3 AND p.status = ?4", nativeQuery = true)
+    int countByCategoryIdAndStatus(Long id, String statusCategory, String statusBrand, String productStatus);
+	
+	
+	@Query(value = "SELECT COUNT(*) FROM (SELECT p.id FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id JOIN filter_product fp ON fp.product_id = p.id "
+			+ "WHERE c.id = ?1 AND c.status = ?2 AND b.status = ?3 AND p.status = ?4 AND fp.filter_id IN (?5) GROUP BY p.id HAVING COUNT(DISTINCT fp.filter_id) = ?6) AS some_name", nativeQuery = true)
+    int countByCategoryIdAndFilterAndStatus(Long id, String statusCategory, String statusBrand, String productStatus, String [] idsFilter, int sizeFilter);
+	
+	@Query(value = "SELECT COUNT(*) FROM (SELECT p.id FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id JOIN filter_product fp ON fp.product_id = p.id "
+			+ "WHERE b.id = ?1 AND c.status = ?2 AND b.status = ?3 AND p.status = ?4 AND fp.filter_id IN (?5) GROUP BY p.id HAVING COUNT(DISTINCT fp.filter_id) = ?6) AS some_name", nativeQuery = true)
+    int countByBrandIdAndFilterAndStatus(Long id, String statusCategory, String statusBrand, String productStatus, String [] idsFilter, int sizeFilter);
+	
 	@Query(value = "SELECT COUNT(p.id) FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id "
-			+ "WHERE c.status = ?1 AND b.status = ?2 AND p.status = ?3 AND p.name LIKE ?4 OR p.alias LIKE ?5 OR p.tags LIKE ?6", nativeQuery = true)
-	int countSearch(String statusCategory, String statusBrand, String productStatus, String keyword, String keywordAlias, String tags);
+			+ "WHERE c.status = ?1 AND b.status = ?2 AND p.status = ?3 AND p.name LIKE ?4 OR p.alias LIKE ?5", nativeQuery = true)
+	int countSearch(String statusCategory, String statusBrand, String productStatus, String keyword, String keywordAlias);
 	
 	@Query(value = "SELECT COUNT(p.id) FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id "
 			+ "WHERE c.status = ?1 AND b.status = ?2 AND p.status = ?3 AND p.tags LIKE ?4", nativeQuery = true)
@@ -113,21 +125,29 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long>{
 	@Query(value = "SELECT p.* FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id WHERE c.alias = ?1 AND c.status = ?2 AND b.status = ?3 AND p.status = ?4 LIMIT ?5 OFFSET ?6", nativeQuery = true)
 	List<ProductEntity> findAllByCategoryAliasAndStatusAndLimitAndOffset(String categoryAlias, String statusCategory, String statusBrand, String productStatus, int limit, int offset);
 	
-	@Query(value = "SELECT p.* FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id WHERE c.id = ?1 AND c.status = ?2 AND b.status = ?3 AND p.status = ?4 LIMIT ?5 OFFSET ?6", nativeQuery = true)
-	List<ProductEntity> findAllByCategoryIdAndStatusAndLimitAndOffset(Long id, String statusCategory, String statusBrand, String productStatus, int limit, int offset);
+	@Query(value = "SELECT p.* FROM PRODUCT p JOIN BRAND b ON p.brand_id = b.id JOIN CATEGORY c ON c.id = b.category_id WHERE c.id = ?1 AND c.status = ?2 AND b.status = ?3 AND p.status = ?4 LIMIT ?5 OFFSET ?6", nativeQuery = true)
+	List<ProductEntity> findAllByCategoryIdAndStatusAndLimitAndOffset(Long categoryId, String statusCategory, String statusBrand, String productStatus, int limit, int offset);
 	
-	@Query(value = "SELECT p.* FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id WHERE b.id = ?1 AND c.status = ?2 AND b.status = ?3 AND p.status = ?4 LIMIT ?5 OFFSET ?6", nativeQuery = true)
-	List<ProductEntity> findAllByBrandIdAndStatusAndLimitAndOffset(Long id, String statusCategory, String statusBrand, String productStatus, int limit, int offset);
+	
+	@Query(value = "SELECT p.* FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id JOIN filter_product fp ON fp.product_id = p.id "
+			+ "WHERE c.id = ?1 AND c.status = ?2 AND b.status = ?3 AND p.status = ?4 AND fp.filter_id IN (?5) GROUP BY p.id HAVING COUNT(DISTINCT fp.filter_id) = ?6 LIMIT ?7 OFFSET ?8", nativeQuery = true)
+	List<ProductEntity> findAllByCategoryIdAndStatusAndFilterAndLimitAndOffset(Long id, String statusCategory, String statusBrand, String productStatus, String[] idsFilter, int sizeFilter, int limit, int offset);
+	
+	@Query(value = "SELECT p.* FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id JOIN filter_product fp ON fp.product_id = p.id "
+			+ "WHERE b.id = ?1 AND c.status = ?2 AND b.status = ?3 AND p.status = ?4 AND fp.filter_id IN (?5) GROUP BY p.id HAVING COUNT(DISTINCT fp.filter_id) = ?6 LIMIT ?7 OFFSET ?8", nativeQuery = true)
+	List<ProductEntity> findAllByBrandIdAndStatusAndFilterAndLimitAndOffset(Long id, String statusCategory, String statusBrand, String productStatus, String[] idsFilter, int sizeFilter , int limit, int offset);
 	
 	@Query(value = "SELECT p.* FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id WHERE c.id = ?1 AND c.status = ?2 AND b.status = ?3 AND p.status = ?4", nativeQuery = true)
 	List<ProductEntity> findAllByCategoryIdAndStatus(Long id, String statusCategory, String statusBrand, String productStatus);
 	
-	@Query(value = "SELECT p.* FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id WHERE b.id = ?1 AND c.status = ?2 AND b.status = ?3 AND p.status = ?4", nativeQuery = true)
-	List<ProductEntity> findAllByBrandIdAndStatus(Long id, String statusCategory, String statusBrand, String productStatus);
+	@Query(value = "SELECT p.* FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id WHERE b.id = ?1 AND c.status = ?2 AND b.status = ?3 AND p.status = ?4 LIMIT ?5 OFFSET ?6", nativeQuery = true)
+	List<ProductEntity> findAllByBrandIdAndStatusAndLimitAndOffset(Long id, String statusCategory, String statusBrand, String productStatus, int limit, int offset );
+	
+	
 	
 	@Query(value = "SELECT p.* FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id "
-			+ "WHERE c.status = ?1 AND b.status = ?2 AND p.status = ?3 AND p.name LIKE ?4 OR p.alias LIKE ?5 OR p.tags LIKE ?6 LIMIT ?7 OFFSET ?8", nativeQuery = true)
-	List<ProductEntity> search(String statusCategory, String statusBrand, String productStatus, String keyword, String keywordAlias, String tags, int limit, int offset);
+			+ "WHERE c.status = ?1 AND b.status = ?2 AND p.status = ?3 AND p.name LIKE ?4 OR p.alias LIKE ?5 LIMIT ?6 OFFSET ?7", nativeQuery = true)
+	List<ProductEntity> search(String statusCategory, String statusBrand, String productStatus, String keyword, String keywordAlias, int limit, int offset);
 	
 	@Query(value = "SELECT p.* FROM product p JOIN brand b ON p.brand_id = b.id JOIN category c ON c.id = b.category_id "
 			+ "WHERE c.status = ?1 AND b.status = ?2 AND p.status = ?3 AND p.tags LIKE ?4 LIMIT ?5 OFFSET ?6", nativeQuery = true)

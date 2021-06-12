@@ -386,51 +386,11 @@ public class ProductService implements IProductService {
 	public List<ProductDTO> findAllByCategoryIdAndFilterAndStatusAndLimitAndOffset(Long id, String filterId,
 			String statusCategory, String statusBrand, String productStatus, int limit, int offset) {
 		List<ProductDTO> result = new ArrayList<ProductDTO>();
-		List<ProductEntity> entitiesFull = productRepository.findAllByCategoryIdAndStatus(id, statusCategory, statusBrand, productStatus);
-		List<ProductEntity> entitiesCondition = new ArrayList<ProductEntity>();
 		
-		Long [] idsFilter = new Long[filterId.split(",").length];
-		
-		int i = 0;
-		for(String s : filterId.split(",")) {
-			idsFilter[i] = Long.parseLong(s);
-			i++;
-		}
-if(idsFilter[0] == null) {
-			
-			int index = 0;
-			int oset = offset;
-			while(true) {
-				if(index == limit || oset >= entitiesFull.size()) break;
-				ProductDTO dto = modelMapper.map(entitiesFull.get(oset), ProductDTO.class);
-				result.add(dto);
-				oset++;
-				index++;
-			}
-			return result;
-		}
-		for (ProductEntity item : entitiesFull) {
-			int match = 0;
-			for(int j = 0; j < item.getListFilter().size(); j++) {
-				for(int k = 0; k < idsFilter.length; k ++) {
-					if(idsFilter[k] == item.getListFilter().get(j).getId()) {
-						match++;
-					}
-				}
-			}
-			if(match == idsFilter.length) {
-				entitiesCondition.add(item);
-			}
-			
-		}
-		int index = 0;
-		int oset = offset;
-		while(true) {
-			if(index == limit || oset >= entitiesCondition.size()) break;
-			ProductDTO dto = modelMapper.map(entitiesCondition.get(oset), ProductDTO.class);
-			result.add(dto);
-			oset++;
-			index++;
+		String [] idsFilter = filterId.split(",");
+		List<ProductEntity> entities = productRepository.findAllByCategoryIdAndStatusAndFilterAndLimitAndOffset(id, statusCategory, statusBrand, productStatus, idsFilter, idsFilter.length,  limit, offset);
+		for(ProductEntity entity : entities) {
+			result.add(modelMapper.map(entity, ProductDTO.class));
 		}
 		return result;
 	}
@@ -439,50 +399,11 @@ if(idsFilter[0] == null) {
 	public List<ProductDTO> findAllByBrandIdAndFilterAndStatusAndLimitAndOffset(Long id, String filterId,
 			String statusCategory, String statusBrand, String productStatus, int limit, int offset) {
 		List<ProductDTO> result = new ArrayList<ProductDTO>();
-		List<ProductEntity> entitiesFull = productRepository.findAllByBrandIdAndStatus(id, statusCategory, statusBrand, productStatus);
-		List<ProductEntity> entitiesCondition = new ArrayList<ProductEntity>();
-		Long [] idsFilter = new Long[filterId.split(",").length];
 		
-		int i = 0;
-		for(String s : filterId.split(",")) {
-			idsFilter[i] = Long.parseLong(s);
-			i++;
-		}
-		if(idsFilter[0] == null) {
-
-			int index = 0;
-			int oset = offset;
-			while(true) {
-				if(index == limit || oset >= entitiesFull.size()) break;
-				ProductDTO dto = modelMapper.map(entitiesFull.get(oset), ProductDTO.class);
-				result.add(dto);
-				oset++;
-				index++;
-			}
-			return result;
-		}
-		for (ProductEntity item : entitiesFull) {
-			int match = 0;
-			for(int j = 0; j < item.getListFilter().size(); j++) {
-				for(int k = 0; k < idsFilter.length; k ++) {
-					if(idsFilter[k] == item.getListFilter().get(j).getId()) {
-						match++;
-					}
-				}
-			}
-			if(match == idsFilter.length) {
-				entitiesCondition.add(item);
-			}
-			
-		}
-		int index = 0;
-		int oset = offset;
-		while(true) {
-			if(index == limit || oset >= entitiesCondition.size()) break;
-			ProductDTO dto = modelMapper.map(entitiesCondition.get(oset), ProductDTO.class);
-			result.add(dto);
-			oset++;
-			index++;
+		String [] idsFilter = filterId.split(",");
+		List<ProductEntity> entities = productRepository.findAllByBrandIdAndStatusAndFilterAndLimitAndOffset(id, statusCategory, statusBrand, productStatus, idsFilter, idsFilter.length,  limit, offset);
+ 		for(ProductEntity entity : entities) {
+			result.add(modelMapper.map(entity, ProductDTO.class));
 		}
 		return result;
 	}
@@ -490,57 +411,15 @@ if(idsFilter[0] == null) {
 	@Override
 	public int countByCategoryIdAndFilterAndStatus(Long id, String filter, String statusCategory, String statusBrand,
 			String productStatus) {
-		int result = 0;
-		List<ProductEntity> entities = productRepository.findAllByCategoryIdAndStatus(id, statusCategory, statusBrand, productStatus);
-		Long [] idsFilter = new Long[filter.split(",").length];
-		
-		int i = 0;
-		for(String s : filter.split(",")) {
-			idsFilter[i] = Long.parseLong(s);
-			i++;
-		}
-		if(idsFilter[0] == null) return entities.size();
-		for (ProductEntity item : entities) {
-			int match = 0;
-			for(int j = 0; j < item.getListFilter().size(); j++) {
-				for(int k = 0; k < idsFilter.length; k ++) {
-					if(idsFilter[k] == item.getListFilter().get(j).getId()) {
-						match++;
-					}
-				}
-			}
-			if(match == idsFilter.length) result++;
-			
-		}
-		return result;
+		String [] idsFilter = filter.split(",");
+		return productRepository.countByCategoryIdAndFilterAndStatus(id, statusCategory, statusBrand, productStatus, idsFilter, idsFilter.length);
 	}
 	
 	@Override
 	public int countByBrandIdAndFilterAndStatus(Long id, String filter, String statusCategory, String statusBrand,
 			String productStatus) {
-		int result = 0;
-		List<ProductEntity> entities = productRepository.findAllByBrandIdAndStatus(id, statusCategory, statusBrand, productStatus);
-		Long [] idsFilter = new Long[filter.split(",").length];
-		if(idsFilter[0] == null) return entities.size();
-		int i = 0;
-		for(String s : filter.split(",")) {
-			idsFilter[i] = Long.parseLong(s);
-			i++;
-		}
-		if(idsFilter[0] == null) return entities.size();
-		for (ProductEntity item : entities) {
-			int match = 0;
-			for(int j = 0; j < item.getListFilter().size(); j++) {
-				for(int k = 0; k < idsFilter.length; k ++) {
-					if(idsFilter[k] == item.getListFilter().get(j).getId()) {
-						match++;
-					}
-				}
-			}
-			if(match == idsFilter.length) result++;
-			
-		}
-		return result;
+		String [] idsFilter = filter.split(",");
+		return productRepository.countByBrandIdAndFilterAndStatus(id, statusCategory, statusBrand, productStatus, idsFilter, idsFilter.length);
 	}
 
 	@Override
@@ -554,6 +433,11 @@ if(idsFilter[0] == null) {
 	public int countSearchByTags(String keyword, String statusCategory, String statusBrand, String productStatus) {
 		keyword = "%" + keyword + "%";
 		return productRepository.countSearchByTags(statusCategory, statusBrand, productStatus, keyword);
+	}
+
+	@Override
+	public int countByCategoryIdAndStatus(Long id, String statusCategory, String statusBrand, String productStatus) {
+		return productRepository.countByCategoryIdAndStatus(id, statusCategory, statusBrand, productStatus);
 	}
 
 

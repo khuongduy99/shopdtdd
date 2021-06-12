@@ -13,7 +13,8 @@
             <div class="col-md-12">
                 <ul class="breadcrumb-tree">
                     <li><a href="/">Trang chủ</a></li>
-                    <li class="active">Tìm kiếm với từ khóa "<th:block th:utext="${keyword}"></th:block>"</li>
+                    <li th:if="${keyword != null}" class="active">Tìm kiếm với từ khóa "<th:block th:utext="${keyword}"></th:block>"</li>
+                    <li th:if="${tags != null}" class="active">Tags "<th:block th:utext="${tags}"></th:block>"</li>
                 </ul>
             </div>
         </div>
@@ -27,7 +28,8 @@
 <div class="section">
     <!-- container -->
     <div class="container">
-    <h4>Tìm thấy <th:block th:utext="${totalItem}"></th:block> sản phẩm cho từ khóa "<th:block th:utext="${keyword}"></th:block>"</h4>
+    <h4 th:if="${keyword != null}">Tìm thấy <th:block th:utext="${totalItem}"></th:block> sản phẩm cho từ khóa "<th:block th:utext="${keyword}"></th:block>"</h4>
+    <h4 th:if="${tags != null}">Tìm thấy <th:block th:utext="${totalItem}"></th:block> sản phẩm cho tags "<th:block th:utext="${tags}"></th:block>"</h4>
         <!-- row -->
         <div class="row">
             <!-- STORE -->
@@ -77,11 +79,12 @@
 	                                        	<span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup>
 	                                        </h4>
                                         <div class="product-rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
+                                            <th:block  th:each="i: ${#numbers.sequence(0, model.star - 1)}">
+					                        		<i class="fa fa-star"></i>
+					                        	</th:block>
+					                            <th:block th:if="${model.star != 5}" th:each="i: ${#numbers.sequence(0, 4 - model.star)}">
+					                        		<i class="fa fa-star-o"></i>
+					                        	</th:block>
                                         </div>
                                         <div class="product-btns">
                                             <button class="add-to-compare"><i class="fa fa-exchange"></i><span
@@ -232,11 +235,12 @@
 				}
 				
 				txt += "<div class='product-rating'>\n";
-				txt += "<i class='fa fa-star'></i>\n";
-				txt += "<i class='fa fa-star'></i>\n";
-				txt += "<i class='fa fa-star'></i>\n";
-				txt += "<i class='fa fa-star'></i>\n";
-				txt += "<i class='fa fa-star'></i\n>";
+				for(var j = 0; j < obj.star; j++) {
+					txt += " <i class='fa fa-star'></i>\n";
+			 	}
+			 	for(var j = 0; j < 5 - obj.star; j++) {
+			 		txt += " <i class='fa fa-star-o'></i>\n";
+			 	}
 				txt += "</div>\n";
 				txt += "<div class='product-btns'>\n";
 				txt += "<button class='add-to-compare'><i class='fa fa-exchange'></i><span class='tooltipp'>add to compare</span></button>\n";

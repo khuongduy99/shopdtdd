@@ -37,6 +37,7 @@ public interface IProductService {
 	int countByBrandIdAndFilterAndStatus(Long id, String filter, String statusCategory, String statusBrand, String productStatus);
 	int countByCategoryAliasAndStatus(String categoryAlias, String statusCategory, String statusBrand, String productStatus);
 	int countByBrandIdAndStatus(Long id, String statusCategory, String statusBrand, String productStatus);
+	int countByCategoryIdAndStatus(Long id, String statusCategory, String statusBrand, String productStatus);
 	int countSearch(String keyword, String statusCategory, String statusBrand, String productStatus);
 	int countSearchByTags(String keyword, String statusCategory, String statusBrand, String productStatus);
 	

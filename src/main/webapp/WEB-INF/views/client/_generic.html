@@ -889,8 +889,26 @@ function suggestSearch(input) {
 				content += "<div class='product-img'>\n";
 				content += "<img src='"+data[i].urlImage+"'></div>\n";
 				content += "<div class='product-body'>\n";
-				content += "<h3 class='product-name'><a>"+data[i].name+"</a></h3>\n";
-				content += "<h4 class='product-price'><span class='money-vnd'>"+data[i].price+"</span><sup>₫</sup></h4></div>\n";
+				content += "<h3 class='product-name'><a class='text-danger' href='/sp?n="+data[i].alias+"'>"+data[i].name+"</a></h3>\n";
+				content += "<div class='product-rating' style='font-size: 10px; color: #D10024;'>\n";
+				for(var j = 0; j < data[i].star; j++) {
+					content += " <i class='fa fa-star'></i>\n";
+			 	}
+			 	for(var j = 0; j < 5 - data[i].star; j++) {
+			 		content += " <i class='fa fa-star-o'></i>\n";
+			 	}
+			 	content += "</div>\n";
+				if(data[i].sale != 0) {
+					content += "<h5 class='product-price'>\n";
+					content += "<span class='money-vnd'>"+data[i].sale+"</span><sup>₫</sup>\n";
+					content += "<del class='product-old-price'><span class='money-vnd' >"+data[i].price+"</span><sup>₫</sup></del>\n";
+					content += "</h5>\n";
+				} else {
+					content += "<h5 class='product-price'>\n";
+					content += "<span class='money-vnd'>"+data[i].price+"</span><sup>₫</sup>\n";
+					content += "</h5>\n";
+				}
+				content += "</div>\n";
 				content += "</div>\n";
 			}
 			

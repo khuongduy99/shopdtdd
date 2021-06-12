@@ -66,21 +66,42 @@ public class ProductAPI {
 	}
     
     @GetMapping("/api/products")
-    public List<ProductDTO> getProductByBrandAndFilter(@RequestParam(required = false) Long categoryId, @RequestParam(required = false) Long brandId, @RequestParam(required = false) String filterId, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer offset) {
+    public List<ProductDTO> getProductByFilter(@RequestParam(required = false) Long categoryId, @RequestParam(required = false) Long brandId, @RequestParam(required = false) String filterId, @RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer offset) {
     	if(categoryId != null) {
-    		return service.findAllByCategoryIdAndFilterAndStatusAndLimitAndOffset(categoryId, filterId,  StatusCustom.ACTIVE, StatusCustom.ACTIVE, StatusCustom.ACTIVE, limit, offset);
+    		if(filterId != null) {
+    			return service.findAllByCategoryIdAndFilterAndStatusAndLimitAndOffset(categoryId, filterId,  StatusCustom.ACTIVE, StatusCustom.ACTIVE, StatusCustom.ACTIVE, limit, offset);
+    		} else {
+    			return service.findAllByCategoryIdAndStatusAndLimitAndOffset(categoryId, StatusCustom.ACTIVE, StatusCustom.ACTIVE, StatusCustom.ACTIVE, limit, offset);
+    		}
+    		
     	} else {
-    		return service.findAllByBrandIdAndFilterAndStatusAndLimitAndOffset(brandId, filterId,  StatusCustom.ACTIVE, StatusCustom.ACTIVE, StatusCustom.ACTIVE, limit, offset);
+    		if(filterId != null) {
+    			return service.findAllByBrandIdAndFilterAndStatusAndLimitAndOffset(brandId, filterId,  StatusCustom.ACTIVE, StatusCustom.ACTIVE, StatusCustom.ACTIVE, limit, offset);
+    		} else {
+    			return service.findAllByBrandIdAndStatusAndLimitAndOffset(brandId, StatusCustom.ACTIVE, StatusCustom.ACTIVE, StatusCustom.ACTIVE, limit, offset);
+    		}
+    		
     	}
 		
 	}
     
     @GetMapping("/api/count/products")
     public int countByBrandIdAndFilter(@RequestParam(required = false) Long categoryId, @RequestParam(required = false) Long brandId, @RequestParam(required = false) String filterId) {
+
     	if(categoryId != null) {
-    		return service.countByCategoryIdAndFilterAndStatus(categoryId, filterId,  StatusCustom.ACTIVE, StatusCustom.ACTIVE, StatusCustom.ACTIVE);
+    		if(filterId != null) {
+    			return service.countByCategoryIdAndFilterAndStatus(categoryId, filterId,  StatusCustom.ACTIVE, StatusCustom.ACTIVE, StatusCustom.ACTIVE);
+    		} else {
+    			return service.countByCategoryIdAndStatus(categoryId, StatusCustom.ACTIVE, StatusCustom.ACTIVE, StatusCustom.ACTIVE);
+    		}
+    		
     	} else {
-    		return service.countByBrandIdAndFilterAndStatus(brandId, filterId,  StatusCustom.ACTIVE, StatusCustom.ACTIVE, StatusCustom.ACTIVE);
+    		if(filterId != null) {
+    			return service.countByBrandIdAndFilterAndStatus(brandId, filterId,  StatusCustom.ACTIVE, StatusCustom.ACTIVE, StatusCustom.ACTIVE);
+    		} else {
+    			return service.countByBrandIdAndStatus(brandId, StatusCustom.ACTIVE, StatusCustom.ACTIVE, StatusCustom.ACTIVE);
+    		}
+    		
     	}
 	}
     

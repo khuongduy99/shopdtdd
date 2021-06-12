@@ -58,7 +58,7 @@
                         
 							<th:block th:each="item, state : ${model.children}">
 		                        <div class="input-checkbox">
-		                            <input onclick="filterProduct(this);" th:value="${item.id}" type="checkbox" th:id="${'filter-' +item.alias+'-'+state.count}">
+		                            <input onclick="filterProduct();" th:value="${item.id}" type="checkbox" th:id="${'filter-' +item.alias+'-'+state.count}">
 		                            <label th:for="${'filter-'+item.alias+'-'+state.count}">
 		                                <span></span>
 		                               <th:block th:utext="${item.name}"></th:block>
@@ -119,6 +119,7 @@
                 <!-- store products -->
                 <div class="products-tabs">
                     <div id="tab1" class="tab-pane active" role="tabpanel">
+                    <span class="store-qty" th:utext="${totalItem + ' sản phẩm'}"></span>
                         <div class="row">
                         
                         <th:block th:each="model : ${ListProduct}">
@@ -137,7 +138,7 @@
                                         </div>
                                     </div>
                                     <div class="product-body">
-                                        <h3 class="product-name"><a href="#" th:utext="${model.name}"></a></h3>
+                                        <h3 class="product-name"><a th:href="${'/sp?n=' + model.alias}" th:utext="${model.name}"></a></h3>
                                         <h4 th:if="${model.sale != 0}" class="product-price">
 	                                        	<span class="money-vnd" th:utext="${model.sale}"></span><sup>₫</sup>
 	                                            <del class="product-old-price"><span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup></del>
@@ -146,17 +147,18 @@
 	                                        	<span class="money-vnd" th:utext="${model.price}"></span><sup>₫</sup>
 	                                        </h4>
                                         <div class="product-rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
+                                            <th:block  th:each="i: ${#numbers.sequence(0, model.star - 1)}">
+					                        		<i class="fa fa-star"></i>
+					                        	</th:block>
+					                            <th:block th:if="${model.star != 5}" th:each="i: ${#numbers.sequence(0, 4 - model.star)}">
+					                        		<i class="fa fa-star-o"></i>
+					                        	</th:block>
                                         </div>
                                         <div class="product-btns">
                                             <button class="add-to-compare"><i class="fa fa-exchange"></i><span
                                                     class="tooltipp">add to compare</span>
                                             </button>
-                                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span>
+                                            <button class="quick-view"><a th:href="${'/sp?n=' + model.alias}"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></a>
                                             </button>
                                         </div>
                                     </div>
@@ -172,7 +174,6 @@
 
                 <!-- store bottom filter -->
                 <div class="store-filter clearfix">
-                    <span class="store-qty" th:utext="${totalItem + ' sản phẩm'}"></span>
                     <ul class="store-pagination">
                         <li class="active">1</li>
                         <th:block th:if="${totalPage > 1}">		
@@ -266,6 +267,7 @@
 			pagnText += "<li><a onclick='getProductPagn("+ limit + "," + (offset + limit)+")'><i class='fa fa-angle-right'></i></a></li>\n";
 		}
 		$(".store-pagination").html(pagnText);
+		if(totalItem <= 5) $(".store-pagination").html("");
 		$('#tab1').css('filter', 'blur(40px)');
 		$('#display-loadding').css('display', 'block');
 		
@@ -289,7 +291,7 @@
 				txt += "</div>\n";
 				
 				txt += "<div class='product-body'>\n";
-				txt += "<h3 class='product-name'><a href=''>"+obj.name+"</a></h3>\n";
+				txt += "<h3 class='product-name'><a href='/sp?n="+obj.alias+"'>"+obj.name+"</a></h3>\n";
 				if(obj.sale != 0) {
 					txt += "<h4 class='product-price'>\n";
 					txt += "<span class='money-vnd'>"+obj.sale+"</span><sup>₫</sup>\n";
@@ -302,15 +304,16 @@
 				}
 				
 				txt += "<div class='product-rating'>\n";
-				txt += "<i class='fa fa-star'></i>\n";
-				txt += "<i class='fa fa-star'></i>\n";
-				txt += "<i class='fa fa-star'></i>\n";
-				txt += "<i class='fa fa-star'></i>\n";
-				txt += "<i class='fa fa-star'></i\n>";
+				for(var j = 0; j < obj.star; j++) {
+					txt += " <i class='fa fa-star'></i>\n";
+			 	}
+			 	for(var j = 0; j < 5 - obj.star; j++) {
+			 		txt += " <i class='fa fa-star-o'></i>\n";
+			 	}
 				txt += "</div>\n";
 				txt += "<div class='product-btns'>\n";
 				txt += "<button class='add-to-compare'><i class='fa fa-exchange'></i><span class='tooltipp'>add to compare</span></button>\n";
-				txt += "<button class='quick-view'><i class='fa fa-eye'></i><span class='tooltipp'>quick view</span></button>\n";
+				txt += "<button class='quick-view'><a href='/sp?n="+obj.alias+"'><i class='fa fa-eye'></i><span class='tooltipp'>Xem chi tiết</span></a></button>\n";
 				txt += "</div>\n";
 				txt += "</div>\n";
 				txt += "</div>\n";
@@ -327,20 +330,20 @@
 		$("#checkbok-filter-brand input[type='checkbox']").each(function (){
 			$(this).prop('checked', false);
 		});
-		$(cked).prop('checked', true);
-		$("#urlAPIgetProduct").val("/api/brands/" + cked.value+"/products?");
-		$("#brandId").val(cked.value);
-		$.get("/api/count/brands/" + cked.value+"/products",function(data) {
-			$("#totalItem").val(data);
-			var limit = $("#limit").val();
-			var totalItem = $("#totalItem").val();
-			var totalPage = Math.ceil(totalItem / limit);
-			$("#totalPage").val(totalPage);
-			getProductPagn(limit, 0);
-		});
+		if(cked.value == $("#brandId").val()) {
+			$(cked).prop('checked', false);
+			$("#brandId").val("");
+			filterProduct();
+		} else {
+			$(cked).prop('checked', true);
+			$("#brandId").val(cked.value);
+			filterProduct();
+		}
+		
+		
 	}
 	
-	function filterProduct(cked) {
+	function filterProduct() {
 		var ids = [];
 		$(".checkbox-filter-product input[type='checkbox']:checked").each(function (){
 			ids.push($(this).val());
@@ -350,26 +353,55 @@
 		var brandId = $("#brandId").val();
 		var categoryId = $("#categoryId").val();
 		if(brandId != "") {
-			$("#urlAPIgetProduct").val("/api/products?brandId=" + brandId + "&filterId=" + ids + "&");
-			$.get("/api/count/products?brandId=" + brandId + "&filterId=" + ids ,function(data) {
-				$("#totalItem").val(data);
-				var limit = $("#limit").val();
-				var totalItem = $("#totalItem").val();
-				var totalPage = Math.ceil(totalItem / limit);
-				$("#totalPage").val(totalPage);
-				getProductPagn(limit, 0);
-			});
+			if(ids.length != 0) {
+				$("#urlAPIgetProduct").val("/api/products?brandId=" + brandId + "&filterId=" + ids + "&");
+				$.get("/api/count/products?brandId=" + brandId + "&filterId=" + ids ,function(data) {
+					$("#totalItem").val(data);
+					var limit = $("#limit").val();
+					var totalItem = $("#totalItem").val();
+					var totalPage = Math.ceil(totalItem / limit);
+					$("#totalPage").val(totalPage);
+					$(".store-qty").text(data + " sản phẩm");
+					getProductPagn(limit, 0);
+				});
+			} else {
+				$("#urlAPIgetProduct").val("/api/products?brandId=" + brandId + "&");
+				$.get("/api/count/products?brandId=" + brandId,function(data) {
+					$("#totalItem").val(data);
+					var limit = $("#limit").val();
+					var totalItem = $("#totalItem").val();
+					var totalPage = Math.ceil(totalItem / limit);
+					$("#totalPage").val(totalPage);
+					$(".store-qty").text(data + " sản phẩm");
+					getProductPagn(limit, 0);
+				});
+			}
+			
 		} else {
-			 var  uu = $("#urlAPIgetProduct").val("/api/products?categoryId="+categoryId+"&filterId=" + ids + "&");
-			 console.log(uu);
-			 $.get("/api/count/products?categoryId="+categoryId+"&filterId=" + ids ,function(data) {
-				$("#totalItem").val(data);
-				var limit = $("#limit").val();
-				var totalItem = $("#totalItem").val();
-				var totalPage = Math.ceil(totalItem / limit);
-				$("#totalPage").val(totalPage);
-				getProductPagn(limit, 0);
-			});
+			 
+			 if(ids.length != 0) {
+				 $("#urlAPIgetProduct").val("/api/products?categoryId="+categoryId+"&filterId=" + ids + "&");
+				 $.get("/api/count/products?categoryId="+categoryId+"&filterId=" + ids ,function(data) {
+					$("#totalItem").val(data);
+					var limit = $("#limit").val();
+					var totalItem = $("#totalItem").val();
+					var totalPage = Math.ceil(totalItem / limit);
+					$("#totalPage").val(totalPage);
+					$(".store-qty").text(data + " sản phẩm");
+					getProductPagn(limit, 0);
+				});
+				} else {
+					$("#urlAPIgetProduct").val("/api/products?categoryId="+categoryId+"&");
+					 $.get("/api/count/products?categoryId="+categoryId ,function(data) {
+						$("#totalItem").val(data);
+						var limit = $("#limit").val();
+						var totalItem = $("#totalItem").val();
+						var totalPage = Math.ceil(totalItem / limit);
+						$("#totalPage").val(totalPage);
+						$(".store-qty").text(data + " sản phẩm");
+						getProductPagn(limit, 0);
+					});
+				}
 		}
 		
 		

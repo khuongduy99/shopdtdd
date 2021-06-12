@@ -108,7 +108,7 @@
                     <ul class="product-links">
                         <li><i class="fa fa-tags"></i></li>
                         <th:block th:each="item, count : ${#strings.arraySplit(Product.tags, ',')}">
-                        <li><a th:href="${'/timkiemtag?n=' + item}" th:utext="${item}"></a></li>
+                        <li><a th:href="${'/tags?n=' + item}" th:utext="${item}"></a></li>
                         </th:block>
                     </ul>
 
@@ -504,18 +504,18 @@ function getReviewPagn(limit, offset) {
 		var pagnText = "\n";
 		
 		if(offset != 0) {
-			pagnText += "<li><a onclick='reloadReview("+ limit + "," + (offset - limit)+")'><i class='fa fa-angle-left'></i></a></li>\n";
+			pagnText += "<li><a onclick='getReviewPagn("+ limit + "," + (offset - limit)+")'><i class='fa fa-angle-left'></i></a></li>\n";
 		}
 		
 		for(var i = 0; i < totalPage; i++) {
 			if(offset == (limit * i)) {
 				pagnText += "<li class='active'>"+(i+1)+"</li>\n";
 			} else {
-				pagnText += "<li><a onclick='reloadReview("+ limit + "," + (limit * i)+")'>"+(i+1)+"</a></li>\n";
+				pagnText += "<li><a onclick='getReviewPagn("+ limit + "," + (limit * i)+")'>"+(i+1)+"</a></li>\n";
 			}
 		}
 		if(offset + limit < totalItem) {
-			pagnText += "<li><a onclick='reloadReview("+ limit + "," + (offset + limit)+")'><i class='fa fa-angle-right'></i></a></li>\n";
+			pagnText += "<li><a onclick='getReviewPagn("+ limit + "," + (offset + limit)+")'><i class='fa fa-angle-right'></i></a></li>\n";
 		}
 		$(".reviews-pagination").html(pagnText);
 		//$('#tab1').css('filter', 'blur(40px)');

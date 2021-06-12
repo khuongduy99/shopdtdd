@@ -97,7 +97,7 @@ public class ProductController {
 		return "client/search";
 	}
 	
-	@RequestMapping(value = {"/timkiemtag"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/tags"}, method = RequestMethod.GET)
 	public String searchProductByTag(@RequestParam(value = "n") String keyword, Model model) {
 		int limit = 8;
 		int offset = 0;
@@ -107,7 +107,7 @@ public class ProductController {
 		model.addAttribute("totalPage", (int) Math.ceil((double) totalItem / limit));
 		List<ProductDTO> listProduct = productService.searchByTagsAndStatusAndLimitAndOffset(keyword, StatusCustom.ACTIVE, StatusCustom.ACTIVE, StatusCustom.ACTIVE, limit, offset);
 		model.addAttribute("ListProduct", listProduct);
-		model.addAttribute("keyword", keyword);
+		model.addAttribute("tags", keyword);
 		return "client/search";
 	}
 }
